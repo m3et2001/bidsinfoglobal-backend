@@ -1,0 +1,174 @@
+[
+  {
+    "name": "Africa",
+    "code": "1"
+  },
+  {
+    "name": "Central Africa/Middle Africa",
+    "code": "101"
+  },
+  {
+    "name": "East Africa/Eastern Africa",
+    "code": "102"
+  },
+  {
+    "name": "North Africa/Northern Africa",
+    "code": "103"
+  },
+  {
+    "name": "SADC (Southern African Development Community)",
+    "code": "107"
+  },
+  {
+    "name": "Southern Africa",
+    "code": "104"
+  },
+  {
+    "name": "Sub Saharan Africa",
+    "code": "106"
+  },
+  {
+    "name": "West Africa",
+    "code": "105"
+  },
+  {
+    "name": "America",
+    "code": "2"
+  },
+  {
+    "name": "Carribean",
+    "code": "201"
+  },
+  {
+    "name": "Central America",
+    "code": "202"
+  },
+  {
+    "name": "Latin America",
+    "code": "205"
+  },
+  {
+    "name": "Northern America",
+    "code": "203"
+  },
+  {
+    "name": "South America",
+    "code": "204"
+  },
+  {
+    "name": "APEC ( Asia-Pacific Economic Cooperation)",
+    "code": "10"
+  },
+  {
+    "name": "Asia",
+    "code": "3"
+  },
+  {
+    "name": "Central Asia",
+    "code": "301"
+  },
+  {
+    "name": "Eastern Asia",
+    "code": "302"
+  },
+  {
+    "name": "GCC countries (Gulf Cooperation Council)",
+    "code": "308"
+  },
+  {
+    "name": "Gulf countries",
+    "code": "309"
+  },
+  {
+    "name": "Middle East Asia",
+    "code": "303"
+  },
+  {
+    "name": "SAARC (South Asian Association for Regional Cooperation)",
+    "code": "307"
+  },
+  {
+    "name": "South Asia",
+    "code": "304"
+  },
+  {
+    "name": "South East Asia",
+    "code": "305"
+  },
+  {
+    "name": "Western Asia",
+    "code": "306"
+  },
+  {
+    "name": "Asia Pacific",
+    "code": "9"
+  },
+  {
+    "name": "Australia and Oceania",
+    "code": "4"
+  },
+  {
+    "name": "Australia and New Zealand",
+    "code": "401"
+  },
+  {
+    "name": "Melanesia",
+    "code": "402"
+  },
+  {
+    "name": "Micronesia",
+    "code": "403"
+  },
+  {
+    "name": "Polynesia",
+    "code": "404"
+  },
+  {
+    "name": "South Pacific Oceania",
+    "code": "405"
+  },
+  {
+    "name": "Balkan",
+    "code": "11"
+  },
+  {
+    "name": "CIS",
+    "code": "6"
+  },
+  {
+    "name": "Europe",
+    "code": "5"
+  },
+  {
+    "name": "Baltic",
+    "code": "506"
+  },
+  {
+    "name": "Central Europe",
+    "code": "505"
+  },
+  {
+    "name": "Eastern Europe",
+    "code": "501"
+  },
+  {
+    "name": "Northern Europe",
+    "code": "502"
+  },
+  {
+    "name": "Southern Europe",
+    "code": "503"
+  },
+  {
+    "name": "Western Europe",
+    "code": "504"
+  },
+  {
+    "name": "Mediterranean",
+    "code": "7"
+  },
+  {
+    "name": "MENA (Middle East Asia & North Africa)",
+    "code": "8"
+  }
+]

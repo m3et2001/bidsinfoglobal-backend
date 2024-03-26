@@ -1,0 +1,3504 @@
+{
+	"info": {
+		"_postman_id": "978c668d-f46f-4b1e-bfa0-6a3a649fb6f7",
+		"name": "Bidsinfoglobal",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26852443"
+	},
+	"item": [
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"radhakishan@gmail.com\",\n    \"password\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/auth/user-login",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"user-login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDQ2YTllMjhlNmNhMzgxNzliYzViMzkiLCJ1aWQiOiI2NDQ2YTllMjhlNmNhMzgxNzliYzViMzkiLCJ1c2VybmFtZSI6InJhZGhha2lzaGFuIiwiZW1haWwiOiJyYWRoYWtpc2hhbkBnbWFpbC5jb20iLCJwYXNzd29yZCI6IiQyYiQxMCQya1dpd0IxTWUvS3U0eWwydFdiSWF1Ym84clI3Q1JvUTdYaXRIOXRBQlkvWTc1UEh0elcvZSIsInJvbGUiOiJzdXBlcl9hZG1pbiIsImlhdCI6MTY4OTk1MDE4MSwiZXhwIjoxNjkwMTIyOTgxfQ.g_vpXEj047HmlFrfP7YS0Y9iyLzhuCji4KcFYLS5Ewc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/auth/users?pageNo=0&limit=10&sortBy=1&sortField=createdAt&keywords=",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"users"
+							],
+							"query": [
+								{
+									"key": "pageNo",
+									"value": "0"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "sortBy",
+									"value": "1"
+								},
+								{
+									"key": "sortField",
+									"value": "createdAt"
+								},
+								{
+									"key": "keywords",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDQ2YTllMjhlNmNhMzgxNzliYzViMzkiLCJ1aWQiOiI2NDQ2YTllMjhlNmNhMzgxNzliYzViMzkiLCJ1c2VybmFtZSI6InJhZGhha2lzaGFuIiwiZW1haWwiOiJyYWRoYWtpc2hhbkBnbWFpbC5jb20iLCJwYXNzd29yZCI6IiQyYiQxMCQya1dpd0IxTWUvS3U0eWwydFdiSWF1Ym84clI3Q1JvUTdYaXRIOXRBQlkvWTc1UEh0elcvZSIsInJvbGUiOiJzdXBlcl9hZG1pbiIsImlhdCI6MTY4OTk1MDE4MSwiZXhwIjoxNjkwMTIyOTgxfQ.g_vpXEj047HmlFrfP7YS0Y9iyLzhuCji4KcFYLS5Ewc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"content_department@gmail.com\",\n    \"role\": \"content_department\", //it, super_admin, sales, content_department\n    \"password\": \"test123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/auth/users",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CMS",
+			"item": [
+				{
+					"name": "Get CMS Records",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/cms/get-cms-data?type=home_page",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"cms",
+								"get-cms-data"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "home_page"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Auth Record Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"forget_password\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.\",\n    \"login_title\": \"Customer Login\",\n    \"login_description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.\",\n    \"register_title\": \"Create Free Account\",\n    \"register_description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/cms/auth-record-update",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"cms",
+								"auth-record-update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Social Record Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Our Social Networks\",\n    \"description\": \"Cras fermentum odio eu feugiat lide par naso tierra videa magna derita valies\",\n    \"twitter\": \"\",\n    \"facebook\": \"\",\n    \"instagram\": \"\",\n    \"skype\": \"\",\n    \"linkedin\": \"\",\n    \"whatsapp\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/cms/social-link-update",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"cms",
+								"social-link-update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Home page record update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDQ2YTllMjhlNmNhMzgxNzliYzViMzkiLCJ1aWQiOiI2NDQ2YTllMjhlNmNhMzgxNzliYzViMzkiLCJ1c2VybmFtZSI6InJhZGhha2lzaGFuIiwiZW1haWwiOiJyYWRoYWtpc2hhbkBnbWFpbC5jb20iLCJwYXNzd29yZCI6IiQyYiQxMCQya1dpd0IxTWUvS3U0eWwydFdiSWF1Ym84clI3Q1JvUTdYaXRIOXRBQlkvWTc1UEh0elcvZSIsImlhdCI6MTY4NDg0NDE2MywiZXhwIjoxNjg1MDE2OTYzfQ.5MlTklrWvBy6dBMg4vO4xxBmOJls2dTT7-4RWsSFElA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"category_title\": \"Top Categories\",\n    \"category_description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore\",\n    \"category_data\": [\n        {\n            \"_id\": \"645cd3f4f195a515266c1119\",\n            \"name\": \"Defence\",\n            \"icon\": \"http://localhost:3001/public/437165-1683807543654.png\"\n        }\n    ],\n    \"tender_title\": \"Top Tenders\",\n    \"tender_description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore\",\n    \"global_tender_data\": [\n        {\n            \"_id\": \"645cdb2f01e0f6c90161a859\",\n            \"authority_name\": \"Global Tender Org\",\n            \"big_ref_no\": \"RFQ:238-22-IA\",\n            \"closing_date\": \"30 Mar 2023\",\n            \"sector\": {\n                \"_id\": \"645cd3f4f195a515266c10e1\",\n                \"name\": \"Textile & Leather\"\n            }\n        }\n    ],\n    \"indian_tender_data\": [\n        {\n            \"_id\": \"64509cbbe554ca71ead4f416\",\n            \"authority_name\": \"Global Tender Org\",\n            \"big_ref_no\": \"RFQ:238-22-IA\",\n            \"closing_date\": \"30 Mar 2023\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/cms/home-page-update",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"cms",
+								"home-page-update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "About us record update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title_one",
+									"value": "Find Out More About Us",
+									"type": "text"
+								},
+								{
+									"key": "sub_title_one",
+									"value": "International Public Procurement",
+									"type": "text"
+								},
+								{
+									"key": "image_one",
+									"type": "file",
+									"src": "/Users/radhakishanjangid/Personal/bidsinfoglobal/src/pages-old/about/about.jpg"
+								},
+								{
+									"key": "description_title_one",
+									"value": "Bidsinfoglobal is world's one of the largest Public Procurement Services portals.",
+									"type": "text"
+								},
+								{
+									"key": "description_one",
+									"value": "With most comprehensive database of International Tenders, Projects, Company Data and Contract Award from Multilateral Funding agencies, Federal, State, County Government, Utilities sector, Defence, Telecommunication, Engineering, Schools, Ports, NGO's, etc. In addition, it also offers market & Company Intelligence information, Bid Outsourcing, e-Tender submission, Vendor Registration & E-procurement support as its major service offerings supporting SME's to Fortune 500 companies world over.",
+									"type": "text"
+								},
+								{
+									"key": "title_two",
+									"value": "KEY FEATURE",
+									"type": "text"
+								},
+								{
+									"key": "sub_title_two",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "image_two",
+									"type": "file",
+									"src": "/Users/radhakishanjangid/Personal/bidsinfoglobal/src/pages-old/about/aboutFetures.jpg"
+								},
+								{
+									"key": "list_description",
+									"value": "[\"4,00,000+ Public / Private Procurement Opportunities from all over the Globe\", \"30000+ New Business Opportunities posted on Bidsinfoglobal.\", \"Different Information Sources from across the world\", \"Global comprehensive coverage\",  \"150+ Researchers\", \"170+ Multilateral and Bi-lateral Funding Agencies coverage\"]",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/cms/about-us-update",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"cms",
+								"about-us-update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Contact us record update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"contact_title\": \"Contact Us\",\n    \"contact_description\": \"Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.\",\n    \"phone\": \"+155895548855\",\n    \"email\": \"contact@example.com\",\n    \"address\": \"A108 Adam Street, New York, NY 535022\",\n    \"google_map_url\": \"https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12097.433213460943!2d-74.0062269!3d40.7101282!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xb89d1fe6bc499443!2sDowntown+Conference+Center!5e0!3m2!1smk!2sbg!4v1539943755621\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/cms/contact-us-update",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"cms",
+								"contact-us-update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Service Page Info Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Find Out More About Us\", //required\n    \"description\": \"TendersInfo as a service provides daily and detailed alerts on International public tenders, RFP's, RFQ's, Prequalifications, EOI's, etc. from across the globe, which are funded by Multilateral Funding Agencies, Federal, State, County Governments, Utilities Sector, Hospitals, Schools, Ports, NGO's, etc. from diversified sectors in Public Procurement Domain.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/cms/service-info-update",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"cms",
+								"service-info-update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Service Record Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "Tender Notice Alerts",
+									"description": "required",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Its simple and intuitive online search system allows members with quick and easy access to over 3,00,000+ Live Procurement Opportunities at any point in time encompassing requirements from 150+ countries and all Industry segments. This database is updated 365 days a year, with close to 25000+ new opportunities being added each day.\n\nMembers of TendersInfo receive a daily email alert consisting of bid opportunities from their chosen Business Area and Geographies. Accurate search profiles are composed ensuring that members receive only those opportunities that exactly match their product profile and target market.",
+									"description": "required",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"description": "required",
+									"type": "file",
+									"src": "/Users/radhakishanjangid/Personal/bidsinfoglobal/src/pages-old/service/about.jpg"
+								},
+								{
+									"key": "_id",
+									"value": "643ba74bf4c91ec1b9683047",
+									"description": "Pass this if you want to update the record",
+									"type": "text"
+								},
+								{
+									"key": "delete",
+									"value": "true",
+									"description": "Pass this if you want to delete the record",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/cms/service-record-update",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"cms",
+								"service-record-update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eprocurment Info Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Welcome to eProcurement System\",\n    \"description\": \"The eProcurement System enables the companies to automate their procurement processes, We BidsInfoGlobal would be glad to help you automate your procurement processes. Kindly find below list of E-Procurement system packages offered by BidsInfoGlobal.\",\n    \"drop_demo_title\": \"Drop A Demo Request\",\n    \"drop_demo_description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/cms/eprocurment-info-update",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"cms",
+								"eprocurment-info-update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eprocurment Record Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"label\": \"Sourcing\",\n    \"icon\": \"bx-file\"\n    //\"_id\":\"643ba74bf4c91ec1b9683047\", // send this to edit \n    //\"delete\":\"true\" // send this to delete\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/cms/eprocurment-record-update",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"cms",
+								"eprocurment-record-update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Grants Info Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Grants Information\",\n    \"description\": \"The Provision Of Services For The Service Of Engineering Systems Of Buildings Of Educational Organizations Subordinate To The Department Of Education And Science Of The City Of Moscow In 2023-2025.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/cms/grants-info-update",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"cms",
+								"grants-info-update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Tenders Info Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Tenders Information\",\n    \"description\": \"The Provision Of Services For The Service Of Engineering Systems Of Buildings Of Educational Organizations Subordinate To The Department Of Education And Science Of The City Of Moscow In 2023-2025.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/cms/tenders-info-update",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"cms",
+								"tenders-info-update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Project Info Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Project Information\",\n    \"description\": \"The Provision Of Services For The Service Of Engineering Systems Of Buildings Of Educational Organizations Subordinate To The Department Of Education And Science Of The City Of Moscow In 2023-2025.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/cms/project-info-update",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"cms",
+								"project-info-update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Contract Award Info Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Contract Award Information\",\n    \"description\": \"The Provision Of Services For The Service Of Engineering Systems Of Buildings Of Educational Organizations Subordinate To The Department Of Education And Science Of The City Of Moscow In 2023-2025.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/cms/contract-award-info-update",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"cms",
+								"contract-award-info-update"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Masters",
+			"item": [
+				{
+					"name": "Country",
+					"item": [
+						{
+							"name": "Get Country List",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/masters/country-all?pageNo=0&limit=300&sortBy=1&sortField=createdAt&by_tenders=1",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"masters",
+										"country-all"
+									],
+									"query": [
+										{
+											"key": "pageNo",
+											"value": "0"
+										},
+										{
+											"key": "limit",
+											"value": "300"
+										},
+										{
+											"key": "sortBy",
+											"value": "1",
+											"description": "1 = asc\n-1 = desc"
+										},
+										{
+											"key": "sortField",
+											"value": "createdAt"
+										},
+										{
+											"key": "by_tenders",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Single Country",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/masters/country?_id=644ca96de053e50054be7046",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"masters",
+										"country"
+									],
+									"query": [
+										{
+											"key": "_id",
+											"value": "644ca96de053e50054be7046"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Insert Country",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"India-2\",\n    \"str_code\": \"IND2\",\n    \"num_code\": \"002\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/masters/country",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"masters",
+										"country"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Country",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"_id\": \"644cb215a2d9cd8a2103298d\",\n    \"name\": \"India-3\",\n    \"str_code\": \"IND2\",\n    \"num_code\": \"002\",\n    \"is_active\": false,\n    \"is_deleted\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/masters/country",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"masters",
+										"country"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Country",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/masters/country?_id=644cb215a2d9cd8a2103298d",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"masters",
+										"country"
+									],
+									"query": [
+										{
+											"key": "_id",
+											"value": "644cb215a2d9cd8a2103298d"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "States",
+					"item": [
+						{
+							"name": "Get States List",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/masters/states-all?pageNo=0&limit=10&sortBy=1&sortField=createdAt&keywords=",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"masters",
+										"states-all"
+									],
+									"query": [
+										{
+											"key": "pageNo",
+											"value": "0"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										},
+										{
+											"key": "sortBy",
+											"value": "1",
+											"description": "1 = asc\n-1 = desc"
+										},
+										{
+											"key": "sortField",
+											"value": "createdAt"
+										},
+										{
+											"key": "keywords",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Single State",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/masters/states?_id=644cb8e11d8aa67ccf6473fb",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"masters",
+										"states"
+									],
+									"query": [
+										{
+											"key": "_id",
+											"value": "644cb8e11d8aa67ccf6473fb"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Insert States",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"India-2\",\n    \"code\": \"002\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/masters/states",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"masters",
+										"states"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update States",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"_id\": \"644cb94b624e3487f5bbdb99\",\n    \"name\": \"India-3\",\n    \"code\": \"IND2\",\n    \"is_active\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/masters/states",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"masters",
+										"states"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete States",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/masters/states?_id=644cb94b624e3487f5bbdb99",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"masters",
+										"states"
+									],
+									"query": [
+										{
+											"key": "_id",
+											"value": "644cb94b624e3487f5bbdb99"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Regions",
+					"item": [
+						{
+							"name": "Get Region List",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/masters/regions-all?pageNo=0&limit=10&sortBy=1&sortField=createdAt&keywords=",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"masters",
+										"regions-all"
+									],
+									"query": [
+										{
+											"key": "pageNo",
+											"value": "0"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										},
+										{
+											"key": "sortBy",
+											"value": "1",
+											"description": "1 = asc\n-1 = desc"
+										},
+										{
+											"key": "sortField",
+											"value": "createdAt"
+										},
+										{
+											"key": "keywords",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Single Regions",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/masters/regions?_id=644cbb4d53ee5f0c066d22f6",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"masters",
+										"regions"
+									],
+									"query": [
+										{
+											"key": "_id",
+											"value": "644cbb4d53ee5f0c066d22f6"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Insert Regions",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"India-2\",\n    \"code\": \"002\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/masters/regions",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"masters",
+										"regions"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Regions",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"_id\": \"644cb94b624e3487f5bbdb99\",\n    \"name\": \"India-3\",\n    \"code\": \"IND2\",\n    \"is_active\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/masters/regions",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"masters",
+										"regions"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Regions",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/masters/regions?_id=644cb94b624e3487f5bbdb99",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"masters",
+										"regions"
+									],
+									"query": [
+										{
+											"key": "_id",
+											"value": "644cb94b624e3487f5bbdb99"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Sectors",
+					"item": [
+						{
+							"name": "Get Sectors List",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/masters/sectors-all?pageNo=0&limit=10&sortBy=1&sortField=createdAt&keywords=",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"masters",
+										"sectors-all"
+									],
+									"query": [
+										{
+											"key": "pageNo",
+											"value": "0"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										},
+										{
+											"key": "sortBy",
+											"value": "1",
+											"description": "1 = asc\n-1 = desc"
+										},
+										{
+											"key": "sortField",
+											"value": "createdAt"
+										},
+										{
+											"key": "keywords",
+											"value": ""
+										},
+										{
+											"key": "by_tenders_count",
+											"value": "true",
+											"disabled": true
+										},
+										{
+											"key": "",
+											"value": null,
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Single Sector",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/masters/sectors?_id=644cbd468451a612e3588d68",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"masters",
+										"sectors"
+									],
+									"query": [
+										{
+											"key": "_id",
+											"value": "644cbd468451a612e3588d68"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Insert Sector",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/masters/sectors",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"masters",
+										"sectors"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Sectors",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "_id",
+											"value": "645cd3f4f195a515266c1119",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "Defence",
+											"type": "text"
+										},
+										{
+											"key": "code",
+											"value": "19",
+											"type": "text"
+										},
+										{
+											"key": "is_active",
+											"value": "true",
+											"type": "text"
+										},
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/Users/radhakishanjangid/Downloads/download.png"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/masters/sectors",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"masters",
+										"sectors"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Sectors",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/masters/sectors?_id=644cbd468451a612e3588d68",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"masters",
+										"sectors"
+									],
+									"query": [
+										{
+											"key": "_id",
+											"value": "644cbd468451a612e3588d68"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "CPV Codes",
+					"item": [
+						{
+							"name": "Get CPV Code List",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/masters/cpv-codes-all?pageNo=0&limit=10&sortBy=1&sortField=createdAt&keywords=",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"masters",
+										"cpv-codes-all"
+									],
+									"query": [
+										{
+											"key": "pageNo",
+											"value": "0"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										},
+										{
+											"key": "sortBy",
+											"value": "1",
+											"description": "1 = asc\n-1 = desc"
+										},
+										{
+											"key": "sortField",
+											"value": "createdAt"
+										},
+										{
+											"key": "keywords",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Single CPV Code",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/masters/cpv-codes?_id=644e02d723a3d9fa17d201db",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"masters",
+										"cpv-codes"
+									],
+									"query": [
+										{
+											"key": "_id",
+											"value": "644e02d723a3d9fa17d201db"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Insert CPV Codes",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"description\": \"India-2\",\n    \"code\": \"002\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/masters/cpv-codes",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"masters",
+										"cpv-codes"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update CPV Codes",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"_id\": \"644e02d723a3d9fa17d201db\",\n    \"description\": \"India-3\",\n    \"code\": \"IND2\",\n    \"is_active\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/masters/cpv-codes",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"masters",
+										"cpv-codes"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete CPV Codes",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/masters/cpv-codes?_id=644e02d723a3d9fa17d201db",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"masters",
+										"cpv-codes"
+									],
+									"query": [
+										{
+											"key": "_id",
+											"value": "644e02d723a3d9fa17d201db"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Funding Agency",
+					"item": [
+						{
+							"name": "Get Funding Agency List",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/masters/funding-agency-all?pageNo=0&limit=10&sortBy=1&sortField=createdAt&keywords=",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"masters",
+										"funding-agency-all"
+									],
+									"query": [
+										{
+											"key": "pageNo",
+											"value": "0"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										},
+										{
+											"key": "sortBy",
+											"value": "1",
+											"description": "1 = asc\n-1 = desc"
+										},
+										{
+											"key": "sortField",
+											"value": "createdAt"
+										},
+										{
+											"key": "keywords",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Single Funding Agency",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/masters/funding-agency?_id=644e02d723a3d9fa17d201db",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"masters",
+										"funding-agency"
+									],
+									"query": [
+										{
+											"key": "_id",
+											"value": "644e02d723a3d9fa17d201db"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Insert Funding Agency",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\": \"India-2\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/masters/funding-agency",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"masters",
+										"funding-agency"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Funding Agency",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"_id\": \"644e02d723a3d9fa17d201db\",\n    \"title\": \"IND2\",\n    \"is_active\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/masters/funding-agency",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"masters",
+										"funding-agency"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Funding Agency",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/masters/funding-agency?_id=644e02d723a3d9fa17d201db",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"masters",
+										"funding-agency"
+									],
+									"query": [
+										{
+											"key": "_id",
+											"value": "644e02d723a3d9fa17d201db"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Grants",
+			"item": [
+				{
+					"name": "Get Grants List",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/grants/list?pageNo=0&limit=10&sortBy=1&sortField=createdAt&keywords=",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"grants",
+								"list"
+							],
+							"query": [
+								{
+									"key": "pageNo",
+									"value": "0"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "sortBy",
+									"value": "1",
+									"description": "1 = asc\n-1 = desc"
+								},
+								{
+									"key": "sortField",
+									"value": "createdAt"
+								},
+								{
+									"key": "keywords",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single Grants",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/grants?_id=644fb102782f78854b598cd2",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"grants"
+							],
+							"query": [
+								{
+									"key": "_id",
+									"value": "644fb102782f78854b598cd2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Insert Grants",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"donor\": \"Global Tender Org\", //required\n    \"contact_information\": \"501 Prodinsa Building, Cnr Steve Bhiko and Pretorius Street - Arcadia\",\n    \"location\": \"012-14400-21071\",\n    \"big_ref_no\": \"RFQ:238-22-IA\",\n    \"title\": \"Defense Forces\",\n    \"type\": \"RFQ:238-22-IA\",\n    \"status\": \"WorldBank\",\n    \"value\": \"International\",\n    \"type_of_services\": \"Testing\",\n    \"sectors\": \"Textile & Leather\",\n    \"regions\": \"Africa\",\n    \"cpv_codes\": \"3000000\",\n    \"funding_agency\": \"Abu Dhabi Commercial Bank\",\n    \"deadline\": \"10 May 2024\",\n    \"duration\": \"15 Days\",\n    \"attachment\": \"https://docs.google.com/spreadsheets/d/1VZcE4XGzMcAlZF1XZKBF2I6PJs2calLA1oR6Qdd92BY/edit\",\n    \"post_date\": \"10/05/2023\",\n    \"is_active\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/grants",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"grants"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Grants",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"_id\": \"644fb102782f78854b598cd2\", //required\n    \"donor\": \"Global Tender Orgs\", //required\n    \"contact_information\": \"501 Prodinsa Building, Cnr Steve Bhiko and Pretorius Street - Arcadia\",\n    \"location\": \"012-14400-21071\",\n    \"big_ref_no\": \"RFQ:238-22-IA\",\n    \"title\": \"Defense Forces\",\n    \"type\": \"RFQ:238-22-IA\",\n    \"status\": \"WorldBank\",\n    \"value\": \"International\",\n    \"type_of_services\": \"Testing\",\n    \"sectors\": \"Textile & Leather\",\n    \"regions\": \"Africa\",\n    \"cpv_codes\": \"3000000\",\n    \"funding_agency\": \"Abu Dhabi Commercial Bank\",\n    \"deadline\": \"10 May 2024\",\n    \"duration\": \"15 Days\",\n    \"attachment\": \"https://docs.google.com/spreadsheets/d/1VZcE4XGzMcAlZF1XZKBF2I6PJs2calLA1oR6Qdd92BY/edit\",\n    \"post_date\": \"10/05/2023\",\n    \"is_active\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/grants",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"grants"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Grants",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/grants?_id=644fb102782f78854b598cd2",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"grants"
+							],
+							"query": [
+								{
+									"key": "_id",
+									"value": "644fb102782f78854b598cd2"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Contract Award",
+			"item": [
+				{
+					"name": "Get Contract Award List",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/contract-award/list?pageNo=0&limit=10&sortBy=1&sortField=createdAt&keywords=",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"contract-award",
+								"list"
+							],
+							"query": [
+								{
+									"key": "pageNo",
+									"value": "0"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "sortBy",
+									"value": "1",
+									"description": "1 = asc\n-1 = desc"
+								},
+								{
+									"key": "sortField",
+									"value": "createdAt"
+								},
+								{
+									"key": "keywords",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single Contract Award",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/contract-award?_id=644fbb8f1cd68c6f39c11de4",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"contract-award"
+							],
+							"query": [
+								{
+									"key": "_id",
+									"value": "644fbb8f1cd68c6f39c11de4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Insert Contract Award",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"org_name\": \"Global Tender Org\", //required\n    \"org_address\": \"501 Prodinsa Building, Cnr Steve Bhiko and Pretorius Street - Arcadia - Pretoria - 0001\",\n    \"telephone_no\": \"012-14400-21071\",\n    \"fax_number\": \"N/A\",\n    \"email\": \"luckym@visava.in\",\n    \"contact_person\": \"Laxman Singh\",\n    \"big_ref_no\": \"RFQ:238-22-IA\",\n    \"document_no\": \"Defense Forces\",\n    \"bidding_type\": \"International\",\n    \"project_location\": \"India\",\n    \"contractor_details\": \"The Provision Of Services For The Service Of Engineering Systems Of Buildings Of Educational Organizations Subordinate.\",\n    \"tender_notice_no\": \"RFQ:238-22-IA\",\n    \"description\": \"International\",\n    \"sectors\": \"Textile & Leather\",\n    \"regions\": \"Africa\",\n    \"cpv_codes\": \"3000000\",\n    \"funding_agency\": \"Abu Dhabi Commercial Bank\",\n    \"awards_publish_date\": \"23/04/2024\",\n    \"is_active\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/contract-award",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"contract-award"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Insert Multiple Contract Award",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"contracts\": [\n        {\n            \"org_name\": \"Global asdf Tender Org\", //required\n            \"org_address\": \"501 Prodinsa Building, Cnr Steve Bhiko and Pretorius Street - Arcadia - Pretoria - 0001\",\n            \"telephone_no\": \"012-14400-21071\",\n            \"fax_number\": \"N/A\",\n            \"email\": \"luckym@visava.in\",\n            \"contact_person\": \"Laxman Singh\",\n            \"big_ref_no\": \"RFQ:238-22-IA\",\n            \"document_no\": \"Defense Forces\",\n            \"bidding_type\": \"International\",\n            \"project_location\": \"India\",\n            \"contractor_details\": \"The Provision Of Services For The Service Of Engineering Systems Of Buildings Of Educational Organizations Subordinate.\",\n            \"tender_notice_no\": \"RFQ:238-22-IA\",\n            \"description\": \"International\",\n            \"sectors\": \"Textile & Leather\",\n            \"regions\": \"Africa\",\n            \"cpv_codes\": \"3000000\",\n            \"funding_agency\": \"Abu Dhabi Commercial Bank\",\n            \"awards_publish_date\": \"23/04/2024\",\n            \"is_active\": true\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/contract-award/multiple",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"contract-award",
+								"multiple"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Contract Award",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"_id\": \"644fbb8f1cd68c6f39c11de4\", //required\n    \"org_name\": \"Global Tender Org\", // required\n    \"org_address\": \"501 Prodinsa Building, Cnr Steve Bhiko and Pretorius Street - Arcadia - Pretoria - 0001\",\n    \"telephone_no\": \"012-14400-21071\",\n    \"fax_number\": \"N/A\",\n    \"email\": \"luckym@visava.in\",\n    \"contact_person\": \"Laxman Singh\",\n    \"big_ref_no\": \"RFQ:238-22-IA\",\n    \"document_no\": \"Defense Forces\",\n    \"bidding_type\": \"International\",\n    \"project_location\": \"India\",\n    \"contractor_details\": \"The Provision Of Services For The Service Of Engineering Systems Of Buildings Of Educational Organizations Subordinate.\",\n    \"tender_notice_no\": \"RFQ:238-22-IA\",\n    \"description\": \"International\",\n    \"sectors\": \"Textile & Leather\",\n    \"regions\": \"Africa\",\n    \"cpv_codes\": \"3000000\",\n    \"funding_agency\": \"Abu Dhabi Commercial Bank\",\n    \"awards_publish_date\": \"23/04/2024\",\n    \"is_active\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/grants",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"grants"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Contract Award",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/contract-award?_id=644fbb8f1cd68c6f39c11de4",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"contract-award"
+							],
+							"query": [
+								{
+									"key": "_id",
+									"value": "644fbb8f1cd68c6f39c11de4"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Projects",
+			"item": [
+				{
+					"name": "Get Projects List",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/projects/list?pageNo=0&limit=10&sortBy=1&sortField=createdAt&keywords=",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"projects",
+								"list"
+							],
+							"query": [
+								{
+									"key": "pageNo",
+									"value": "0"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "sortBy",
+									"value": "1",
+									"description": "1 = asc\n-1 = desc"
+								},
+								{
+									"key": "sortField",
+									"value": "createdAt"
+								},
+								{
+									"key": "keywords",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single Project",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/projects?_id=644fd3ab0c57af771499e771",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"projects"
+							],
+							"query": [
+								{
+									"key": "_id",
+									"value": "644fd3ab0c57af771499e771"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Insert Projects",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"project_id\": \"RFQ:238-22-IA\",\n    \"project_name\": \"Global Tender Org\",\n    \"project_background\": \"Global Tender Org\",\n    \"project_location\": \"Pretoria\",\n    \"project_status\": \"Active\",\n    \"project_publishing_date\": \"10/05/2023\",\n    \"estimated_project_completion_date\": \"10/05/2023\",\n    \"client_name\": \"Laxman Singh\",\n    \"client_address\": \"501 Prodinsa Building, Bhiko and Pretorius Street - Arcadia - Pretoria - 0001\",\n    \"financer_name\": \"N/A\",\n    \"sectors\": \"Textile & Leather\",\n    \"regions\": \"Africa\",\n    \"cpv_codes\": \"3000000\",\n    \"funding_agency\": \"Abu Dhabi Commercial Bank\",\n    \"is_active\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/projects",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"projects"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Insert Multiple Projects",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"projects\": [\n        {\n            \"project_id\": \"TESTEy\",\n            \"project_name\": \"Global Tender Org\",\n            \"project_background\": \"Global Tender Org\",\n            \"project_location\": \"Pretoria\",\n            \"project_status\": \"Active\",\n            \"project_publishing_date\": \"10/05/2023\",\n            \"estimated_project_completion_date\": \"10/05/2023\",\n            \"client_name\": \"Laxman Singh\",\n            \"client_address\": \"501 Prodinsa Building, Bhiko and Pretorius Street - Arcadia - Pretoria - 0001\",\n            \"sectors\": \"Textile & Leather\",\n            \"regions\": \"Africa\",\n            \"cpv_codes\": \"3000000\",\n            \"funding_agency\": \"Abu Dhabi Commercial Bank\",\n            \"is_active\": true\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/projects/multiple",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"projects",
+								"multiple"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Projects",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"_id\": \"644fd3ab0c57af771499e771\", //required\n    \"project_name\": \"Global Tender Org\", // required\n    \"project_id\": \"RFQ:238-22-IA\", \n    \"project_background\": \"Global Tender Org\",\n    \"project_location\": \"Pretoria\",\n    \"project_status\": \"Active\",\n    \"project_publishing_date\": \"10/05/2023\",\n    \"estimated_project_completion_date\": \"10/05/2023\",\n    \"client_name\": \"Laxman Singh\",\n    \"client_address\": \"501 Prodinsa Building, Bhiko and Pretorius Street - Arcadia - Pretoria - 0001\",\n    \"sectors\": \"Textile & Leather\",\n    \"regions\": \"Africa\",\n    \"cpv_codes\": \"3000000\",\n    \"funding_agency\": \"Abu Dhabi Commercial Bank\",\n    \"is_active\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/projects",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"projects"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Projects",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/projects?_id=644fd3ab0c57af771499e771",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"projects"
+							],
+							"query": [
+								{
+									"key": "_id",
+									"value": "644fd3ab0c57af771499e771"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tenders",
+			"item": [
+				{
+					"name": "Get Tenders List",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/tenders/list?pageNo=0&limit=10&sortBy=1&sortField=createdAt&keywords=&cpv_codes=&sectors=&regions&funding_agency",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"tenders",
+								"list"
+							],
+							"query": [
+								{
+									"key": "pageNo",
+									"value": "0"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "sortBy",
+									"value": "1",
+									"description": "1 = asc\n-1 = desc"
+								},
+								{
+									"key": "sortField",
+									"value": "createdAt"
+								},
+								{
+									"key": "keywords",
+									"value": ""
+								},
+								{
+									"key": "cpv_codes",
+									"value": ""
+								},
+								{
+									"key": "sectors",
+									"value": ""
+								},
+								{
+									"key": "regions",
+									"value": null
+								},
+								{
+									"key": "funding_agency",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single Tenders",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/tenders?_id=644fd3ab0c57af771499e771",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"tenders"
+							],
+							"query": [
+								{
+									"key": "_id",
+									"value": "644fd3ab0c57af771499e771"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Insert Tenders",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"authority_name\": \"Global Tender Org\",\n    \"address\": \"501 Prodinsa Building, Cnr Steve Bhiko and Pretorius Street - Arcadia - Pretoria - 0001\",\n    \"telephone\": \"012-14400-21071\",\n    \"fax_number\": \"N/A\",\n    \"email\": \"luckym@visava.in\",\n    \"contact_person\": \"Laxman Singh\",\n    \"big_ref_no\": \"RFQ:238-22-IA\",\n    \"description\": \"The Provision Of Services For The Service Of Engineering Systems Of Buildings Of Educational Organizations Subordinate To The Department Of Education And Science Of The City Of Moscow In 2023-2025.\",\n    \"tender_type\": \"Defense Forces\",\n    \"tender_no\": \"RFQ:238-22-IA\",\n    \"tender_competition\": \"International\",\n    \"published_date\": \"30 Mar 2023\",\n    \"closing_date\": \"30 Mar 2023\",\n    \"country\": \"India\",\n    \"emd\": \"Laxman Singh\",\n    \"estimated_cost\": \"10 - 15 Million\",\n    \"documents\": \"N/A\",\n    \"sectors\": \"Textile & Leather\",\n    \"regions\": \"Africa\",\n    \"cpv_codes\": \"3000000\",\n    \"funding_agency\": \"Abu Dhabi Commercial Bank\",\n    \"is_active\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/tenders",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"tenders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Insert Multiple Tenders",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDQ2YTllMjhlNmNhMzgxNzliYzViMzkiLCJ1aWQiOiI2NDQ2YTllMjhlNmNhMzgxNzliYzViMzkiLCJ1c2VybmFtZSI6InJhZGhha2lzaGFuIiwiZW1haWwiOiJyYWRoYWtpc2hhbkBnbWFpbC5jb20iLCJwYXNzd29yZCI6IiQyYiQxMCQya1dpd0IxTWUvS3U0eWwydFdiSWF1Ym84clI3Q1JvUTdYaXRIOXRBQlkvWTc1UEh0elcvZSIsInJvbGUiOiJzdXBlcl9hZG1pbiIsImlhdCI6MTY5MTg1ODgyMywiZXhwIjoxNjkyMDMxNjIzfQ._5nyRfWqzjPJEqET0facTFQdgAL7ok0jskh2PhoKUmc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tenders\": [\n        {\n            \"authority_name\": \"Global Tender Orgss\",\n            \"address\": \"501 Prodinsa Building, Cnr Steve Bhiko and Pretorius Street - Arcadia - Pretoria - 0001\",\n            \"telephone\": \"012-14400-21071\",\n            \"fax_number\": \"N/A\",\n            \"email\": \"luckym@visava.in\",\n            \"contact_person\": \"Laxman Singh\",\n            \"big_ref_no\": \"RFQ:238-22-IA\",\n            \"description\": \"The Provision Of Services For The Service Of Engineering Systems Of Buildings Of Educational Organizations Subordinate To The Department Of Education And Science Of The City Of Moscow In 2023-2025.\",\n            \"tender_type\": \"Defense Forces\",\n            \"tender_no\": \"RFQ:238-22-IA\",\n            \"tender_competition\": \"International\",\n            \"published_date\": \"30 Mar 2023\",\n            \"closing_date\": \"30 Mar 2023\",\n            \"country\": \"India\",\n            \"emd\": \"Laxman Singh\",\n            \"estimated_cost\": \"10 - 15 Million\",\n            \"documents\": \"N/A\",\n            \"sectors\": \"Textile & Leather\",\n            \"regions\": \"Africa\",\n            \"cpv_codes\": \"3000000\",\n            \"funding_agency\": \"Abu Dhabi Commercial Bank\",\n            \"is_active\": true\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/tenders/multiple",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"tenders",
+								"multiple"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Tenders",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"_id\": \"645cdb2f01e0f6c90161a859\", //required\n    \"authority_name\": \"Global Tender Org\", //required\n    \"address\": \"501 Prodinsa Building, Cnr Steve Bhiko and Pretorius Street - Arcadia - Pretoria - 0001\",\n    \"telephone\": \"012-14400-21071\",\n    \"fax_number\": \"N/A\",\n    \"email\": \"luckym@visava.in\",\n    \"contact_person\": \"Laxman Singh\",\n    \"big_ref_no\": \"RFQ:238-22-IA\",\n    \"description\": \"The Provision Of Services For The Service Of Engineering Systems Of Buildings Of Educational Organizations Subordinate To The Department Of Education And Science Of The City Of Moscow In 2023-2025.\",\n    \"tender_type\": \"Defense Forces\",\n    \"tender_no\": \"RFQ:238-22-IA\",\n    \"sectors\": \"Textile & Leather\",\n    \"regions\": \"Africa\",\n    \"cpv_codes\": \"3000000\",\n    \"funding_agency\": \"Abu Dhabi Commercial Bank\",\n    \"tender_competition\": \"International\",\n    \"published_date\": \"30 Mar 2023\",\n    \"closing_date\": \"30 Mar 2023\",\n    \"country\": \"America\",\n    \"emd\": \"Laxman Singh\",\n    \"estimated_cost\": \"10 - 15 Million\",\n    \"documents\": \"N/A\",\n    \"is_active\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/tenders",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"tenders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Tenders",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/tenders?_id=64509cbbe554ca71ead4f416",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"tenders"
+							],
+							"query": [
+								{
+									"key": "_id",
+									"value": "64509cbbe554ca71ead4f416"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Plan",
+			"item": [
+				{
+					"name": "List of plan",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/plan/list",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"plan",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Subscribe",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDhhOTAxMDFjZTE3ZjEwYzQxMjA2ZmEiLCJmdWxsX25hbWUiOiJSYWRoYWtpc2hhbiBKYW5naWQiLCJlbWFpbCI6InJhZGhha2lzaGFuamFuZ2lkNDA0QGdtYWlsLmNvbSIsInVzZXJuYW1lIjoicmFkaGFraXNoYW5qYW5naWQ0MDQiLCJwaG9uZV9ubyI6Ijk4MjA5Mzg0NDAiLCJvcmdhbml6YXRpb25fbmFtZSI6IkVkdWJyaWRnZSBJbmRpYSIsIndlYnNpdGVfdXJsIjoiaHR0cHM6Ly9yYWRoYWtpc2hhbjQwNC5naXRodWIuaW8iLCJjb3VudHJ5IjoiSW5kaWEiLCJwbGFuX2V4cGlyZV9kYXRlIjoiRnJlZSIsInN0YXR1cyI6ImFjdGl2ZSIsInV1aWQiOjUwMDAsImN1c3RvbWVyX2lkIjoiNjQ4YTkwMTAxY2UxN2YxMGM0MTIwNmZhIiwibGFzdF9sb2dnZWRfaW4iOiIyMDIzLTA2LTE5VDA3OjI5OjM3LjIyOVoiLCJpYXQiOjE2ODcxNjgzODMsImV4cCI6MTY4NzM0MTE4M30.ZZvMUJD14VgHchu5Jj4fuFnrrKfNyEGoihtBwW8jveU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"plan_id\": \"648a979d90c9e508be4fe8bc\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/plan/subscribe",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"plan",
+								"subscribe"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List of plan requests",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDhhOTAxMDFjZTE3ZjEwYzQxMjA2ZmEiLCJmdWxsX25hbWUiOiJSYWRoYWtpc2hhbiBKYW5naWQiLCJlbWFpbCI6InJhZGhha2lzaGFuamFuZ2lkNDA0QGdtYWlsLmNvbSIsInVzZXJuYW1lIjoicmFkaGFraXNoYW5qYW5naWQ0MDQiLCJwaG9uZV9ubyI6Ijk4MjA5Mzg0NDAiLCJvcmdhbml6YXRpb25fbmFtZSI6IkVkdWJyaWRnZSBJbmRpYSIsIndlYnNpdGVfdXJsIjoiaHR0cHM6Ly9yYWRoYWtpc2hhbjQwNC5naXRodWIuaW8iLCJjb3VudHJ5IjoiSW5kaWEiLCJwbGFuX2V4cGlyZV9kYXRlIjoiRnJlZSIsInN0YXR1cyI6ImFjdGl2ZSIsInV1aWQiOjUwMDAsImN1c3RvbWVyX2lkIjoiNjQ4YTkwMTAxY2UxN2YxMGM0MTIwNmZhIiwibGFzdF9sb2dnZWRfaW4iOiIyMDIzLTA2LTE5VDA3OjI5OjM3LjIyOVoiLCJpYXQiOjE2ODcxNjgzODMsImV4cCI6MTY4NzM0MTE4M30.ZZvMUJD14VgHchu5Jj4fuFnrrKfNyEGoihtBwW8jveU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/plan/request",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"plan",
+								"request"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Activate plan request",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDhhOTAxMDFjZTE3ZjEwYzQxMjA2ZmEiLCJmdWxsX25hbWUiOiJSYWRoYWtpc2hhbiBKYW5naWQiLCJlbWFpbCI6InJhZGhha2lzaGFuamFuZ2lkNDA0QGdtYWlsLmNvbSIsInVzZXJuYW1lIjoicmFkaGFraXNoYW5qYW5naWQ0MDQiLCJwaG9uZV9ubyI6Ijk4MjA5Mzg0NDAiLCJvcmdhbml6YXRpb25fbmFtZSI6IkVkdWJyaWRnZSBJbmRpYSIsIndlYnNpdGVfdXJsIjoiaHR0cHM6Ly9yYWRoYWtpc2hhbjQwNC5naXRodWIuaW8iLCJjb3VudHJ5IjoiSW5kaWEiLCJwbGFuX2V4cGlyZV9kYXRlIjoiRnJlZSIsInN0YXR1cyI6ImFjdGl2ZSIsInV1aWQiOjUwMDAsImN1c3RvbWVyX2lkIjoiNjQ4YTkwMTAxY2UxN2YxMGM0MTIwNmZhIiwibGFzdF9sb2dnZWRfaW4iOiIyMDIzLTA2LTE5VDA3OjI5OjM3LjIyOVoiLCJpYXQiOjE2ODcxNjgzODMsImV4cCI6MTY4NzM0MTE4M30.ZZvMUJD14VgHchu5Jj4fuFnrrKfNyEGoihtBwW8jveU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"plan_request_id\": \"6490666ccd924dca2794b30a\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/plan/activate-request",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"plan",
+								"activate-request"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reports",
+			"item": [
+				{
+					"name": "Customer Reports",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDQ2YTllMjhlNmNhMzgxNzliYzViMzkiLCJ1aWQiOiI2NDQ2YTllMjhlNmNhMzgxNzliYzViMzkiLCJ1c2VybmFtZSI6InJhZGhha2lzaGFuIiwiZW1haWwiOiJyYWRoYWtpc2hhbkBnbWFpbC5jb20iLCJwYXNzd29yZCI6IiQyYiQxMCQya1dpd0IxTWUvS3U0eWwydFdiSWF1Ym84clI3Q1JvUTdYaXRIOXRBQlkvWTc1UEh0elcvZSIsInJvbGUiOiJzdXBlcl9hZG1pbiIsImlhdCI6MTY4OTI1NjgyMiwiZXhwIjoxNjg5NDI5NjIyfQ.wMJ3r9ybzJX-BuKv9roS1QZJt7IB7iI2Grz8EspM3ig",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/reports/customer-reports?pageNo=0&limit=300&sortBy=1&sortField=createdAt",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"reports",
+								"customer-reports"
+							],
+							"query": [
+								{
+									"key": "pageNo",
+									"value": "0"
+								},
+								{
+									"key": "limit",
+									"value": "300"
+								},
+								{
+									"key": "sortBy",
+									"value": "1"
+								},
+								{
+									"key": "sortField",
+									"value": "createdAt"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Customer Reports",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDQ2YTllMjhlNmNhMzgxNzliYzViMzkiLCJ1aWQiOiI2NDQ2YTllMjhlNmNhMzgxNzliYzViMzkiLCJ1c2VybmFtZSI6InJhZGhha2lzaGFuIiwiZW1haWwiOiJyYWRoYWtpc2hhbkBnbWFpbC5jb20iLCJwYXNzd29yZCI6IiQyYiQxMCQya1dpd0IxTWUvS3U0eWwydFdiSWF1Ym84clI3Q1JvUTdYaXRIOXRBQlkvWTc1UEh0elcvZSIsInJvbGUiOiJzdXBlcl9hZG1pbiIsImlhdCI6MTY4OTI1NjgyMiwiZXhwIjoxNjg5NDI5NjIyfQ.wMJ3r9ybzJX-BuKv9roS1QZJt7IB7iI2Grz8EspM3ig",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"from_date\": \"2023-01-01\",\n    \"to_date\": \"2023-08-01\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/reports/customer-reports",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"reports",
+								"customer-reports"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Customer Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"full_name\": \"Rk Jangid\",\n    \"email\": \"radhakishanjangid407@gmail.com\",\n    \"phone_no\": \"9820938443\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/auth/customer-register",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"auth",
+						"customer-register"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Eg",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"full_name\": \"radhakishan jangid\",\n    \"email\": \"radhakishan@gmail.com\",\n    \"password\": \"123456\",\n    \"phone_no\": \"9820938440\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/auth/customer-register",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"customer-register"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "836"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"344-yURLJyMC5SaToLf6ddjFJ9/od98\""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 13 Apr 2023 14:38:17 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"Student Created Successfully\",\n    \"result\": {\n        \"full_name\": \"radhakishan jangid\",\n        \"email\": \"radhakishan@gmail.com\",\n        \"password\": \"123456\",\n        \"phone_no\": \"9820938440\",\n        \"_id\": \"643813d91381f1d5b7fd4fac\",\n        \"createdAt\": \"2023-04-13T14:38:17.709Z\",\n        \"updatedAt\": \"2023-04-13T14:38:17.709Z\",\n        \"customer_id\": \"643813d91381f1d5b7fd4fac\",\n        \"__v\": 0,\n        \"tokens\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmdWxsX25hbWUiOiJyYWRoYWtpc2hhbiBqYW5naWQiLCJlbWFpbCI6InJhZGhha2lzaGFuQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiMTIzNDU2IiwicGhvbmVfbm8iOiI5ODIwOTM4NDQwIiwiX2lkIjoiNjQzODEzZDkxMzgxZjFkNWI3ZmQ0ZmFjIiwiY3JlYXRlZEF0IjoiMjAyMy0wNC0xM1QxNDozODoxNy43MDlaIiwidXBkYXRlZEF0IjoiMjAyMy0wNC0xM1QxNDozODoxNy43MDlaIiwiY3VzdG9tZXJfaWQiOiI2NDM4MTNkOTEzODFmMWQ1YjdmZDRmYWMiLCJfX3YiOjAsImlhdCI6MTY4MTM5NjY5NywiZXhwIjoxNjgxNTY5NDk3fQ.5kWzCw433vGRIVsYib3N6Q2Xsj-xUHn6RlEOPoO8uIQ\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Customer Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"radhakishanjangid404\",\n    \"password\": \"radhakishanjangid404@Bids\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/auth/customer-login",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"auth",
+						"customer-login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Customer Profile Update",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ACCESS_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"full_name\": \"radhakishan jangid\",\n    \"email\": \"radhakishan@gmail.com\",\n    \"phone_no\": \"9820938440\",\n    \"organization_name\": \"Testing\",\n    \"website_url\": \"radhakishan\",\n    \"country\": \"india\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/auth/customer-profile",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"auth",
+						"customer-profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Drop Demo Request",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"radhakishan\",\n    \"email\": \"radhakishan@gmail.com\",\n    \"phoneno\": \"9820938440\",\n    \"organization\": \"Test\",\n    \"website\": \"radhakishan.site\",\n    \"country\": \"India\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/common/demo-request",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"common",
+						"demo-request"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Demo Request list",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"radhakishan\",\n    \"email\": \"radhakishan@gmail.com\",\n    \"phoneno\": \"9820938440\",\n    \"organization\": \"Test\",\n    \"website\": \"radhakishan.site\",\n    \"country\": \"India\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/common/demo-request",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"common",
+						"demo-request"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Contact Us Submit",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"radhakishan\",\n    \"email\": \"radhakishanjangid404@gmail.com\",\n    \"subject\": \"9820938440\",\n    \"message\": \"Test\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/common/contact-us",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"common",
+						"contact-us"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Contact Us records",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/common/contact-us",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"common",
+						"contact-us"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Customers List",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDQ2YTllMjhlNmNhMzgxNzliYzViMzkiLCJ1aWQiOiI2NDQ2YTllMjhlNmNhMzgxNzliYzViMzkiLCJ1c2VybmFtZSI6InJhZGhha2lzaGFuIiwiZW1haWwiOiJyYWRoYWtpc2hhbkBnbWFpbC5jb20iLCJwYXNzd29yZCI6IiQyYiQxMCQya1dpd0IxTWUvS3U0eWwydFdiSWF1Ym84clI3Q1JvUTdYaXRIOXRBQlkvWTc1UEh0elcvZSIsInJvbGUiOiJzdXBlcl9hZG1pbiIsImlhdCI6MTY4NjI0NDkyMSwiZXhwIjoxNjg2NDE3NzIxfQ.3Fm9UnG_0aD7UJtvm5ePNOlyuNNraKdZKszp-lE6-Qo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/auth/customers?pageNo=0&limit=10&sortBy=1&sortField=createdAt&keywords=",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"auth",
+						"customers"
+					],
+					"query": [
+						{
+							"key": "pageNo",
+							"value": "0"
+						},
+						{
+							"key": "limit",
+							"value": "10"
+						},
+						{
+							"key": "sortBy",
+							"value": "1"
+						},
+						{
+							"key": "sortField",
+							"value": "createdAt"
+						},
+						{
+							"key": "keywords",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Customer Status Update",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDQ2YTllMjhlNmNhMzgxNzliYzViMzkiLCJ1aWQiOiI2NDQ2YTllMjhlNmNhMzgxNzliYzViMzkiLCJ1c2VybmFtZSI6InJhZGhha2lzaGFuIiwiZW1haWwiOiJyYWRoYWtpc2hhbkBnbWFpbC5jb20iLCJwYXNzd29yZCI6IiQyYiQxMCQya1dpd0IxTWUvS3U0eWwydFdiSWF1Ym84clI3Q1JvUTdYaXRIOXRBQlkvWTc1UEh0elcvZSIsInJvbGUiOiJzdXBlcl9hZG1pbiIsImlhdCI6MTY4NjgwMzEwOSwiZXhwIjoxNjg2OTc1OTA5fQ.c3OgM4vvml1-M3Lx8ffV-4ZTsoHC5eRPNQuD4p5A_fM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"customer_id\": \"648a90101ce17f10c41206fa\",\n    \"status\": \"active\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/auth/customers-status",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"auth",
+						"customers-status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Activate Tenders Filter",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDhhOTAxMDFjZTE3ZjEwYzQxMjA2ZmEiLCJmdWxsX25hbWUiOiJSYWRoYWtpc2hhbiBKYW5naWQiLCJlbWFpbCI6InJhZGhha2lzaGFuamFuZ2lkNDA0QGdtYWlsLmNvbSIsInVzZXJuYW1lIjoicmFkaGFraXNoYW5qYW5naWQ0MDQiLCJjdXN0b21lcl9pZCI6IjY0OGE5MDEwMWNlMTdmMTBjNDEyMDZmYSIsImxhc3RfbG9nZ2VkX2luIjoiMjAyMy0wNi0xOVQxNjowNDo1OC4xNTFaIiwicGxhbnMiOnsicHVyY2hhc2VfcGxhbl9pZCI6IjY0OGE5NzlkOTBjOWU1MDhiZTRmZThiYyIsInBsYW5fbmFtZSI6IlRyaWFsIFBhY2thZ2UiLCJwbGFuX3B1cmNoYXNlX2RhdGUiOiIyMDIzLTA2LTE5VDE0OjMxOjM4LjQxOVoiLCJwbGFuX2V4cGlyZV9kYXRlIjoiMjAyMy0wNy0xOVQxNDozMTozOC40MTlaIiwiY3JlYXRlZEF0IjoiMjAyMy0wNi0xOVQxNDozMTozOC40NTRaIiwidXBkYXRlZEF0IjoiMjAyMy0wNi0xOVQxNDozMTozOC40NTRaIn0sImlhdCI6MTY4NzE5MDgyNywiZXhwIjoxNjg3MzYzNjI3fQ.sLjiH7l0xJ9s8_mNcoMIIlmfUH9UQcJjhlcRUogy20o",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"customer_id\": \"648a90101ce17f10c41206fa\",\n    \"filter\": {\n        \"keywords\": \"\",\n        \"cpv_codes\": \"\",\n        \"sectors\": \"Textile & Leather\",\n        \"regions\": \"\",\n        \"funding_agency\": \"\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/auth/assign-tenders",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"auth",
+						"assign-tenders"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{ACCESS_TOKEN}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BASE_URL",
+			"value": "http://localhost:3001",
+			"type": "string"
+		}
+	]
+}

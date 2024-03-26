@@ -1,0 +1,250 @@
+[
+  {
+    "code": "1",
+    "name": "Agriculture and F&B"
+  },
+  {
+    "code": "2",
+    "name": "Industry sectors"
+  },
+  {
+    "code": "201",
+    "name": "Textile & Leather"
+  },
+  {
+    "code": "202",
+    "name": "Chemicals"
+  },
+  {
+    "code": "203",
+    "name": "Plastic & Rubber"
+  },
+  {
+    "code": "204",
+    "name": "Paper & Packaging"
+  },
+  {
+    "code": "205",
+    "name": "Printing & Publishing"
+  },
+  {
+    "code": "206",
+    "name": "Construction materials"
+  },
+  {
+    "code": "207",
+    "name": "Metals & Non-Metals"
+  },
+  {
+    "code": "208",
+    "name": "Fire system & services"
+  },
+  {
+    "code": "209",
+    "name": "Mining & Minerals"
+  },
+  {
+    "code": "210",
+    "name": "Machinery & Equipment"
+  },
+  {
+    "code": "211",
+    "name": "Security & Safety"
+  },
+  {
+    "code": "212",
+    "name": "Automobile"
+  },
+  {
+    "code": "213",
+    "name": "Furniture"
+  },
+  {
+    "code": "3",
+    "name": "Oil & Gas"
+  },
+  {
+    "code": "301",
+    "name": "O&G equipment"
+  },
+  {
+    "code": "302",
+    "name": "O&G services"
+  },
+  {
+    "code": "4",
+    "name": "Energy & Power"
+  },
+  {
+    "code": "401",
+    "name": "Electrical & Automation"
+  },
+  {
+    "code": "402",
+    "name": "Renewable Energy"
+  },
+  {
+    "code": "403",
+    "name": "Non-Renewable Energy"
+  },
+  {
+    "code": "5",
+    "name": "Telecommunication"
+  },
+  {
+    "code": "6",
+    "name": "Healthcare"
+  },
+  {
+    "code": "601",
+    "name": "Pharmacueticals"
+  },
+  {
+    "code": "602",
+    "name": "Hospital & Medical equipment"
+  },
+  {
+    "code": "7",
+    "name": "Laboratory"
+  },
+  {
+    "code": "8",
+    "name": "Information Technology"
+  },
+  {
+    "code": "801",
+    "name": "IT software"
+  },
+  {
+    "code": "802",
+    "name": "IT hardware"
+  },
+  {
+    "code": "803",
+    "name": "Access control & Biometric"
+  },
+  {
+    "code": "804",
+    "name": "GPS/GIS"
+  },
+  {
+    "code": "9",
+    "name": "Transportation"
+  },
+  {
+    "code": "901",
+    "name": "Aviation"
+  },
+  {
+    "code": "902",
+    "name": "Marine"
+  },
+  {
+    "code": "903",
+    "name": "Railway"
+  },
+  {
+    "code": "904",
+    "name": "Roadway"
+  },
+  {
+    "code": "10",
+    "name": "Finance & Insurance"
+  },
+  {
+    "code": "11",
+    "name": "Sports"
+  },
+  {
+    "code": "12",
+    "name": "Tourism"
+  },
+  {
+    "code": "13",
+    "name": "Water ,Sanitation & Environmental"
+  },
+  {
+    "code": "14",
+    "name": "Engineering"
+  },
+  {
+    "code": "15",
+    "name": "Architecture"
+  },
+  {
+    "code": "16",
+    "name": "Construction"
+  },
+  {
+    "code": "1601",
+    "name": "Building"
+  },
+  {
+    "code": "1602",
+    "name": "Airport"
+  },
+  {
+    "code": "1603",
+    "name": "Harbour & Ports"
+  },
+  {
+    "code": "1604",
+    "name": "Railway infrastructure"
+  },
+  {
+    "code": "1605",
+    "name": "Roads & Highway"
+  },
+  {
+    "code": "1606",
+    "name": "Bridge & Tunnel"
+  },
+  {
+    "code": "17",
+    "name": "Consultancy"
+  },
+  {
+    "code": "1701",
+    "name": "Business/ Management consultancy"
+  },
+  {
+    "code": "1702",
+    "name": "Legal & Law"
+  },
+  {
+    "code": "1703",
+    "name": "Human Resource & Manpower"
+  },
+  {
+    "code": "18",
+    "name": "Services"
+  },
+  {
+    "code": "1801",
+    "name": "Entertainment & Media service"
+  },
+  {
+    "code": "1802",
+    "name": "Postal & Courier service"
+  },
+  {
+    "code": "1803",
+    "name": "Security service"
+  },
+  {
+    "code": "19",
+    "name": "Defence"
+  },
+  {
+    "code": "20",
+    "name": "Education & Training"
+  },
+  {
+    "code": "21",
+    "name": "Real Estate"
+  },
+  {
+    "code": "22",
+    "name": "Retail"
+  }
+]

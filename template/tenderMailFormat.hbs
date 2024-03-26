@@ -1,0 +1,476 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=100, initial-scale=1.0" />
+        <title>Mail Template</title>
+    </head>
+    <body>
+        <div>
+            <span style="color: #003c5e">
+                <img
+                    src="https://bidsinfoglobal.com/static/media/logo.96dc4c1272d7ec77c64e.jpg"
+                    width="200"
+                />
+            </span>
+        </div>
+        <div style="display: flex; width: 100%;">
+            <p style="width: 50%">
+                <span style="font-size:10pt;font-family:Arial,sans-serif">
+                    {{pendingDays}}
+                    days remaining :
+                    <a
+                        href="https://bidsinfoglobal.com/subscribe"
+                        rel="noreferrer"
+                        target="_blank"
+                    >
+                        <span>Subscribe</span>
+                    </a>
+                </span>
+            </p>
+            <p style="width: 50%; text-align: right;">
+                <span
+                    style="font-size:10pt;font-family:Arial,sans-serif;color:rgb(153,0,0)"
+                >
+                    {{formattedDatee}}
+                </span>
+            </p>
+        </div>
+        {{#if rows.length}}
+            <div>
+                <p style="background: rgb(118, 118, 118); padding: 15px">
+                    <span
+                        style="
+                            font-size: 10pt;
+                            font-weight: bold;
+                            font-family: Arial, sans-serif;
+                            color: black;
+                        "
+                    >
+                        Today's Tenders and RFP's
+                    </span>
+                </p>
+            </div>
+            <table>
+                {{#each regions}}
+                    <tr>
+                        <td><strong>{{this.regions}}:</strong></td>
+                    </tr>
+                    {{#each this.data}}
+                        <tr>
+                            <td></td>
+                            <td>
+                                {{inc @index}}.
+                                <strong>{{this.country}}</strong>-
+                                <a
+                                    href="#description_{{this.country}}_{{inc
+                                        @index
+                                    }}"
+                                    rel="noreferrer"
+                                >{{this.description}}</a>
+                            </td>
+                        </tr>
+                    {{/each}}
+                {{/each}}
+            </table>
+            <div>
+                <p style="background: rgb(195, 195, 195); padding: 15px">
+                    <span
+                        style="
+                            font-size: 10pt;
+                            font-weight: bold;
+                            font-family: Arial, sans-serif;
+                            color: black;
+                        "
+                    >
+                        Your requested Tenders and RFP's Details:
+                    </span>
+                </p>
+            </div>
+            {{#each rows}}
+                <table style="width: 100%; color: rgb(0, 0, 0); border: 0">
+                    <tbody>
+                        <tr>
+                            <td
+                                colspan="3"
+                                style="
+                                padding-bottom: 2.25pt;
+                                padding-top: 2.25pt;
+                                padding-left: 2.25pt;
+                                padding-right: 2.25pt;
+                            "
+                            >
+                                <p>
+                                    <a
+                                        name="description_{{this.country}}_{{inc
+                                            @index
+                                        }}"
+                                        rel="noreferrer"
+                                    ></a>
+                                    <b>
+                                        <span
+                                            style="
+                                            font-size: 10pt;
+                                            font-family: Verdana, sans-serif;
+                                            color: rgb(153, 0, 0);
+                                        "
+                                        >
+                                            {{inc @index}}.
+                                            {{this.authority_name}}
+                                        </span>
+                                    </b>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td
+                                width="15%"
+                                nowrap=""
+                                style="
+                                width: 15%;
+                                background: whitesmoke;
+                                padding: 2.25pt;
+                            "
+                            >
+                                <p>
+                                    <span
+                                        style="
+                                        font-size: 10pt;
+                                        font-family: 'Verdana', sans-serif;
+                                    "
+                                    >
+                                        TI Ref. No.
+                                    </span>
+                                </p>
+                            </td>
+                            <td
+                                colspan="2"
+                                style="background: whitesmoke; padding: 2.25pt"
+                            >
+                                <p>
+                                    <span
+                                        style="
+                                        font-size: 10pt;
+                                        font-family: 'Verdana', sans-serif;
+                                    "
+                                    >
+                                        {{this.big_ref_no}}
+                                    </span>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td
+                                width="15%"
+                                style="
+                                width: 15%;
+                                background: whitesmoke;
+                                padding: 2.25pt;
+                            "
+                            >
+                                <p>
+                                    <span
+                                        style="
+                                        font-size: 10pt;
+                                        font-family: 'Verdana', sans-serif;
+                                    "
+                                    >
+                                        Bidding Type
+                                    </span>
+                                </p>
+                            </td>
+                            <td
+                                colspan="2"
+                                style="background: whitesmoke; padding: 2.25pt"
+                            >
+                                <p>
+                                    <span
+                                        style="
+                                        font-size: 10pt;
+                                        font-family: 'Verdana', sans-serif;
+                                    "
+                                    >
+                                        {{this.tender_type}}
+                                    </span>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td
+                                width="15%"
+                                style="
+                                width: 15%;
+                                background: whitesmoke;
+                                padding: 2.25pt;
+                            "
+                            >
+                                <p>
+                                    <span
+                                        style="
+                                        font-size: 10pt;
+                                        font-family: 'Verdana', sans-serif;
+                                    "
+                                    >
+                                        Project Location
+                                    </span>
+                                </p>
+                            </td>
+                            <td
+                                colspan="2"
+                                style="background: whitesmoke; padding: 2.25pt"
+                            >
+                                <p>
+                                    <span
+                                        style="
+                                        font-size: 10pt;
+                                        font-family: 'Verdana', sans-serif;
+                                    "
+                                    >
+                                        {{this.country}}
+                                    </span>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td
+                                width="15%"
+                                style="
+                                width: 15%;
+                                background: whitesmoke;
+                                padding: 2.25pt;
+                            "
+                            >
+                                <p>
+                                    <span
+                                        style="
+                                        font-size: 10pt;
+                                        font-family: 'Verdana', sans-serif;
+                                    "
+                                    >
+                                        Description
+                                    </span>
+                                </p>
+                            </td>
+                            <td
+                                colspan="2"
+                                style="background: whitesmoke; padding: 2.25pt"
+                            >
+                                <p>
+                                    <span
+                                        style="
+                                        font-size: 10pt;
+                                        font-family: 'Verdana', sans-serif;
+                                    "
+                                    >
+                                        {{this.description}}<br />
+                                        Closing On:
+                                        {{this.closing_date}}
+                                    </span>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td
+                                valign="top"
+                                width="15%"
+                                style="
+                                width: 15%;
+                                background: whitesmoke;
+                                padding: 2.25pt;
+                            "
+                            >
+                                <p>
+                                    <span
+                                        style="
+                                        font-size: 10pt;
+                                        font-family: 'Verdana', sans-serif;
+                                    "
+                                    >
+                                        Organisation
+                                    </span>
+                                </p>
+                            </td>
+                            <td
+                                colspan="2"
+                                style="background: whitesmoke; padding: 2.25pt"
+                            >
+                                <p>
+                                    <span
+                                        style="
+                                        font-size: 10pt;
+                                        font-family: 'Verdana', sans-serif;
+                                    "
+                                    >
+                                        {{this.tender_competition}}
+                                    </span>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td
+                                width="15%"
+                                style="
+                                width: 15%;
+                                background: whitesmoke;
+                                padding: 2.25pt;
+                            "
+                            >
+                                <p>
+                                    <span
+                                        style="
+                                        font-size: 10pt;
+                                        font-family: 'Verdana', sans-serif;
+                                    "
+                                    >
+                                        Client Address
+                                    </span>
+                                </p>
+                            </td>
+                            <td
+                                colspan="2"
+                                style="background: whitesmoke; padding: 2.25pt"
+                            >
+                                <p>
+                                    <span
+                                        style="
+                                        font-size: 10pt;
+                                        font-family: 'Verdana', sans-serif;
+                                    "
+                                    >
+                                        {{this.contact_person}}
+                                    </span>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td
+                                width="15%"
+                                style="
+                                width: 15%;
+                                background: whitesmoke;
+                                padding: 2.25pt;
+                            "
+                            >
+                                <p>
+                                    <span
+                                        style="
+                                        font-size: 10pt;
+                                        font-family: 'Verdana', sans-serif;
+                                    "
+                                    >
+                                        Tender Notice No.
+                                    </span>
+                                </p>
+                            </td>
+                            <td
+                                colspan="2"
+                                style="background: whitesmoke; padding: 2.25pt"
+                            >
+                                <p>
+                                    <span
+                                        style="
+                                        font-size: 10pt;
+                                        font-family: 'Verdana', sans-serif;
+                                    "
+                                    >
+                                        {{this.tender_no}}
+                                    </span>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td
+                                width="15%"
+                                nowrap=""
+                                style="
+                                width: 15%;
+                                background: whitesmoke;
+                                padding: 2.25pt;
+                            "
+                            >
+                                <p>
+                                    <span
+                                        style="
+                                        font-size: 10pt;
+                                        font-family: 'Verdana', sans-serif;
+                                    "
+                                    >
+                                        Deadline
+                                    </span>
+                                </p>
+                            </td>
+                            <td
+                                colspan="2"
+                                style="background: whitesmoke; padding: 2.25pt"
+                            >
+                                <p>
+                                    <span
+                                        style="
+                                        font-size: 10pt;
+                                        font-family: 'Verdana', sans-serif;
+                                    "
+                                    >
+                                        {{data.closing_date}}
+                                    </span>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td
+                                valign="top"
+                                width="15%"
+                                nowrap=""
+                                style="
+                                width: 15%;
+                                background: whitesmoke;
+                                padding: 2.25pt;
+                            "
+                            >
+                                <p>
+                                    <span
+                                        style="
+                                        font-size: 10pt;
+                                        font-family: 'Verdana', sans-serif;
+                                    "
+                                    >
+                                        Related Documents :
+                                    </span>
+                                </p>
+                            </td>
+                            <td
+                                colspan="2"
+                                style="background: whitesmoke; padding: 2.25pt"
+                            >
+                                <p>
+                                    <span
+                                        style="
+                                        font-size: 10pt;
+                                        font-family: 'Verdana', sans-serif;
+                                    "
+                                    >
+                                        {{this.documents}}
+                                    </span>
+                                </p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            {{/each}}
+        {{else}}
+            <div>
+                <p style="background: rgb(118, 118, 118); padding: 15px">
+                    <span
+                        style="
+                            font-size: 10pt;
+                            font-weight: bold;
+                            font-family: Arial, sans-serif;
+                            color: black;
+                        "
+                    >
+                        No Tenders Today
+                    </span>
+                </p>
+            </div>
+        {{/if}}
+    </body>
+</html>

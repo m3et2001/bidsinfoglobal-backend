@@ -6,6 +6,12 @@ const contractAwardSchema = new mongoose.Schema(
         contract_award_id: {
             type: String
         },
+        title: {
+            type: String
+        },
+        sub_region: {
+            type: String
+        },
         org_name: {
             type: String
         },

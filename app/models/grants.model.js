@@ -6,6 +6,12 @@ const grantsSchema = new mongoose.Schema(
         grants_id: {
             type: String
         },
+        title: {
+            type: String
+        },
+        sub_region: {
+            type: String
+        },
         donor: {
             type: String
         },

@@ -5,6 +5,12 @@ const projectsSchema = new mongoose.Schema(
         project_id: {
             type: String
         },
+        title: {
+            type: String
+        },
+        sub_region: {
+            type: String
+        },
         big_ref_no: {
             type: String,
             unique: true

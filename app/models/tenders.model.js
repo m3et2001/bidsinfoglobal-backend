@@ -6,6 +6,12 @@ const tendersSchema = new mongoose.Schema(
         tenders_id: {
             type: String
         },
+        title: {
+            type: String
+        },
+        sub_region: {
+            type: String
+        },
         authority_name: {
             type: String
         },

@@ -20,7 +20,9 @@ const __dirname = path.resolve();
 
 const app = express();
 
-const port = 4000;
+
+const port = 5000;
+
 const NODE_ENV = process.env.NODE_ENV;
 
 app.use(cors());

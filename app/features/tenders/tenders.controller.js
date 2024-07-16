@@ -13,9 +13,9 @@ import { startingBigRefNo } from "../../helpers/constance.js";
 
 const tenders_list = { title:1,sectors: 1, country: 1, big_ref_no: 1, description: 1, published_date: 1, closing_date: 1, cpv_codes: 1, createdAt: 1 };
 
-export const tenders_all_field = { authority_name: 1, sectors: 1, cpv_codes: 1, regions: 1, address: 1, telephone: 1, fax_number: 1, email: 1, contact_person: 1, big_ref_no: 1, description: 1, tender_type: 1, tender_no: 1, funding_agency: 1, tender_competition: 1, published_date: 1, closing_date: 1, country: 1, emd: 1, estimated_cost: 1, documents: 1, is_active: 1, is_active: 1, createdAt: 1 };
+export const tenders_all_field = { title:1,authority_name: 1, sectors: 1, cpv_codes: 1, regions: 1, address: 1, telephone: 1, fax_number: 1, email: 1, contact_person: 1, big_ref_no: 1, description: 1, tender_type: 1, tender_no: 1, funding_agency: 1, tender_competition: 1, published_date: 1, closing_date: 1, country: 1, emd: 1, estimated_cost: 1, documents: 1, is_active: 1, is_active: 1, createdAt: 1 };
 
-const tenders_limit_field = { description: 1, published_date: 1, closing_date: 1, country: 1, emd: 1, estimated_cost: 1, documents: 1, sectors: 1, cpv_codes: 1, regions: 1, createdAt: 1 }
+const tenders_limit_field = {title:1, description: 1, published_date: 1, closing_date: 1, country: 1, emd: 1, estimated_cost: 1, documents: 1, sectors: 1, cpv_codes: 1, regions: 1, createdAt: 1 }
 
 
 export const tendersAllList = async (req, res, next) => {

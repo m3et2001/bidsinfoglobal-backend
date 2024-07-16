@@ -18,7 +18,7 @@ import sectorsModel from "./app/models/sectors.model.js";
 import cpvCodesModel from "./app/models/cpv_codes.model.js";
 import fundingAgencyModel from "./app/models/funding_agency.model.js";
 
-const mongoURL = 'mongodb://localhost:27017/bidsinfoglobal';
+const mongoURL = 'mongodb+srv://bidsinfoglobal:qGWxjS3YxJRHFovt@qa.t5cmca1.mongodb.net/';
 mongoose.connect(mongoURL);
 
 //connection for mongoose

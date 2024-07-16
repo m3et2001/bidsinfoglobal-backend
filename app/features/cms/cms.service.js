@@ -19,6 +19,19 @@ export const updateCmsRecords = async (filter, updateData, select = {}) => {
             })
             .select(select)
             .lean();
+            if (!result ) {
+        
+        // If no document was found, insert a new one
+        const newRecord = new cmsModel(updateData);
+        const savedRecord = await newRecord.save();
+        // Optionally select fields in the newly inserted record
+        const selectedNewRecord = await cmsModel
+        .findById(savedRecord._id)
+        .select(select)
+        .lean();
+        console.log(selectedNewRecord)
+                return selectedNewRecord;
+            }
         return result;
     } catch (error) {
         throw new Error(error);

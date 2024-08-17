@@ -24,6 +24,7 @@ export const projectsGetVal = Joi.object({
 
 export const projectsAddVal = Joi.object({
     project_name: Joi.string().required(),
+    title: Joi.string().allow(""),
     project_id: Joi.string().allow(""),
     project_background: Joi.string().allow(""),
     project_location: Joi.string().allow(""),
@@ -67,6 +68,7 @@ export const projectsAddMultipleVal = Joi.object({
     projects: Joi.array().items(
         Joi.object({
             project_name: Joi.string().required(),
+            title: Joi.string().allow(""),
             project_id: Joi.string().allow(""),
             project_background: Joi.string().allow(""),
             project_location: Joi.string().allow(""),

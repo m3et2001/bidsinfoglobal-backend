@@ -24,6 +24,7 @@ export const contractAwardGetVal = Joi.object({
 
 export const contractAwardAddVal = Joi.object({
     org_name: Joi.string().required(),
+    title: Joi.string().allow(""),
     org_address: Joi.string().allow(""),
     telephone_no: Joi.string().allow(""),
     fax_number: Joi.string().allow(""),
@@ -75,6 +76,7 @@ export const contractAwardAddMultipleVal = Joi.object({
     contracts: Joi.array().items(
         Joi.object({
             org_name: Joi.string().required(),
+            title: Joi.string().allow(""),
             org_address: Joi.string().allow(""),
             telephone_no: Joi.string().allow(""),
             fax_number: Joi.string().allow(""),

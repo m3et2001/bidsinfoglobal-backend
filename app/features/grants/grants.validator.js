@@ -25,6 +25,7 @@ export const grantsGetVal = Joi.object({
 export const grantsAddVal = Joi.object({
     donor: Joi.string().required(),
     contact_information: Joi.string().allow(""),
+    title: Joi.string().allow(""),
     location: Joi.string().allow(""),
     big_ref_no: Joi.string().allow(""),
     title: Joi.string().allow(""),

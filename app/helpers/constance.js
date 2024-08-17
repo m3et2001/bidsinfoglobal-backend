@@ -1,4 +1,4 @@
-export const BASE_URL = "https://beta.api.bidsinfoglobal.com/";
+export const BASE_URL = "https://api.bidsinfoglobal.com/";
 
 export const ADMIN_EMAIL = [
     {

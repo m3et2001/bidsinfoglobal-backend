@@ -27,6 +27,7 @@ export const tendersGetVal = Joi.object({
 
 export const tendersAddVal = Joi.object({
     authority_name: Joi.string().required(),
+    title: Joi.string().allow(""),
     sectors: Joi.string().required(),
     regions: Joi.string().required(),
     cpv_codes: Joi.string().required(),
@@ -84,6 +85,7 @@ export const tendersAddMultipleVal = Joi.object({
     tenders: Joi.array().items(
         Joi.object({
             authority_name: Joi.string().required(),
+            title: Joi.string().allow(""),
             sectors: Joi.string().required(),
             regions: Joi.string().required(),
             cpv_codes: Joi.string().required(),

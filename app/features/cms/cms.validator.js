@@ -7,7 +7,6 @@ export const cmsRecordValidator = Joi.object({
 });
 
 export const authRecordValidator = Joi.object({
-    forget_password: Joi.string().required(),
     login_title: Joi.string().required(),
     login_description: Joi.string().allow(""),
     register_title: Joi.string().required(),

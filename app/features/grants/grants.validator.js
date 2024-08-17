@@ -72,6 +72,7 @@ export const grantsAddMultipleVal = Joi.object({
 
 export const grantsUpdateVal = Joi.object({
     _id: Joi.string().required(),
+    title: Joi.string().allow(""),
     donor: Joi.string().required(),
     contact_information: Joi.string().allow(""),
     location: Joi.string().allow(""),

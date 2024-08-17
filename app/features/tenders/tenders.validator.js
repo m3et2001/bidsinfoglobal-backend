@@ -54,6 +54,7 @@ export const tendersAddVal = Joi.object({
 export const tendersUpdateVal = Joi.object({
     _id: Joi.string().required(),
     authority_name: Joi.string().required(),
+    title: Joi.string().allow(""),
     sectors: Joi.string().required(),
     regions: Joi.string().required(),
     cpv_codes: Joi.string().required(),

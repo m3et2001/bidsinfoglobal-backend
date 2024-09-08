@@ -43,7 +43,7 @@ export const countryAllList = async (req, res, next) => {
             let tenders = await tendersModel.aggregate([
                 {
                     $group: {
-                        _id: "$country",
+                        _id: { $toLower: "$country" },
                         count: {
                             $sum: 1
                         }

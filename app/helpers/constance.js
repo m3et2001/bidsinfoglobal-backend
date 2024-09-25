@@ -30,7 +30,7 @@ export const userRoles = {
 export const searchType = {
     ANY: "Any Word",
     EXACT: "Exact Phrase",
-    RELEVENT: "Relevent Word"
+    RELEVENT: "Relevant Word"
 }
 
 export const mailSubject = {

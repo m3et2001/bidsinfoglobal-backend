@@ -68,6 +68,7 @@ export const advanceSearch = async (req, res, next) => {
 
         const filter = {
             keywords,
+            search_type,
             pageNo,
             limit,
             sortBy,

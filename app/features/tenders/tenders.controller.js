@@ -93,35 +93,44 @@ export const tendersAllList = async (req, res, next) => {
 
     let filter = { is_active: true, is_deleted: false };
     let select = tenders_list;
+    let orAdvCon = []
+    let orCon = []
+    let keywordsList = []
+    if (keywords) {
 
-    if (search_type === searchType.EXACT) {
-      search_type_filter = keywords;
-    } else if (search_type === searchType.RELEVENT) {
-      search_type_filter = { $regex: keywords, $options: "m" };
-    } else if (search_type === searchType.ANY) {
-      keywords = keywords.replace(/\s+/g, ",").split(",").join("|");
-      search_type_filter = { $regex: keywords, $options: "i" };
+      keywordsList = keywords?.split(",")
     }
 
-    if (exclude_words) {
-      search_type_filter = {
-        ...search_type_filter,
-        $not: { $regex: new RegExp(exclude_words), $options: "i" },
-      };
+    if (search_type === searchType.EXACT) {
+      for (let ele of keywordsList) {
+        orAdvCon.push({ "description": ele.trim() })
+        orAdvCon.push({ "title": ele.trim() })
+      }
+    } else if (search_type === searchType.RELEVENT) {
+      for (let ele of keywordsList) {
+        orAdvCon.push({ "description": { $regex: new RegExp(ele.trim()), $options: "m" } })
+        orAdvCon.push({ "title": { $regex: new RegExp(ele.trim()), $options: "m" } })
+      }
+
+    } else if (search_type === searchType.ANY) {
+      keywords = keywords.replace(/\s+/g, ",").split(",").join("|");
+      search_type_filter = { $regex: new RegExp(keywords), $options: "i" };
+    }
+
+    
+    for (let ele of keywordsList) {
+      orCon.push({ "description": { $regex: new RegExp(ele.trim()), $options: "m" } })
+      orCon.push({ "title": { $regex: new RegExp(ele.trim()), $options: "m" } })
     }
 
     if (extraFilter) filter = { ...filter, ...extraFilter };
-
+    console.log(search_type_filter, "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF")
     if (keywords && keywords !== "")
       filter = {
         ...filter,
-        $or: [
-          {
-            description: search_type_filter
-              ? search_type_filter
-              : { $regex: keywords, $options: "i" },
-          },
-        ],
+        $or: orAdvCon.length > 0 ? orAdvCon :
+          orCon
+        ,
       };
 
     if (country && country !== "")
@@ -168,6 +177,106 @@ export const tendersAllList = async (req, res, next) => {
     next(error);
   }
 };
+// export const tendersAllList = async (req, res, next) => {
+//   try {
+//     var {
+//       keywords,
+//       pageNo,
+//       limit,
+//       sortBy,
+//       sortField,
+//       cpv_codes,
+//       sectors,
+//       regions,
+//       location,
+//       funding_agency,
+//       search_type,
+//       extraFilter = null,
+//       search_type_filter = null,
+//       from_date = null,
+//       to_date = null,
+//       country = null,
+//       exclude_words = null,
+//     } = req.query;
+
+//     let filter = { is_active: true, is_deleted: false };
+//     let select = tenders_list;
+
+//     if (search_type === searchType.EXACT) {
+//       search_type_filter = keywords;
+//     } else if (search_type === searchType.RELEVENT) {
+//       search_type_filter = { $regex: keywords, $options: "m" };
+//     } else if (search_type === searchType.ANY) {
+//       keywords = keywords.replace(/\s+/g, ",").split(",").join("|");
+//       search_type_filter = { $regex: keywords, $options: "i" };
+//     }
+
+//     if (exclude_words) {
+//       search_type_filter = {
+//         ...search_type_filter,
+//         $not: { $regex: new RegExp(exclude_words), $options: "i" },
+//       };
+//     }
+
+//     if (extraFilter) filter = { ...filter, ...extraFilter };
+
+//     if (keywords && keywords !== "")
+//       filter = {
+//         ...filter,
+//         $or: [
+//           {
+//             description: search_type_filter
+//               ? search_type_filter
+//               : { $regex: keywords, $options: "i" },
+//           },
+//         ],
+//       };
+
+//     if (country && country !== "")
+//       filter.country = { $regex: new RegExp(`^${country}$`, "i") };
+//     if (cpv_codes && cpv_codes !== "")
+//       filter.cpv_codes = { $in: cpv_codes.split(",") };
+//     if (sectors && sectors !== "") filter.sectors = { $in: sectors.split(",") };
+//     if (regions && regions !== "") {
+//       // filter.regions = { $in: regions.split(",") };
+//       filter = {
+//         ...filter,
+//         $or: [
+//           { regions: { $in: regions.split(",") } },
+//           { country: { $in: regions.split(",") } },
+//         ],
+//       };
+//     }
+//     if (funding_agency && funding_agency !== "")
+//       filter.funding_agency = { $in: funding_agency.split(",") };
+//     if (location && location !== "")
+//       filter.address = { $regex: location, $options: "i" };
+//     if (from_date && to_date && from_date !== "" && to_date !== "") {
+//       filter.published_date = {
+//         $gte: new Date(new Date(from_date).setHours(0, 0, 0)),
+//       };
+//       filter.closing_date = {
+//         $lte: new Date(new Date(to_date).setHours(23, 59, 59)),
+//       };
+//     }
+
+//     let superAdmin = await isSuperAdmin(req.session);
+//     if (req.session && superAdmin) select = tenders_all_field;
+
+//     let result = await readAllTenders(
+//       filter,
+//       select,
+//       { [sortField]: parseInt(sortBy) },
+//       parseInt(pageNo) * parseInt(limit),
+//       parseInt(limit)
+//     );
+
+//     responseSend(res, 201, "Tenders records", { ...result, ...req.query });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+
 
 export const tendersGet = async (req, res, next) => {
   try {
@@ -231,9 +340,9 @@ export const tendersGet = async (req, res, next) => {
                 description: search_type_filter
                   ? search_type_filter
                   : {
-                      $regex: customerData.tenders_filter.keywords,
-                      $options: "i",
-                    },
+                    $regex: customerData.tenders_filter.keywords,
+                    $options: "i",
+                  },
               },
             ],
           };

@@ -17,12 +17,12 @@ export const readAllTenders = async (
     let validDatePattern = /^[0-9]{4}\/[0-9]{2}\/[0-9]{2}$/; // Valid date pattern
 
     let pipeline = [
-      
+
       { $match: filter },
-      { $project: select },
       { $sort: sort },
       { $skip: skip },
-      { $limit: limit }
+      { $limit: limit },
+      { $project: select }
     ];
     console.log(sort, pipeline, "sssssssssssssssssssssssssssssss")
 
@@ -46,45 +46,40 @@ export const readAllTenders = async (
       }
     }
     let condition
+    let sliceCount = 1
     //     // Apply conditions based on tender_type
     if (filter.tender_type === "Live") {
-      // pipeline[2].$match = {
-      //   parsedClosingDate: { $gte: oneDayAgo } // Live tenders: Closing date in the future or today
-      // };
-       condition = {
+      condition = {
         $match: {
           parsedClosingDate: { $gte: oneDayAgo }// Ensure we only process valid dates
         }
       }
     } else if (filter.tender_type === "Archive") {
-      // pipeline[2].$match = {
-      //   parsedClosingDate: { $lt: oneDayAgo } // Archive tenders: Closing date in the past
-      // };
-       condition = {
+      condition = {
         $match: {
           parsedClosingDate: { $lt: oneDayAgo } // Ensure we only process valid dates
         }
       }
-      
+
     }
-    
+
     if (extra) {
       pipeline.push(extra);
     }
     if (filter?.tender_type) {
-      pipeline.splice(0, 0, dateMatch, addDate,condition);
+      pipeline.splice(0, 0, dateMatch, addDate, condition);
+      sliceCount += 4
 
       delete filter.tender_type
     }
     // Execute the aggregation query
-    const result = await tendersModel.aggregate(pipeline);
-
+    const result = await tendersModel.aggregate(pipeline).allowDiskUse(true);
     // Counting total results
     const countPipeline = [
-      ...pipeline.slice(0, 3),
+      ...pipeline.slice(0, sliceCount),
       { $count: "count" }
     ];
-    const countResult = await tendersModel.aggregate(countPipeline);
+    const countResult = await tendersModel.aggregate(countPipeline).allowDiskUse(true);
     const count = countResult[0]?.count || 0;
 
     return { result, count };

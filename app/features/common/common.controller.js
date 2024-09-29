@@ -64,7 +64,7 @@ export const listContactUs = async (req, res, next) => {
 
 export const advanceSearch = async (req, res, next) => {
     try {
-        const { notice_type, search_type, keywords, posting_date, closing_date, pageNo, limit, sortBy, sortField, exclude_words } = req.body;
+        const { notice_type, search_type, keywords, posting_date, closing_date,competition_type, pageNo, limit, sortBy, sortField, exclude_words } = req.body;
 
         const filter = {
             keywords,
@@ -73,6 +73,7 @@ export const advanceSearch = async (req, res, next) => {
             limit,
             sortBy,
             sortField,
+            competition_type,
             cpv_codes: req.body.cpv_codes || undefined,
             sectors: req.body.sectors || undefined,
             regions: req.body.regions || undefined,
@@ -100,8 +101,8 @@ export const advanceSearch = async (req, res, next) => {
                     filter.extraFilter.big_ref_no = req.body.big_ref_no || undefined;
                 if (req.body.tender_type)
                     filter.extraFilter.tender_type = req.body.tender_type || undefined;
-                if (req.body.tender_competition)
-                    filter.extraFilter.tender_competition = req.body.tender_competition || undefined;
+                if (req.body.competition_type)
+                    filter.extraFilter.tender_competition = req.body.competition_type || undefined;
                 if (req.body.country)
                     filter.country = req.body.country || undefined;
 
@@ -113,9 +114,16 @@ export const advanceSearch = async (req, res, next) => {
                     }
                 }
                 if (closing_date && closing_date.length > 1) {
+                    function zeroPad(num) {
+                        return num < 10 ? '0' + num : num; // Pad single digits with a leading zero
+                    }
+                    const inputStartDate = new Date(closing_date[0]); // Example input start date
+                    const inputEndDate = new Date(closing_date[1]);
+                    const startDateStr = `${inputStartDate.getFullYear()}/${zeroPad(inputStartDate.getMonth() + 1)}/${zeroPad(inputStartDate.getDate())}`;
+                    const endDateStr = `${inputEndDate.getFullYear()}/${zeroPad(inputEndDate.getMonth() + 1)}/${zeroPad(inputEndDate.getDate())}`;
                     filter.extraFilter.closing_date = {
-                        $gte: new Date(closing_date[0]),
-                        $lte: new Date(closing_date[1])
+                        $gte: startDateStr,
+                        $lte: endDateStr
                     }
                 }
 

@@ -73,13 +73,13 @@ export const readAllTenders = async (
       delete filter.tender_type
     }
     // Execute the aggregation query
-    const result = await tendersModel.aggregate(pipeline).allowDiskUse(true);
+    const result = await tendersModel.aggregate(pipeline,{ allowDiskUse: true })
     // Counting total results
     const countPipeline = [
       ...pipeline.slice(0, sliceCount),
       { $count: "count" }
     ];
-    const countResult = await tendersModel.aggregate(countPipeline).allowDiskUse(true);
+    const countResult = await tendersModel.aggregate(countPipeline,{ allowDiskUse: true })
     const count = countResult[0]?.count || 0;
 
     return { result, count };

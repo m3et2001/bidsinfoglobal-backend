@@ -258,14 +258,14 @@ export const tendersAllList = async (req, res, next) => {
       filter.sectors = { $in: sectors.split(",") };
     }
     if (regions && regions !== "") {
-      // filter.regions = { $in: regions.split(",") };
-      filter = {
-        ...filter,
-        $or: [
-          { regions: { $in: regions.split(",") } },
-          { country: { $in: regions.split(",") } },
-        ],
-      };
+      filter.regions = { $in: regions.split(",") };
+      // filter = {
+      //   ...filter,
+      //   $or: [
+      //     { regions: { $in: regions.split(",") } },
+      //     { country: { $in: regions.split(",") } },
+      //   ],
+      // };
     }
     if (funding_agency && funding_agency !== "")
       filter.funding_agency = { $in: funding_agency.split(",") };
@@ -282,7 +282,7 @@ export const tendersAllList = async (req, res, next) => {
 
     let superAdmin = await isSuperAdmin(req.session);
     if (req.session && superAdmin) select = tenders_all_field;
-    
+
     let result = await readAllTenders(
       filter,
       select,

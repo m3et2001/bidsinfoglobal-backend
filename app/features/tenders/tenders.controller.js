@@ -244,11 +244,19 @@ export const tendersAllList = async (req, res, next) => {
         ,
       };
 
-    if (country && country !== "")
-      filter.country = { $regex: new RegExp(`^${country}$`, "i") };
-    if (cpv_codes && cpv_codes !== "")
+    if (country && country !== "") {
+
+      filter.country = { $in: country.split(',').map(c => new RegExp(`^${c.trim()}$`, "i")) };
+    }
+
+    if (cpv_codes && cpv_codes !== "") {
       filter.cpv_codes = { $in: cpv_codes.split(",") };
-    if (sectors && sectors !== "") filter.sectors = { $in: sectors.split(",") };
+
+    }
+    if (sectors && sectors !== "") {
+
+      filter.sectors = { $in: sectors.split(",") };
+    }
     if (regions && regions !== "") {
       // filter.regions = { $in: regions.split(",") };
       filter = {

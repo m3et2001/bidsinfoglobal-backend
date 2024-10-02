@@ -30,33 +30,33 @@ db.once('open', function () {
 });
 
 // Read users.json file
-fs.readFile('country.json', function (err, data) {
-    // Check for errors
-    if (err) throw err;
+// fs.readFile('country.json', function (err, data) {
+//     // Check for errors
+//     if (err) throw err;
 
-    // Converting to JSON
-    const science = JSON.parse(data);
-    // console.log(science[0].interest_rate);
-    var promises = science.map((scores) => {
-        var payload = {};
-        payload.name = scores.name;
-        payload.num_code = scores.num_code;
-        payload.str_code = scores.str_code;
-        payload.is_deleted = false;
-        payload.is_active = true;
-        return payload;
-    });
-    Promise.all(promises).then((files) =>
-        // console.log(files.length)
-        countryModel.insertMany(files)
-            .then((results) => {
-                return results;
-            })
-            .catch((e) => {
-                return e;
-            })
-    );
-});
+//     // Converting to JSON
+//     const science = JSON.parse(data);
+//     // console.log(science[0].interest_rate);
+//     var promises = science.map((scores) => {
+//         var payload = {};
+//         payload.name = scores.name;
+//         payload.num_code = scores.num_code;
+//         payload.str_code = scores.str_code;
+//         payload.is_deleted = false;
+//         payload.is_active = true;
+//         return payload;
+//     });
+//     Promise.all(promises).then((files) =>
+//         // console.log(files.length)
+//         countryModel.insertMany(files)
+//             .then((results) => {
+//                 return results;
+//             })
+//             .catch((e) => {
+//                 return e;
+//             })
+//     );
+// });
 
 // fs.readFile('states.json', function (err, data) {
 //     // Check for errors
@@ -142,32 +142,32 @@ fs.readFile('country.json', function (err, data) {
 //     );
 // });
 
-// fs.readFile('cpvcodes.json', function (err, data) {
-//     // Check for errors
-//     if (err) throw err;
+fs.readFile('cpvcodes.json', function (err, data) {
+    // Check for errors
+    if (err) throw err;
 
-//     // Converting to JSON
-//     const science = JSON.parse(data);
-//     // console.log(science[0].interest_rate);
-//     var promises = science.map((scores) => {
-//         var payload = {};
-//         payload.description = scores.description;
-//         payload.code = scores.code;
-//         payload.is_deleted = false;
-//         payload.is_active = true;
-//         return payload;
-//     });
-//     Promise.all(promises).then((files) =>
-//         // console.log(files.length)
-//         cpvCodesModel.insertMany(files)
-//             .then((results) => {
-//                 return results;
-//             })
-//             .catch((e) => {
-//                 return e;
-//             })
-//     );
-// });
+    // Converting to JSON
+    const science = JSON.parse(data);
+    // console.log(science[0].interest_rate);
+    var promises = science.map((scores) => {
+        var payload = {};
+        payload.description = scores.Description;
+        payload.code = scores.Code;
+        payload.is_deleted = false;
+        payload.is_active = true;
+        return payload;
+    });
+    Promise.all(promises).then((files) =>
+        // console.log(files.length)
+        cpvCodesModel.insertMany(files)
+            .then((results) => {
+                return results;
+            })
+            .catch((e) => {
+                return e;
+            })
+    );
+});
 
 // fs.readFile('funding_agency.json', function (err, data) {
 //     // Check for errors

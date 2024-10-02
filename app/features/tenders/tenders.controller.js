@@ -95,7 +95,8 @@ export const tendersAllList = async (req, res, next) => {
     let select = tenders_list;
     let orAdvCon = []
     let orCon = []
-    let keywordsList = []
+    let keywordsList = keywords ? keywords.split(',').map(kw => kw.trim()) : [];
+
     let condition = 0;
     if (keywords && exclude_words) {
       condition = 1; // Both keywords and exclude_words exist
@@ -163,7 +164,6 @@ export const tendersAllList = async (req, res, next) => {
       }
 
     } else if (search_type === searchType.RELEVENT) {
-      let keywordsList = keywords ? keywords.split(',').map(kw => kw.trim()) : [];
       let excludeWordsList = exclude_words ? exclude_words.split(',').map(ew => ew.trim()) : [];
       switch (condition) {
         case 1:
@@ -282,7 +282,7 @@ export const tendersAllList = async (req, res, next) => {
 
     let superAdmin = await isSuperAdmin(req.session);
     if (req.session && superAdmin) select = tenders_all_field;
-
+    
     let result = await readAllTenders(
       filter,
       select,

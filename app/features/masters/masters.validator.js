@@ -121,6 +121,7 @@ export const sectorsAddVal = Joi.object({
 export const sectorsUpdateVal = Joi.object({
     _id: Joi.string().required(),
     name: Joi.string().allow(""),
+    description: Joi.string().allow(""),
     code: Joi.string().allow(""),
     is_active: Joi.boolean().allow("")
 });

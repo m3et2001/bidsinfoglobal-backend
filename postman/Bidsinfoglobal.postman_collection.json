@@ -1527,6 +1527,11 @@
 											"type": "text"
 										},
 										{
+											"key": "description",
+											"value": "Defence",
+											"type": "text"
+										},
+										{
 											"key": "code",
 											"value": "19",
 											"type": "text"

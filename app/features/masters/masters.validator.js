@@ -18,6 +18,8 @@ export const countryGetVal = Joi.object({
 
 export const countryAddVal = Joi.object({
     name: Joi.string().required(),
+    title: Joi.string().allow(""),
+    description: Joi.string().allow(""),
     num_code: Joi.string().required(),
     str_code: Joi.string().required(),
     is_active: Joi.boolean().allow(""),
@@ -26,6 +28,8 @@ export const countryAddVal = Joi.object({
 export const countryUpdateVal = Joi.object({
     _id: Joi.string().required(),
     name: Joi.string().allow(""),
+    title: Joi.string().allow(""),
+    description: Joi.string().allow(""),
     num_code: Joi.string().allow(""),
     str_code: Joi.string().allow(""),
     is_active: Joi.boolean().allow("")
@@ -82,6 +86,8 @@ export const regionsGetVal = Joi.object({
 
 export const regionsAddVal = Joi.object({
     name: Joi.string().required(),
+    title: Joi.string().allow(""),
+    description: Joi.string().allow(""),
     code: Joi.string().required(),
     is_active: Joi.boolean().allow(""),
 });
@@ -89,6 +95,8 @@ export const regionsAddVal = Joi.object({
 export const regionsUpdateVal = Joi.object({
     _id: Joi.string().required(),
     name: Joi.string().allow(""),
+    title: Joi.string().allow(""),
+    description: Joi.string().allow(""),
     code: Joi.string().allow(""),
     is_active: Joi.boolean().allow("")
 });

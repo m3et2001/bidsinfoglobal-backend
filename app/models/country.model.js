@@ -5,6 +5,12 @@ const countrySchema = new mongoose.Schema(
         name: {
             type: String
         },
+        title: {
+            type: String
+        },
+        description: {
+            type: String
+        },
         num_code: {
             type: String
         },

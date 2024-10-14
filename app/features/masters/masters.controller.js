@@ -14,7 +14,7 @@ import {
 
 // country master api
 
-const country_select_field = { name: 1, num_code: 1, str_code: 1, is_active: 1, createdAt: 1 };
+const country_select_field = { name: 1, title: 1, description: 1, num_code: 1, str_code: 1, is_active: 1, createdAt: 1 };
 
 export const countryAllList = async (req, res, next) => {
     try {
@@ -194,7 +194,7 @@ export const statesDelete = async (req, res, next) => {
 }
 
 // regions master api
-const regions_select_field = { name: 1, code: 1, is_active: 1, createdAt: 1 };
+const regions_select_field = { name: 1, title: 1, description: 1, code: 1, is_active: 1, createdAt: 1 };
 
 export const regionsAllList = async (req, res, next) => {
     try {
@@ -307,7 +307,7 @@ export const regionsDelete = async (req, res, next) => {
 }
 
 // sectors master api
-const sectors_select_field = { name: 1, code: 1,title:1,description: 1, icon: 1, is_active: 1, createdAt: 1 };
+const sectors_select_field = { name: 1, code: 1, title: 1, description: 1, icon: 1, is_active: 1, createdAt: 1 };
 
 export const sectorsAllList = async (req, res, next) => {
     try {

@@ -8,6 +8,9 @@ const sectorsSchema = new mongoose.Schema(
         name: {
             type: String
         },
+        title: {
+            type: String
+        },
         description: {
             type: String
         },

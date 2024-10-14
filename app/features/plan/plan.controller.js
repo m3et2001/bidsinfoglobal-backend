@@ -11,7 +11,7 @@ const select = { plan_id: 1, title: 1, plan_name: 1, amount: 1, plan_type: 1, va
 
 export const getPlansList = async (req, res, next) => {
     try {
-        const planList = await readPlans({ status: 1, plan_type: "Paid" }, select);
+        const planList = await readPlans({ status: 1, plan_type: "Paid" });
         if (!planList) throw new Error("Plans not found");
 
         responseSend(res, 201, "Plans fetched successfully", planList);

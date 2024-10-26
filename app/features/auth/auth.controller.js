@@ -198,7 +198,8 @@ export const customerRegister = async (req, res, next) => {
                 name: _customerData.full_name,
             }
         })
-
+        console.log("SAdfdsssssssssssssssssss")
+        console.log("SAdfdsssssssssssssssssss")
         sendEMAIL(
             mailTo,
             "You are now registered with us",

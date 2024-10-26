@@ -13,7 +13,6 @@ export const sendEMAIL = async (
         let client = new SendMailClient({ url, token });
 
         let res = await client.sendMail({
-            // bounce_address: "prefix@subdomain.bidsinfoglobal.com",
             from:
             {
                 address: "noreply@bidsinfoglobal.com",
@@ -31,7 +30,7 @@ export const sendEMAIL = async (
     } catch (error) {
         console.log(
             "🚀 ~ file: email.util.js ~ line 16 ~ sendEMAIL ~ error",
-            JSON.stringify( error),
+            JSON.stringify(error),
         );
         throw new Error(error);
     }

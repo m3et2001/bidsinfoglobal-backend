@@ -539,9 +539,44 @@ export const tendersAddMultiple = async (req, res, next) => {
       )
     );
 
-    let result = await tendersModel.insertMany(tenders);
+    // let result = await tendersModel.insertMany(tenders);
+    const filteredTenders = [];
+    for (const tender of tenders) {
+      const exists = await tendersModel.findOne({
+        $or: [
+          // Criteria 1: If tender_no is the same, check for matching tender_no, closing_date, and country
+          {
+            tender_no: tender.tender_no,
+            closing_date: tender.closing_date,
+            country: tender.country,
+          },
+          // Criteria 2: If tender_no is different, check for title, published_date, country, and closing_date
+          {
+            tender_no: { $ne: tender.tender_no },
+            title: tender.title,
+            published_date: tender.published_date,
+            country: tender.country,
+            closing_date: tender.closing_date,
+          }
+        ]
+      });
 
-    responseSend(res, 201, "Tenders data added successfully", result);
+      // If no existing record matches, add to the filtered array
+      if (!exists) {
+        filteredTenders.push(tender);
+      }
+    }
+
+    // Insert only the new tenders that passed the filtering
+    if (filteredTenders.length > 0) {
+      let result = await tendersModel.insertMany(filteredTenders);
+      console.log("Inserted tenders:", result);
+      responseSend(res, 201, "Tenders data added successfully", result);
+    } else {
+      console.log("No new tenders to insert.");
+      responseSend(res, 201, "No new tenders to insert.", []);
+    }
+
   } catch (error) {
     next(error);
   }

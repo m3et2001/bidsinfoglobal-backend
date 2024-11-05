@@ -25,14 +25,13 @@ export const sendEMAIL = async (
             "htmlbody": html,
             "attachments": attachments
         });
-        console.log("Asdsadsdsaddddddddddddddddddddddddddddddddddddddddddddd")
         return res;
 
     } catch (error) {
         console.log(
             "🚀 ~ file: email.util.js ~ line 16 ~ sendEMAIL ~ error",
-            JSON.stringify( error),
+            JSON.stringify(error),
         );
-        throw new Error(error);
+        // throw new Error(JSON.stringify( error));
     }
 };

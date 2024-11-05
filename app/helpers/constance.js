@@ -10,6 +10,10 @@ export const ADMIN_EMAIL = [
             address: "bidsinfoglobal@gmail.com",
             name: "Bidsinfoglobal",
         },
+        email_address: {
+            address: "meetvelani2728@gmail.com",
+            name: "meet velani",
+        },
     }
 ]
 

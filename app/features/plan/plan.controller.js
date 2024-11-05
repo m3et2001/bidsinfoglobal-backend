@@ -5,7 +5,7 @@ import { subscribePlanReq } from "../../helpers/constance.js";
 import { responseSend } from "../../helpers/responseSend.js";
 import { readCustomers, updateCustomer } from "../auth/auth.service.js";
 import { sendEMAIL } from "../../utils/email.util.js";
-import { createPlanHistory, createPlanRequest, readPlan, readPlanRequest, readPlanRequestSingle, readPlans, updatePlanRequest } from "./plan.service.js";
+import { createPlanHistory, createPlanRequest, readPlan, readPlanRequest, readPlanRequestSingle, readPlans, sendSubscriptionInfoToAdmin, updatePlanRequest } from "./plan.service.js";
 
 const select = { plan_id: 1, title: 1, plan_name: 1, amount: 1, plan_type: 1, validity_days: 1, access: 1, status: 1 };
 
@@ -28,7 +28,7 @@ export const subscribePlan = async (req, res, next) => {
 
         const custCheck = await readCustomers({ customer_id, status: "active" }, { email: 1, full_name: 1 });
         if (!custCheck) throw new Error("Customer not found");
-
+        
         const planData = await readPlan({ plan_id }, select);
         if (!planData) throw new Error("Plan not found");
 
@@ -42,6 +42,7 @@ export const subscribePlan = async (req, res, next) => {
             request_date: new Date(),
         }
         await createPlanRequest(payload);
+        sendSubscriptionInfoToAdmin(custCheck?.full_name, custCheck?.email,planData?.title)
 
         responseSend(res, 201, "Your request has been submitted, please wait while our team contacts you.", {});
 

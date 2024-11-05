@@ -13,7 +13,7 @@ export const sendEMAIL = async (
         let client = new SendMailClient({ url, token });
 
         let res = await client.sendMail({
-            bounce_address: "bounce@bidsinfoglobal.com",
+            bounce_address: "bounce@bounce-zem.bidsinfoglobal.com",
             from:
             {
                 address: "noreply@bidsinfoglobal.com",

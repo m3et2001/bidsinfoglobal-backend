@@ -24,7 +24,6 @@ export const readAllTenders = async (
       { $limit: limit },
       { $project: select }
     ];
-    console.log(sort, pipeline, "sssssssssssssssssssssssssssssss")
 
     const dateMatch = {
       $match: {
@@ -68,18 +67,18 @@ export const readAllTenders = async (
     }
     if (filter?.tender_type) {
       pipeline.splice(0, 0, dateMatch, addDate, condition);
-      sliceCount += 4
+      sliceCount += 3
 
       delete filter.tender_type
     }
     // Execute the aggregation query
-    const result = await tendersModel.aggregate(pipeline,{ allowDiskUse: true })
+    const result = await tendersModel.aggregate(pipeline, { allowDiskUse: true })
     // Counting total results
     const countPipeline = [
       ...pipeline.slice(0, sliceCount),
       { $count: "count" }
     ];
-    const countResult = await tendersModel.aggregate(countPipeline,{ allowDiskUse: true })
+    const countResult = await tendersModel.aggregate(countPipeline, { allowDiskUse: true })
     const count = countResult[0]?.count || 0;
 
     return { result, count };

@@ -19,7 +19,11 @@ import cpvCodesModel from "./app/models/cpv_codes.model.js";
 import fundingAgencyModel from "./app/models/funding_agency.model.js";
 
 const mongoURL = 'mongodb+srv://bidsinfoglobal:qGWxjS3YxJRHFovt@qa.t5cmca1.mongodb.net/';
-mongoose.connect(mongoURL);
+mongoose.connect(mongoURL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 30000
+});
 
 //connection for mongoose
 const db = mongoose.connection;

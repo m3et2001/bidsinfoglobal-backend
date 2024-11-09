@@ -83,7 +83,7 @@ export const customerProfileUpdate = async (req, res, next) => {
             let historyPayload = {
                 customer_id,
                 plan_id: req.body.purchase_plan_id,
-                plan_type: plans.plan_type,
+                plan_type: plans?.plan_type,
                 start_date,
                 end_date,
                 amount: req.body.received_amount,

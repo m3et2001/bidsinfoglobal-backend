@@ -39,6 +39,7 @@ export const forgotPasswordV = Joi.object({
 
 export const profileUpdateV = Joi.object({
     customer_id: Joi.string().allow(""),
+    customer_type: Joi.string().allow(""),
     full_name: Joi.string().required(),
     email: Joi.string().required(),
     phone_no: Joi.string().required(),

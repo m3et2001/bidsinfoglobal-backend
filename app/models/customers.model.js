@@ -23,6 +23,9 @@ const customersSchema = new mongoose.Schema(
             type: String,
             unique: true
         },
+        customer_type: {
+            type: String
+        },
         uuid: {
             type: Number,
             unique: true

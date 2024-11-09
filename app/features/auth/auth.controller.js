@@ -102,7 +102,7 @@ export const customerProfileUpdate = async (req, res, next) => {
                 ],
                 "You are now an active plan user",
                 "",
-                `<p>Your plan ${plans.title} has been activated today and will expire on ${format(end_date, "dd-MM-yyyy hh:mm:ss a")}.</p>`,
+                `<p>Your plan ${plans?.title} has been activated today and will expire on ${format(end_date, "dd-MM-yyyy hh:mm:ss a")}.</p>`,
             );
         }
 

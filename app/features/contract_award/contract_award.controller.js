@@ -155,6 +155,20 @@ export const contractAwardGet = async (req, res, next) => {
 
 export const contractAwardAdd = async (req, res, next) => {
     try {
+        // Step 1: Generate big_ref_no based on existing tenders or fallback to count
+        let baseRefNo = startingBigRefNo;
+        const latestTender = await contractAwardModel.findOne().sort({ createdAt: -1 });
+        console.log(latestTender)
+
+        if (latestTender) {
+            baseRefNo = parseInt(latestTender.big_ref_no.split('-')[1]);
+        } else {
+            // const count = await contractAwardModel.count();
+            // baseRefNo += count;
+        }
+
+        // Assign big_ref_no to the new tender
+        req.body.big_ref_no = "CA-" + (baseRefNo + 1);
         let result = await insertContractAward(req.body);
 
         responseSend(res, 201, "Contract award added successfully", result);
@@ -167,9 +181,20 @@ export const contractAwardAddMultiple = async (req, res, next) => {
     try {
         const { contracts } = req.body;
 
-        const count = await contractAwardModel.count();
+        // Step 1: Retrieve the latest contract award's big_ref_no
+        let baseRefNo = startingBigRefNo;
+        const latestContract = await contractAwardModel.findOne().sort({ createdAt: -1 });
 
-        await Promise.all(contracts.map((e, k) => e.big_ref_no = "CA-" + (startingBigRefNo + count + (k + 1))));
+        if (latestContract) {
+            // Extract the numeric part of big_ref_no from the latest contract and increment
+            baseRefNo = parseInt(latestContract.big_ref_no.split('-')[1]) + 1;
+        }
+
+        // Step 2: Assign big_ref_no to each contract and increment from the baseRefNo
+        contracts.forEach((contract, index) => {
+            contract.big_ref_no = "CA-" + (baseRefNo + index);
+        });
+
 
         let result = await contractAwardModel.insertMany(contracts);
 

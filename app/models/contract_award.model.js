@@ -83,10 +83,9 @@ const contractAwardSchema = new mongoose.Schema(
 contractAwardSchema.pre("save", async function (next) {
     const data = this;
     data.contract_award_id = data._id;
-
     const lastAward = await contractAwardModel.findOne(null, null, { sort: { ["createdAt"]: -1 } }).select({ big_ref_no: 1 });
-    let split = lastAward.big_ref_no.split("CA-");
-    data.big_ref_no = "CA-" + zeroPad(parseInt(split[1]) + 1, 6);
+    // let split = lastAward.big_ref_no.split("CA-");
+    // data.big_ref_no = "CA-" + zeroPad(parseInt(split[1]) + 1, 6);
 
     next();
 });

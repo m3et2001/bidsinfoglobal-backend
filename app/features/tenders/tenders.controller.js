@@ -553,12 +553,12 @@ export const tendersAdd = async (req, res, next) => {
       if (latestTender) {
         baseRefNo = parseInt(latestTender.big_ref_no.split('-')[1]);
       } else {
-        const count = await tendersModel.count();
-        baseRefNo += count;
+        // const count = await tendersModel.count();
+        // baseRefNo += count;
       }
 
       // Assign big_ref_no to the new tender
-      tender.big_ref_no = "T-" + (baseRefNo + 1);
+      tender.big_ref_no = "T-" + (baseRefNo +1 );
 
       // Step 3: Insert the new tender
       let result = await insertTenders(req.body);

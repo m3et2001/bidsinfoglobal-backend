@@ -46,6 +46,6 @@ export const subscribePlanReq = {
     PROCESSED: "Processed",
 }
 
-export const startingBigRefNo = 1001;
+export const startingBigRefNo = 1000;
 
 export const roleArray = [userRoles.ADMIN, userRoles.CUSTOMERS, userRoles.SUPER_ADMIN]

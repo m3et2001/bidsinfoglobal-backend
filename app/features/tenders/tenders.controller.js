@@ -519,9 +519,53 @@ export const tendersGet = async (req, res, next) => {
 
 export const tendersAdd = async (req, res, next) => {
   try {
-    let result = await insertTenders(req.body);
+    const tender = req.body;
 
-    responseSend(res, 201, "Tenders added successfully", result);
+    // Step 1: Check if the tender already exists in the database
+    const exists = await tendersModel.findOne({
+      $or: [
+        {
+          tender_no: tender.tender_no,
+          closing_date: tender.closing_date,
+          country: tender.country,
+        },
+        {
+          tender_no: { $ne: tender.tender_no },
+          title: tender.title,
+          published_date: tender.published_date,
+          country: tender.country,
+          closing_date: tender.closing_date,
+        }
+      ]
+    });
+
+
+    if (exists) {
+      // If the tender exists, send a response indicating duplication
+      return responseSend(res, 409, "Tender already exists.", []);
+    }
+    else {
+
+      // Step 2: Generate big_ref_no based on existing tenders or fallback to count
+      let baseRefNo = startingBigRefNo;
+      const latestTender = await tendersModel.findOne().sort({ createdAt: -1 });
+
+      if (latestTender) {
+        baseRefNo = parseInt(latestTender.big_ref_no.split('-')[1]);
+      } else {
+        const count = await tendersModel.count();
+        baseRefNo += count;
+      }
+
+      // Assign big_ref_no to the new tender
+      tender.big_ref_no = "T-" + (baseRefNo + 1);
+
+      // Step 3: Insert the new tender
+      let result = await insertTenders(req.body);
+      console.log("Inserted tender:", result);
+      responseSend(res, 201, "Tender added successfully", result);
+    }
+
   } catch (error) {
     next(error);
   }
@@ -531,26 +575,29 @@ export const tendersAddMultiple = async (req, res, next) => {
   try {
     const { tenders } = req.body;
 
-    const count = await tendersModel.count();
+    // Step 1: Deduplicate incoming tenders based on some unique criteria
+    const uniqueTenders = tenders.reduce((acc, tender) => {
+      if (!acc.some((t) =>
+        t.tender_no === tender.tender_no &&
+        t.closing_date === tender.closing_date &&
+        t.country === tender.country &&
+        t.title === tender.title
+      )) {
+        acc.push(tender);
+      }
+      return acc;
+    }, []);
 
-    await Promise.all(
-      tenders.map(
-        (e, k) => (e.big_ref_no = "T-" + (startingBigRefNo + count + (k + 1)))
-      )
-    );
-
-    // let result = await tendersModel.insertMany(tenders);
+    // Step 2: Filter tenders to avoid inserting duplicates in the database
     const filteredTenders = [];
-    for (const tender of tenders) {
+    for (const tender of uniqueTenders) {
       const exists = await tendersModel.findOne({
         $or: [
-          // Criteria 1: If tender_no is the same, check for matching tender_no, closing_date, and country
           {
             tender_no: tender.tender_no,
             closing_date: tender.closing_date,
             country: tender.country,
           },
-          // Criteria 2: If tender_no is different, check for title, published_date, country, and closing_date
           {
             tender_no: { $ne: tender.tender_no },
             title: tender.title,
@@ -561,26 +608,45 @@ export const tendersAddMultiple = async (req, res, next) => {
         ]
       });
 
-      // If no existing record matches, add to the filtered array
+
       if (!exists) {
         filteredTenders.push(tender);
       }
     }
 
-    // Insert only the new tenders that passed the filtering
+    // Step 3: Generate big_ref_no based on existing tenders or fallback to count
     if (filteredTenders.length > 0) {
-      let result = await tendersModel.insertMany(filteredTenders);
+      let baseRefNo = startingBigRefNo;
+      const latestTender = await tendersModel.findOne().sort({ createdAt: -1 });
+
+      if (latestTender) {
+        baseRefNo = parseInt(latestTender.big_ref_no.split('-')[1]);
+      } else {
+        const count = await tendersModel.count();
+        baseRefNo += count;
+      }
+
+      await Promise.all(
+        filteredTenders.map((tender, index) => {
+          tender.big_ref_no = "T-" + (baseRefNo + index + 1);
+        })
+      );
+
+      // Step 4: Insert new tenders
+      const result = await tendersModel.insertMany(filteredTenders);
       console.log("Inserted tenders:", result);
       responseSend(res, 201, "Tenders data added successfully", result);
     } else {
       console.log("No new tenders to insert.");
-      responseSend(res, 201, "No new tenders to insert.", []);
+      responseSend(res, 200, "No new tenders to insert.", []);
     }
 
   } catch (error) {
     next(error);
   }
 };
+
+
 
 export const tendersUpdate = async (req, res, next) => {
   try {

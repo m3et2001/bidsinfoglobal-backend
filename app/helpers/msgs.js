@@ -31,6 +31,11 @@ const message = {
         httpCode: 406,
         status: false,
     },
+    409: {
+        message: "Data conflict",
+        httpCode: 409,
+        status: false,
+    },
     417: {
         message: "Joi Validation Error",
         httpCode: 417,

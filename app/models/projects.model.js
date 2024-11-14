@@ -70,9 +70,9 @@ projectsSchema.pre("save", async function (next) {
     data.project_id = data._id;
 
     const lastGrant = await projectsModel.findOne(null, null, { sort: { ["createdAt"]: -1 } }).select({ big_ref_no: 1 });
-    let split = lastGrant.big_ref_no.split("P-");
+    // let split = lastGrant.big_ref_no.split("P-");
 
-    data.big_ref_no = "P-" + zeroPad(parseInt(split[1]) + 1, 6);
+    // data.big_ref_no = "P-" + zeroPad(parseInt(split[1]) + 1, 6);
 
     next();
 });

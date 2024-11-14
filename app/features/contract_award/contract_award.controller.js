@@ -10,9 +10,9 @@ import {
 } from "./contract_award.service.js";
 import { readCustomers } from "../auth/auth.service.js";
 
-const contract_award_list_field = { big_ref_no: 1, project_location: 1, contractor_details: 1, description: 1, sectors: 1, awards_publish_date: 1, sectors: 1, cpv_codes: 1, funding_agency: 1, regions: 1, };
-const contract_award_all_field = { contract_award_id: 1, org_name: 1, org_address: 1, telephone_no: 1, fax_number: 1, email: 1, contact_person: 1, big_ref_no: 1, document_no: 1, bidding_type: 1, project_location: 1, contractor_details: 1, tender_notice_no: 1, description: 1, cpv_codes: 1, funding_agency: 1, regions: 1, sectors: 1, awards_publish_date: 1, is_active: 1, createdAt: 1 };
-const contract_award_limit_field = { big_ref_no: 1, project_location: 1, contractor_details: 1, description: 1, sectors: 1, cpv_codes: 1, funding_agency: 1, regions: 1, awards_publish_date: 1 };
+const contract_award_list_field = { title:1,big_ref_no: 1, project_location: 1, contractor_details: 1, description: 1, sectors: 1, awards_publish_date: 1, sectors: 1, cpv_codes: 1, funding_agency: 1, regions: 1, };
+const contract_award_all_field = {  title:1,contract_award_id: 1, org_name: 1, org_address: 1, telephone_no: 1, fax_number: 1, email: 1, contact_person: 1, big_ref_no: 1, document_no: 1, bidding_type: 1, project_location: 1, contractor_details: 1, tender_notice_no: 1, description: 1, cpv_codes: 1, funding_agency: 1, regions: 1, sectors: 1, awards_publish_date: 1, is_active: 1, createdAt: 1 };
+const contract_award_limit_field = {  title:1,big_ref_no: 1, project_location: 1, contractor_details: 1, description: 1, sectors: 1, cpv_codes: 1, funding_agency: 1, regions: 1, awards_publish_date: 1 };
 
 export const contractAwardAllList = async (req, res, next) => {
     try {
@@ -157,11 +157,10 @@ export const contractAwardAdd = async (req, res, next) => {
     try {
         // Step 1: Generate big_ref_no based on existing tenders or fallback to count
         let baseRefNo = startingBigRefNo;
-        const latestTender = await contractAwardModel.findOne().sort({ createdAt: -1 });
-        console.log(latestTender)
+        const latestContract = await contractAwardModel.findOne().sort({ createdAt: -1 });
 
-        if (latestTender) {
-            baseRefNo = parseInt(latestTender.big_ref_no.split('-')[1]);
+        if (latestContract) {
+            baseRefNo = parseInt(latestContract.big_ref_no.split('-')[1]);
         } else {
             // const count = await contractAwardModel.count();
             // baseRefNo += count;

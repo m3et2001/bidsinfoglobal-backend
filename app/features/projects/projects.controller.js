@@ -10,9 +10,9 @@ import {
 } from "./projects.service.js";
 import { readCustomers } from "../auth/auth.service.js";
 
-const project_list_field = { project_id: 1, project_background: 1, project_location: 1, project_publishing_date: 1, estimated_project_completion_date: 1, sectors: 1, cpv_codes: 1, regions: 1 };
-const project_all_field = { project_id: 1, project_name: 1, project_background: 1, project_location: 1, project_status: 1, project_publishing_date: 1, estimated_project_completion_date: 1, client_name: 1, client_address: 1, funding_agency: 1, sectors: 1, regions: 1, cpv_codes: 1, is_active: 1, createdAt: 1 };
-const project_limit_field = { project_id: 1, project_name: 1, project_background: 1, project_location: 1, project_status: 1, project_publishing_date: 1, estimated_project_completion_date: 1, sectors: 1, cpv_codes: 1, regions: 1, is_active: 1, createdAt: 1 };
+const project_list_field = { title: 1, big_ref_no: 1, project_id: 1, project_background: 1, project_location: 1, project_publishing_date: 1, estimated_project_completion_date: 1, sectors: 1, cpv_codes: 1, regions: 1 };
+const project_all_field = { title: 1, big_ref_no: 1, project_id: 1, project_name: 1, project_background: 1, project_location: 1, project_status: 1, project_publishing_date: 1, estimated_project_completion_date: 1, client_name: 1, client_address: 1, funding_agency: 1, sectors: 1, regions: 1, cpv_codes: 1, is_active: 1, createdAt: 1 };
+const project_limit_field = { title: 1, big_ref_no: 1, project_id: 1, project_name: 1, project_background: 1, project_location: 1, project_status: 1, project_publishing_date: 1, estimated_project_completion_date: 1, sectors: 1, cpv_codes: 1, regions: 1, is_active: 1, createdAt: 1 };
 
 export const projectsAllList = async (req, res, next) => {
     try {
@@ -154,6 +154,20 @@ export const projectsGet = async (req, res, next) => {
 
 export const projectsAdd = async (req, res, next) => {
     try {
+        // Step 1: Generate big_ref_no based on existing tenders or fallback to count
+        let baseRefNo = startingBigRefNo;
+        const latestProject = await projectsModel.findOne().sort({ createdAt: -1 });
+
+
+        if (latestProject) {
+            baseRefNo = parseInt(latestProject.big_ref_no.split('-')[1]);
+        } else {
+            // const count = await contractAwardModel.count();
+            // baseRefNo += count;
+        }
+
+        // Assign big_ref_no to the new tender
+        req.body.big_ref_no = "P-" + (baseRefNo + 1);
         let result = await insertProjects(req.body);
 
         responseSend(res, 201, "Projects added successfully", result);
@@ -166,9 +180,18 @@ export const projectsAddMultiple = async (req, res, next) => {
     try {
         const { projects } = req.body;
 
-        const count = await projectsModel.count();
+        let baseRefNo = startingBigRefNo;
+        const latestProject = await projectsModel.findOne().sort({ createdAt: -1 });
 
-        await Promise.all(projects.map((e, k) => e.big_ref_no = "P-" + (startingBigRefNo + count + (k + 1))));
+        if (latestProject) {
+            // Extract the numeric part of big_ref_no from the latest contract and increment
+            baseRefNo = parseInt(latestProject.big_ref_no.split('-')[1]) + 1;
+        }
+
+        // Step 2: Assign big_ref_no to each contract and increment from the baseRefNo
+        projects.forEach((project, index) => {
+            project.big_ref_no = "P-" + (baseRefNo + index);
+        });
 
         let result = await projectsModel.insertMany(projects);
 

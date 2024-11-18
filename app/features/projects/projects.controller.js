@@ -191,6 +191,7 @@ export const projectsAddMultiple = async (req, res, next) => {
         // Step 2: Assign big_ref_no to each contract and increment from the baseRefNo
         projects.forEach((project, index) => {
             project.big_ref_no = "P-" + (baseRefNo + index);
+            project.createdAt = new Date(Date.now() + index);
         });
 
         let result = await projectsModel.insertMany(projects);

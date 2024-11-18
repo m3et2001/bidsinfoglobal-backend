@@ -192,6 +192,8 @@ export const contractAwardAddMultiple = async (req, res, next) => {
         // Step 2: Assign big_ref_no to each contract and increment from the baseRefNo
         contracts.forEach((contract, index) => {
             contract.big_ref_no = "CA-" + (baseRefNo + index);
+            contract.createdAt = new Date(Date.now() + index);
+
         });
 
 

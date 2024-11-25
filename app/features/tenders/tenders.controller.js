@@ -275,8 +275,14 @@ export const tendersAllList = async (req, res, next) => {
       filter.published_date = {
         $gte: new Date(new Date(from_date).setHours(0, 0, 0)),
       };
+      const inputEndDate = new Date(to_date);
+      function zeroPad(num) {
+        return num < 10 ? '0' + num : num; // Pad single digits with a leading zero
+    }
+      const endDateStr = `${inputEndDate.getFullYear()}/${zeroPad(inputEndDate.getMonth() + 1)}/${zeroPad(inputEndDate.getDate())}`;
+
       filter.closing_date = {
-        $lte: new Date(new Date(to_date).setHours(23, 59, 59)),
+        $lte: endDateStr,
       };
     }
 
@@ -423,18 +429,18 @@ export const tendersGet = async (req, res, next) => {
         };
 
         let search_type_filter = null;
-        if (customerData.tenders_filter.search_type) {
-          if (customerData.tenders_filter.search_type === searchType.EXACT) {
+        if (customerData.tenders_filter?.search_type) {
+          if (customerData.tenders_filter?.search_type === searchType.EXACT) {
             search_type_filter = customerData.tenders_filter.keywords;
           } else if (
-            customerData.tenders_filter.search_type === searchType.RELEVENT
+            customerData.tenders_filter?.search_type === searchType.RELEVENT
           ) {
             search_type_filter = {
               $regex: customerData.tenders_filter.keywords,
               $options: "m",
             };
           } else if (
-            customerData.tenders_filter.search_type === searchType.ANY
+            customerData.tenders_filter?.search_type === searchType.ANY
           ) {
             customerData.tenders_filter.keywords =
               customerData.tenders_filter.keywords

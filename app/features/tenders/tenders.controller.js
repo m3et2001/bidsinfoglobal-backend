@@ -278,7 +278,7 @@ export const tendersAllList = async (req, res, next) => {
       const inputEndDate = new Date(to_date);
       function zeroPad(num) {
         return num < 10 ? '0' + num : num; // Pad single digits with a leading zero
-    }
+      }
       const endDateStr = `${inputEndDate.getFullYear()}/${zeroPad(inputEndDate.getMonth() + 1)}/${zeroPad(inputEndDate.getDate())}`;
 
       filter.closing_date = {
@@ -429,78 +429,82 @@ export const tendersGet = async (req, res, next) => {
         };
 
         let search_type_filter = null;
-        if (customerData.tenders_filter?.search_type) {
-          if (customerData.tenders_filter?.search_type === searchType.EXACT) {
-            search_type_filter = customerData.tenders_filter.keywords;
-          } else if (
-            customerData.tenders_filter?.search_type === searchType.RELEVENT
-          ) {
-            search_type_filter = {
-              $regex: customerData.tenders_filter.keywords,
-              $options: "m",
+        if (customerData?.tenders_filter) {
+
+
+          if (customerData.tenders_filter?.search_type) {
+            if (customerData.tenders_filter?.search_type === searchType.EXACT) {
+              search_type_filter = customerData.tenders_filter?.keywords;
+            } else if (
+              customerData.tenders_filter?.search_type === searchType.RELEVENT
+            ) {
+              search_type_filter = {
+                $regex: customerData.tenders_filter?.keywords,
+                $options: "m",
+              };
+            } else if (
+              customerData.tenders_filter?.search_type === searchType.ANY
+            ) {
+              customerData.tenders_filter.keywords =
+                customerData.tenders_filter?.keywords
+                  .replace(/\s+/g, "")
+                  .split(",")
+                  .join("|");
+              search_type_filter = {
+                $regex: customerData.tenders_filter?.keywords,
+                $options: "i",
+              };
+            }
+          }
+
+          if (
+            customerData.tenders_filter?.keywords &&
+            customerData.tenders_filter?.keywords !== ""
+          )
+            accessFilter = {
+              ...accessFilter,
+              $or: [
+                {
+                  description: search_type_filter
+                    ? search_type_filter
+                    : {
+                      $regex: customerData.tenders_filter?.keywords,
+                      $options: "i",
+                    },
+                },
+              ],
             };
-          } else if (
-            customerData.tenders_filter?.search_type === searchType.ANY
+          if (
+            customerData.tenders_filter?.sectors &&
+            customerData.tenders_filter?.sectors.length > 0
+          )
+            accessFilter.sectors = { $in: customerData.tenders_filter?.sectors };
+          if (
+            customerData.tenders_filter.funding_agency &&
+            customerData.tenders_filter.funding_agency.length > 0
+          )
+            accessFilter.funding_agency = {
+              $in: customerData.tenders_filter.funding_agency,
+            };
+          if (
+            customerData.tenders_filter.cpv_codes &&
+            customerData.tenders_filter.cpv_codes.length > 0
+          )
+            accessFilter.cpv_codes = {
+              $in: customerData.tenders_filter.cpv_codes,
+            };
+          if (
+            customerData.tenders_filter.regions &&
+            customerData.tenders_filter.regions.length > 0
           ) {
-            customerData.tenders_filter.keywords =
-              customerData.tenders_filter.keywords
-                .replace(/\s+/g, "")
-                .split(",")
-                .join("|");
-            search_type_filter = {
-              $regex: customerData.tenders_filter.keywords,
-              $options: "i",
+            accessFilter = {
+              ...accessFilter,
+              $or: [
+                { regions: { $in: customerData.tenders_filter.regions } },
+                { country: { $in: customerData.tenders_filter.regions } },
+              ],
             };
           }
-        }
-
-        if (
-          customerData.tenders_filter.keywords &&
-          customerData.tenders_filter.keywords !== ""
-        )
-          accessFilter = {
-            ...accessFilter,
-            $or: [
-              {
-                description: search_type_filter
-                  ? search_type_filter
-                  : {
-                    $regex: customerData.tenders_filter.keywords,
-                    $options: "i",
-                  },
-              },
-            ],
-          };
-        if (
-          customerData.tenders_filter.sectors &&
-          customerData.tenders_filter.sectors.length > 0
-        )
-          accessFilter.sectors = { $in: customerData.tenders_filter.sectors };
-        if (
-          customerData.tenders_filter.funding_agency &&
-          customerData.tenders_filter.funding_agency.length > 0
-        )
-          accessFilter.funding_agency = {
-            $in: customerData.tenders_filter.funding_agency,
-          };
-        if (
-          customerData.tenders_filter.cpv_codes &&
-          customerData.tenders_filter.cpv_codes.length > 0
-        )
-          accessFilter.cpv_codes = {
-            $in: customerData.tenders_filter.cpv_codes,
-          };
-        if (
-          customerData.tenders_filter.regions &&
-          customerData.tenders_filter.regions.length > 0
-        ) {
-          accessFilter = {
-            ...accessFilter,
-            $or: [
-              { regions: { $in: customerData.tenders_filter.regions } },
-              { country: { $in: customerData.tenders_filter.regions } },
-            ],
-          };
         }
         const tendersExists = await readTenders(accessFilter, { _id: 1 });
         if (tendersExists) {
@@ -564,7 +568,7 @@ export const tendersAdd = async (req, res, next) => {
       }
 
       // Assign big_ref_no to the new tender
-      tender.big_ref_no = "T-" + (baseRefNo +1 );
+      tender.big_ref_no = "T-" + (baseRefNo + 1);
 
       // Step 3: Insert the new tender
       let result = await insertTenders(req.body);
@@ -638,7 +642,7 @@ export const tendersAddMultiple = async (req, res, next) => {
           tender.createdAt = new Date(Date.now() + index);
         })
       );
-      
+
       // Step 4: Insert new tenders
       const result = await tendersModel.insertMany(filteredTenders);
       console.log("Inserted tenders:", result);

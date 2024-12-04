@@ -88,6 +88,8 @@ export const regionsAddVal = Joi.object({
     name: Joi.string().required(),
     title: Joi.string().allow(""),
     description: Joi.string().allow(""),
+    project_title: Joi.string().allow(""),
+    project_description: Joi.string().allow(""),
     code: Joi.string().required(),
     is_active: Joi.boolean().allow(""),
 });
@@ -97,6 +99,8 @@ export const regionsUpdateVal = Joi.object({
     name: Joi.string().allow(""),
     title: Joi.string().allow(""),
     description: Joi.string().allow(""),
+    project_title: Joi.string().allow(""),
+    project_description: Joi.string().allow(""),
     code: Joi.string().allow(""),
     is_active: Joi.boolean().allow("")
 });
@@ -123,8 +127,10 @@ export const sectorsGetVal = Joi.object({
 export const sectorsAddVal = Joi.object({
     name: Joi.string().required(),
     title: Joi.string().allow(""),
-    code: Joi.string().required(),
     description: Joi.string().allow(""),
+    project_title: Joi.string().allow(""),
+    project_description: Joi.string().allow(""),
+    code: Joi.string().required(),
     is_active: Joi.boolean().allow(""),
 });
 
@@ -133,6 +139,8 @@ export const sectorsUpdateVal = Joi.object({
     name: Joi.string().allow(""),
     title: Joi.string().allow(""),
     description: Joi.string().allow(""),
+    project_title: Joi.string().allow(""),
+    project_description: Joi.string().allow(""),
     code: Joi.string().allow(""),
     is_active: Joi.boolean().allow("")
 });

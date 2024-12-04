@@ -20,7 +20,14 @@ export const readAllGrants = async (
             { $match: filter },
             { $count: "count" }
         ])
-        return { result, count: count[0]?.count || 0 };
+        const query = [
+            { $match: filter },
+            { $project: select },
+            { $sort: sort },
+            { $skip: skip },
+            { $limit: limit },
+        ]
+        return { result, count: count[0]?.count || 0 ,query};
     } catch (error) {
         throw new Error(error);
     }

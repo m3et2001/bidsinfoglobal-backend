@@ -98,7 +98,25 @@ const customersSchema = new mongoose.Schema(
         },
         tenders_id: {
             type: Object
-        }
+        },
+        grants_filter: {
+            type: Object
+        },
+        grants_id: {
+            type: Object
+        },
+        projects_filter: {
+            type: Object
+        },
+        projects_id: {
+            type: Object
+        },
+        contract_awards_filter: {
+            type: Object
+        },
+        contract_awards_id: {
+            type: Object
+        },
     },
     {
         timestamps: true

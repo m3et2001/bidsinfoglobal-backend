@@ -11,6 +11,12 @@ const regionsSchema = new mongoose.Schema(
         description: {
             type: String
         },
+        project_title: {
+            type: String
+        },
+        project_description: {
+            type: String
+        },
         code: {
             type: String
         },

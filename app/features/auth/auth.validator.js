@@ -85,6 +85,9 @@ export const updateCustomerStatus = Joi.object({
     customer_id: Joi.string().required(""),
     status: Joi.string().required(""),
 });
+export const customerId = Joi.object({
+    customer_id: Joi.string().required(""),
+});
 
 export const businessProfileV = Joi.object({
     customer_id: Joi.string().allow(""),
@@ -107,6 +110,6 @@ export const businessProfileV = Joi.object({
 
 export const assignTendersV = Joi.object({
     customer_id: Joi.string().required(),
-    tenders_id: Joi.array().required(),
+    data_id: Joi.array().required(),
     filter: Joi.object().required(),
 });

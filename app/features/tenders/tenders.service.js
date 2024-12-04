@@ -80,8 +80,9 @@ export const readAllTenders = async (
     ];
     const countResult = await tendersModel.aggregate(countPipeline, { allowDiskUse: true })
     const count = countResult[0]?.count || 0;
+    const query = pipeline
 
-    return { result, count };
+    return { result, count,query };
   } catch (error) {
     console.error("Error in readAllTenders:", error);
     throw new Error(error);

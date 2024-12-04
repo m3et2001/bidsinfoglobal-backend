@@ -39,6 +39,16 @@ const select_all = {
     last_logged_in: 1,
     plans: 1
 }
+const activation_panel_filed ={
+    tenders_filter: 1,
+    tenders_id: 1,
+    grants_filter: 1,
+    grants_id: 1,
+    projects_filter:1,
+    projects_id: 1,
+    contract_awards_filter: 1,
+    contract_awards_id: 1
+}
 
 export const getLoggedInCustomer = async (req, res, next) => {
     try {
@@ -48,6 +58,19 @@ export const getLoggedInCustomer = async (req, res, next) => {
         if (!customerCheck) throw new Error("Customer not found");
 
         responseSend(res, 201, "Customer fetched successfully", customerCheck);
+
+    } catch (error) {
+        next(error);
+    }
+};
+export const getCustomerById= async (req, res, next) => {
+    try {
+        const { customer_id } = req.query;
+
+        const customerCheck = await readCustomers({ customer_id }, activation_panel_filed);
+        if (!customerCheck) throw new Error("Customer not found");
+
+        responseSend(res, 200, "Customer fetched successfully", customerCheck);
 
     } catch (error) {
         next(error);
@@ -463,14 +486,44 @@ export const sendDataMail = async (tendersData = [], customer_id, full_name, ema
 
 export const assignTendersToCustomer = async (req, res, next) => {
     try {
-        const { filter, customer_id, tenders_id } = req.body;
+        const { filter, customer_id, data_id } = req.body;
+        if (filter.data_type === "tender") {
+            delete filter.data_type
+            let customerData = await readCustomers({ customer_id }, { tenders_filter: 1, tenders_id: 1 });
 
-        let customerData = await readCustomers({ customer_id }, { tenders_filter: 1, tenders_id: 1 });
+            customerData.tenders_filter = filter;
+            customerData.tenders_id = data_id;
 
-        customerData.tenders_filter = filter;
-        customerData.tenders_id = tenders_id;
+            await updateCustomer({ customer_id }, customerData);
+        }
+        else if (filter.data_type === "contract_awards") {
+            let customerData = await readCustomers({ customer_id }, { contract_awards_filter: 1, contract_awards_id: 1 });
+            delete filter.data_type
 
-        await updateCustomer({ customer_id }, customerData);
+            customerData.contract_awards_filter = filter;
+            customerData.contract_awards_id = data_id;
+
+            await updateCustomer({ customer_id }, customerData);
+        }
+        else if (filter.data_type === "projects") {
+            let customerData = await readCustomers({ customer_id }, { projects_filter: 1, projects_id: 1 });
+            delete filter.data_type
+
+            customerData.projects_filter = filter;
+            customerData.projects_id = data_id;
+
+            await updateCustomer({ customer_id }, customerData);
+        }
+        else if (filter.data_type === "grants") {
+            let customerData = await readCustomers({ customer_id }, { grants_filter: 1, grants_id: 1 });
+            delete filter.data_type
+
+            customerData.grants_filter = filter;
+            customerData.grants_id = data_id;
+
+            await updateCustomer({ customer_id }, customerData);
+        }
+
 
         responseSend(res, 201, "Tenders filter activated successfully", null);
     } catch (error) {

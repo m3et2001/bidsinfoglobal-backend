@@ -15,6 +15,10 @@ export const projectsAllListVal = Joi.object({
     location: Joi.string().allow(""),
     notice_type: Joi.string().allow(""),
     funding_agency: Joi.string().allow(""),
+    search_type: Joi.string().allow(""),
+    from_date: Joi.string().allow(""),
+    to_date: Joi.string().allow(""),
+
 });
 
 export const projectsGetVal = Joi.object({

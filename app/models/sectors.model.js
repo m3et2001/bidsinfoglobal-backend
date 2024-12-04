@@ -14,6 +14,12 @@ const sectorsSchema = new mongoose.Schema(
         description: {
             type: String
         },
+        project_title: {
+            type: String
+        },
+        project_description: {
+            type: String
+        },
         icon: {
             type: String
         },

@@ -2,8 +2,8 @@
 import express from "express";
 import reqValidator from "../../middlewares/req.validator.js";
 
-import { customerLogin, userLogin, customerRegister, customerForgotPassword, customersList, customerProfileUpdate, customersStatusUpdate, getLoggedInCustomer, assignTendersToCustomer, getLoggedInBusinessProfile, businessProfileUpdate, updateCustomerPassword, usersList, usersAdd, resetCustomerPassword } from "./auth.controller.js";
-import { authLoginV, authCustomerRegisterV, forgotPasswordV, profileUpdateV, authCustLoginV, getCustomersList, updateCustomerStatus, businessProfileV, authPasswordV, assignTendersV, getUserList, addUserVal, resetPasswordV } from "./auth.validator.js";
+import { customerLogin, userLogin, customerRegister, customerForgotPassword, customersList, customerProfileUpdate, customersStatusUpdate, getLoggedInCustomer, assignTendersToCustomer, getLoggedInBusinessProfile, businessProfileUpdate, updateCustomerPassword, usersList, usersAdd, resetCustomerPassword, getCustomerById } from "./auth.controller.js";
+import { authLoginV, authCustomerRegisterV, forgotPasswordV, profileUpdateV, authCustLoginV, getCustomersList, updateCustomerStatus, businessProfileV, authPasswordV, assignTendersV, getUserList, addUserVal, resetPasswordV, customerId } from "./auth.validator.js";
 import { authenticateUser } from "../../middlewares/authentication.js";
 
 const router = express.Router();
@@ -26,6 +26,12 @@ router.get(
     authenticateUser,
     reqValidator(getCustomersList),
     customersList
+);
+router.get(
+    "/customers-by-id",
+    authenticateUser,
+    reqValidator(customerId),
+    getCustomerById
 );
 
 router.put(
@@ -105,7 +111,7 @@ router.post(
 );
 
 router.post(
-    "/assign-tenders",
+    "/assign-data",
     authenticateUser,
     reqValidator(assignTendersV),
     assignTendersToCustomer

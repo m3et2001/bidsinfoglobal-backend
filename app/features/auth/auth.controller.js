@@ -483,6 +483,49 @@ export const sendDataMail = async (tendersData = [], customer_id, full_name, ema
         throw new Error(error);
     }
 };
+export const sendCaDataMail = async (CaData = [], customer_id, full_name, email, regionsDataArray, pendingDays) => {
+    try {
+        handlebars.registerHelper("inc", function (value, options) {
+            return parseInt(value) + 1;
+        });
+
+        let date = new Date();
+        date.setDate(date.getDate() - 1);
+        const formattedDatee = format(date, "EEEE, LLLL dd, yyyy");
+        const filePath = path.join(__dirname, '/template/tenderMailFormat.hbs');
+        const source = fs.readFileSync(filePath, 'utf-8').toString();
+        const template = handlebars.compile(source);
+
+        const htmlToSend = template({
+            rows: CaData,
+            regions: regionsDataArray,
+            pendingDays,
+            formattedDatee
+        });
+
+        const mailTo = [];
+
+        mailTo.push({
+            email_address: {
+                address: email,
+                name: full_name,
+            }
+        })
+
+        let mailRes = await sendEMAIL(
+            mailTo,
+            mailSubject.tendersToCustomer + "for " + formattedDatee,
+            "",
+            htmlToSend
+        )
+
+        console.log(mailRes, "mailRes");
+
+    } catch (error) {
+        console.log(error, "error");
+        throw new Error(error);
+    }
+};
 
 export const assignTendersToCustomer = async (req, res, next) => {
     try {

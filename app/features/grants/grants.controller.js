@@ -13,7 +13,7 @@ import { readCustomers } from "../auth/auth.service.js";
 function convertToQueryObject(queryString) {
     // List of MongoDB comparison operators for dates
     const dateOperators = ['$gte', '$lte', '$gt', '$lt', '$eq', '$ne'];
-  
+
     return JSON.parse(queryString, (key, value) => {
         // Handle regex patterns
         if (typeof value === 'string') {
@@ -22,7 +22,7 @@ function convertToQueryObject(queryString) {
                 // Convert string that looks like a regex to RegExp object
                 return new RegExp(regexMatch[1], regexMatch[2]);
             }
-  
+
             // Check if the current context should trigger date conversion
             if (dateOperators.includes(key) && value.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/)) {
                 // Convert ISO 8601 date strings to JavaScript Date objects
@@ -31,86 +31,226 @@ function convertToQueryObject(queryString) {
         }
         return value;
     });
-  }
+}
 const grants_list_field = { location: 1, big_ref_no: 1, title: 1, sectors: 1, regions: 1, cpv_codes: 1, funding_agency: 1, funding_agency: 1, deadline: 1, post_date: 1, createAt: 1 };
 const grants_all_field = { grants_id: 1, donor: 1, contact_information: 1, location: 1, big_ref_no: 1, title: 1, type: 1, status: 1, value: 1, type_of_services: 1, sectors: 1, regions: 1, cpv_codes: 1, funding_agency: 1, funding_agency: 1, deadline: 1, duration: 1, attachment: 1, post_date: 1, createAt: 1 };
 const grants_limit_field = { grants_id: 1, title: 1, location: 1, big_ref_no: 1, sectors: 1, regions: 1, cpv_codes: 1, funding_agency: 1, funding_agency: 1, deadline: 1, post_date: 1, createAt: 1 };
 
 export const grantsAllList = async (req, res, next) => {
-    try {
-        const { keywords, pageNo, limit, sortBy, sortField, cpv_codes, sectors, regions, location, country, funding_agency, extraFilter = null, search_type_filter = null, raw_query,
-            query_type } = req.query;
-        let filter = { is_active: true, is_deleted: false };
-        let select = grants_list_field;
+    // try {
+        var { keywords, pageNo, limit, sortBy, sortField, cpv_codes, sectors, regions, location, country, funding_agency, extraFilter = null, search_type_filter = null, raw_query,
+            query_type, search_type, exclude_words = null, } = req.query;
+
         if (query_type === "raw_query") {
             const pipeline = convertToQueryObject(raw_query)
             const result = await grantsModel.aggregate(pipeline, { allowDiskUse: true })
             // Counting total results
             let sliceCount = 1
-      
+
             const countPipeline = [
-              ...pipeline.slice(0, sliceCount),
-              { $count: "count" }
+                ...pipeline.slice(0, sliceCount),
+                { $count: "count" }
             ];
             const countResult = await grantsModel.aggregate(countPipeline, { allowDiskUse: true })
             const count = countResult[0]?.count || 0;
             const query = pipeline
-      
+
             const re = { result, count, query }
             responseSend(res, 201, "Grants records", { ...re, ...req.query });
-      
-          }
-          else {
 
-        if (extraFilter)
-            filter = { ...filter, ...extraFilter }
-
-        if (keywords && keywords !== "")
-            filter = {
-                ...filter,
-                $or: [
-                    { title: search_type_filter ? search_type_filter : { $regex: keywords, $options: 'i' } },
-                ]
-            };
-
-        if (cpv_codes && cpv_codes !== "")
-            filter.cpv_codes = { $in: cpv_codes.split(",") }
-        if (sectors && sectors !== "")
-            filter.sectors = { $in: sectors.split(",") };
-        if (regions && regions !== "") {
-            // filter.regions = { $in: regions.split(",") };
-            filter = {
-                ...filter,
-                $or: [
-                    { "regions": { $in: regions.split(",") } },
-                    { "location": { $in: regions.split(",") } }
-                ]
-            };
         }
-        if (funding_agency && funding_agency !== "")
-            filter.funding_agency = { $in: funding_agency.split(",") };
-        if (location && location !== "")
-            filter.location = { $regex: location, $options: 'i' }
-        if (country && country !== "")
-            filter.location = { $regex: country, $options: 'i' }
+        else {
+            let filter = { is_active: true, is_deleted: false };
+            let select = grants_list_field;
+            let orAdvCon = []
+            let orCon = []
+            let keywordsList = keywords ? keywords.split(',').map(kw => kw.trim()) : [];
+      
+            let condition = 0;
+            if (keywords && exclude_words) {
+              condition = 1; // Both keywords and exclude_words exist
+            } else if (keywords) {
+              condition = 2; // Only keywords exist
+            } else if (exclude_words) {
+              condition = 3; // Only exclude_words exist
+            }
+            
+            if (search_type === searchType.EXACT) {
+      
+              switch (condition) {
+                case 1:
+                  // Both keywords and exclude_words exist
+                  orAdvCon.push({
+                    $and: [
+                      {
+                        $or: [
+                          { "title": { $regex: new RegExp(keywords.trim()), $options: "m" } }
+                        ]
+                      },
+                      {
+                        $and: [
+                          { "title": { $not: { $regex: new RegExp(exclude_words.trim()), $options: "m" } } }
+                        ]
+                      }
+                    ]
+                  });
+                  break;
+      
+                case 2:
+                  // Only keywords exist
+                  orAdvCon.push({
+                    $and: [
+                      {
+                        $or: [
+                          { "title": { $regex: new RegExp(keywords.trim()), $options: "m" } }
+                        ]
+                      }
+                    ]
+                  });
+                  console.log(JSON.stringify(orAdvCon), "Keywords case");
+                  break;
+      
+                case 3:
+                  // Only exclude_words exist
+                  orAdvCon.push({
+                    $and: [
+                      {
+                        $and: [
+                          { "title": { $not: { $regex: new RegExp(exclude_words.trim()), $options: "m" } } }
+                        ]
+                      }
+                    ]
+                  });
+                  console.log(JSON.stringify(orAdvCon), "Exclude words case");
+                  break;
+      
+                default:
+                  console.log("No keywords or exclude_words provided.");
+              }
+      
+            } else if (search_type === searchType.RELEVENT) {
+              let excludeWordsList = exclude_words ? exclude_words.split(',').map(ew => ew.trim()) : [];
+              switch (condition) {
+                case 1:
+                  // Both keywords and exclude_words exist
+                  let keywordConditions = [];
+                  for (let ele of keywordsList) {
+                    keywordConditions.push({ "title": { $regex: new RegExp(ele), $options: "m" } });
+                  }
+      
+                  let excludeConditions = [];
+                  for (let ele of excludeWordsList) {
+                    excludeConditions.push({ "title": { $not: { $regex: new RegExp(ele), $options: "m" } } });
+                  }
+      
+                  orAdvCon.push({
+                    $and: [
+                      { $or: keywordConditions },
+                      { $and: excludeConditions }
+                    ]
+                  });
+                  break;
+      
+                case 2:
+                  // Only keywords exist
+                  let keywordOnlyConditions = [];
+                  for (let ele of keywordsList) {
+                    keywordOnlyConditions.push({ "title": { $regex: new RegExp(ele), $options: "m" } });
+                  }
+      
+                  orAdvCon.push({
+                    $and: [
+                      { $or: keywordOnlyConditions }
+                    ]
+                  });
+                  console.log(JSON.stringify(orAdvCon), "Keywords case");
+                  break;
+      
+                case 3:
+                  // Only exclude_words exist
+                  let excludeOnlyConditions = [];
+                  for (let ele of excludeWordsList) {
+                    excludeOnlyConditions.push({ "title": { $not: { $regex: new RegExp(ele), $options: "m" } } });
+                  }
+      
+                  orAdvCon.push({
+                    $and: [
+                      { $and: excludeOnlyConditions }
+                    ]
+                  });
+                  console.log(JSON.stringify(orAdvCon), "Exclude words case");
+                  break;
+      
+                default:
+                  console.log("No keywords or exclude_words provided.");
+              }
+      
+            } else if (search_type === searchType.ANY) {
+              keywords = keywords.replace(/\s+/g, ",").split(",").join("|");
+              search_type_filter = { $regex: new RegExp(keywords), $options: "i" };
+            }
+      
+      
+            for (let ele of keywordsList) {
+              orCon.push({ "title": { $regex: new RegExp(ele.trim()), $options: "m" } })
+            }
+
+            if (extraFilter)
+                filter = { ...filter, ...extraFilter }
+
+            // if (keywords && keywords !== "")
+            //     filter = {
+            //         ...filter,
+            //         $or: [
+            //             { title: search_type_filter ? search_type_filter : { $regex: keywords, $options: 'i' } },
+            //         ]
+            //     };
+            if ((keywords && keywords !== "") || (exclude_words && exclude_words !== ""))
+                filter = {
+                  ...filter,
+                  $or: orAdvCon.length > 0 ? orAdvCon :
+                    orCon
+                  ,
+                };
+
+            if (cpv_codes && cpv_codes !== "")
+                filter.cpv_codes = { $in: cpv_codes.split(",") }
+            if (sectors && sectors !== "")
+                filter.sectors = { $in: sectors.split(",") };
+            if (regions && regions !== "") {
+                // filter.regions = { $in: regions.split(",") };
+                filter = {
+                    ...filter,
+                    $or: [
+                        { "regions": { $in: regions.split(",") } },
+                        { "location": { $in: regions.split(",") } }
+                    ]
+                };
+            }
+            if (funding_agency && funding_agency !== "")
+                filter.funding_agency = { $in: funding_agency.split(",") };
+            if (location && location !== "")
+                filter.location = { $regex: location, $options: 'i' }
+            if (country && country !== "")
+                filter.location = { $regex: country, $options: 'i' }
 
 
-        if (req.session && isSuperAdmin(req.session))
-            select = grants_all_field;
+            if (req.session && isSuperAdmin(req.session))
+                select = grants_all_field;
 
-        let result = await readAllGrants(
-            filter,
-            select,
-            { [sortField]: parseInt(sortBy) },
-            parseInt(pageNo) * parseInt(limit),
-            parseInt(limit),
-        )
+            let result = await readAllGrants(
+                filter,
+                select,
+                { [sortField]: parseInt(sortBy) },
+                parseInt(pageNo) * parseInt(limit),
+                parseInt(limit),
+            )
 
-        responseSend(res, 201, "Grants records", { ...result, ...req.query });
-    }
-    } catch (error) {
-        next(error);
-    }
+            responseSend(res, 201, "Grants records", { ...result, ...req.query });
+        }
+    // } catch (error) {
+    //     next(error);
+    // }
 };
 
 export const grantsGet = async (req, res, next) => {

@@ -153,7 +153,7 @@ export const tendersAllList = async (req, res, next) => {
       } else if (exclude_words) {
         condition = 3; // Only exclude_words exist
       }
-
+      
       if (search_type === searchType.EXACT) {
 
         switch (condition) {

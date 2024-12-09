@@ -38,10 +38,9 @@ const project_limit_field = { title: 1, big_ref_no: 1, project_id: 1, project_na
 
 export const projectsAllList = async (req, res, next) => {
     try {
-        const { keywords, pageNo, limit, sortBy, sortField, cpv_codes, sectors, regions, location, funding_agency, extraFilter = null, search_type_filter = null, country = null, raw_query,
-            query_type } = req.query;
-        let filter = { is_active: true, is_deleted: false };
-        let select = project_list_field;
+        const { keywords,search_type, pageNo, limit, sortBy, sortField, cpv_codes, sectors, regions, location, funding_agency, extraFilter = null, search_type_filter = null, country = null, raw_query,
+            query_type, exclude_words = null } = req.query;
+       
         if (query_type === "raw_query") {
             const pipeline = convertToQueryObject(raw_query)
             const result = await projectsModel.aggregate(pipeline, { allowDiskUse: true })
@@ -60,16 +59,166 @@ export const projectsAllList = async (req, res, next) => {
             responseSend(res, 201, "Projects records", { ...re, ...req.query });
         }
         else {
-
+            let filter = { is_active: true, is_deleted: false };
+            let select = project_list_field;
+            let orAdvCon = []
+            let orCon = []
+            let keywordsList = keywords ? keywords.split(',').map(kw => kw.trim()) : [];
+      
+            let condition = 0;
+            if (keywords && exclude_words) {
+              condition = 1; // Both keywords and exclude_words exist
+            } else if (keywords) {
+              condition = 2; // Only keywords exist
+            } else if (exclude_words) {
+              condition = 3; // Only exclude_words exist
+            }
+            
+            if (search_type === searchType.EXACT) {
+              console.log(condition,"conditionconditioncondition")
+      
+              switch (condition) {
+                case 1:
+                  // Both keywords and exclude_words exist
+                  orAdvCon.push({
+                    $and: [
+                      {
+                        $or: [
+                          { "project_background": { $regex: new RegExp(keywords.trim()), $options: "m" } },
+                          { "title": { $regex: new RegExp(keywords.trim()), $options: "m" } }
+                        ]
+                      },
+                      {
+                        $and: [
+                          { "project_background": { $not: { $regex: new RegExp(exclude_words.trim()), $options: "m" } } },
+                          { "title": { $not: { $regex: new RegExp(exclude_words.trim()), $options: "m" } } }
+                        ]
+                      }
+                    ]
+                  });
+                  break;
+      
+                case 2:
+                  // Only keywords exist
+                  orAdvCon.push({
+                    $and: [
+                      {
+                        $or: [
+                          { "project_background": { $regex: new RegExp(keywords.trim()), $options: "m" } },
+                          { "title": { $regex: new RegExp(keywords.trim()), $options: "m" } }
+                        ]
+                      }
+                    ]
+                  });
+                  console.log(JSON.stringify(orAdvCon), "Keywords case");
+                  break;
+      
+                case 3:
+                  // Only exclude_words exist
+                  orAdvCon.push({
+                    $and: [
+                      {
+                        $and: [
+                          { "project_background": { $not: { $regex: new RegExp(exclude_words.trim()), $options: "m" } } },
+                          { "title": { $not: { $regex: new RegExp(exclude_words.trim()), $options: "m" } } }
+                        ]
+                      }
+                    ]
+                  });
+                  console.log(JSON.stringify(orAdvCon), "Exclude words case");
+                  break;
+      
+                default:
+                  console.log("No keywords or exclude_words provided.");
+              }
+      
+            } else if (search_type === searchType.RELEVENT) {
+              let excludeWordsList = exclude_words ? exclude_words.split(',').map(ew => ew.trim()) : [];
+              switch (condition) {
+                case 1:
+                  // Both keywords and exclude_words exist
+                  let keywordConditions = [];
+                  for (let ele of keywordsList) {
+                    keywordConditions.push({ "project_background": { $regex: new RegExp(ele), $options: "m" } });
+                    keywordConditions.push({ "title": { $regex: new RegExp(ele), $options: "m" } });
+                  }
+      
+                  let excludeConditions = [];
+                  for (let ele of excludeWordsList) {
+                    excludeConditions.push({ "project_background": { $not: { $regex: new RegExp(ele), $options: "m" } } });
+                    excludeConditions.push({ "title": { $not: { $regex: new RegExp(ele), $options: "m" } } });
+                  }
+      
+                  orAdvCon.push({
+                    $and: [
+                      { $or: keywordConditions },
+                      { $and: excludeConditions }
+                    ]
+                  });
+                  break;
+      
+                case 2:
+                  // Only keywords exist
+                  let keywordOnlyConditions = [];
+                  for (let ele of keywordsList) {
+                    keywordOnlyConditions.push({ "project_background": { $regex: new RegExp(ele), $options: "m" } });
+                    keywordOnlyConditions.push({ "title": { $regex: new RegExp(ele), $options: "m" } });
+                  }
+      
+                  orAdvCon.push({
+                    $and: [
+                      { $or: keywordOnlyConditions }
+                    ]
+                  });
+                  console.log(JSON.stringify(orAdvCon), "Keywords case");
+                  break;
+      
+                case 3:
+                  // Only exclude_words exist
+                  let excludeOnlyConditions = [];
+                  for (let ele of excludeWordsList) {
+                    excludeOnlyConditions.push({ "project_background": { $not: { $regex: new RegExp(ele), $options: "m" } } });
+                    excludeOnlyConditions.push({ "title": { $not: { $regex: new RegExp(ele), $options: "m" } } });
+                  }
+      
+                  orAdvCon.push({
+                    $and: [
+                      { $and: excludeOnlyConditions }
+                    ]
+                  });
+                  console.log(JSON.stringify(orAdvCon), "Exclude words case");
+                  break;
+      
+                default:
+                  console.log("No keywords or exclude_words provided.");
+              }
+      
+            } else if (search_type === searchType.ANY) {
+              keywords = keywords.replace(/\s+/g, ",").split(",").join("|");
+              search_type_filter = { $regex: new RegExp(keywords), $options: "i" };
+            }
+      
+      
+            for (let ele of keywordsList) {
+              orCon.push({ "description": { $regex: new RegExp(ele.trim()), $options: "m" } })
+              orCon.push({ "title": { $regex: new RegExp(ele.trim()), $options: "m" } })
+            }
             if (extraFilter)
                 filter = { ...filter, ...extraFilter }
 
-            if (keywords && keywords !== "")
+            // if (keywords && keywords !== "")
+            //     filter = {
+            //         ...filter,
+            //         $or: [
+            //             { project_background: search_type_filter ? search_type_filter : { $regex: keywords, $options: 'i' } },
+            //         ]
+            //     };
+            if ((keywords && keywords !== "") || (exclude_words && exclude_words !== ""))
                 filter = {
                     ...filter,
-                    $or: [
-                        { project_background: search_type_filter ? search_type_filter : { $regex: keywords, $options: 'i' } },
-                    ]
+                    $or: orAdvCon.length > 0 ? orAdvCon :
+                        orCon
+                    ,
                 };
 
             if (cpv_codes && cpv_codes !== "")

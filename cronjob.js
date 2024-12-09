@@ -29,7 +29,7 @@ cron.schedule('*/1000 * * * * *', async function () { // testing
                 status: "active",
                 tenders_filter: { $exists: true, $not: { $size: 0 } }
             },
-            { _id: 1, tenders_filter: 1, email: 1, full_name: 1, plans: 1 },
+            { _id: 1, tenders_filter: 1,contract_awards_filter:1, email: 1, full_name: 1, plans: 1 },
             { ["createdAt"]: -1 },
             0,
             1000000
@@ -81,35 +81,40 @@ cron.schedule('*/1000 * * * * *', async function () { // testing
                     console.log(`Sending tenders data email to ${element.email}...`);
                     sendDataMail(tendersData?.result || [], element._id, element.full_name, element.email, regionsDataArray, pendingDays);
                     console.log(`Email sent for tenders data to ${element.email}.`);
+                    console.log(element)
 
-                    // Fetching contract awards data
-                    console.log(`Fetching contract awards data for customer ${element._id}...`);
-                    const CaData = await contractAwardAllListForCron(element?.tenders_filter);
-                    console.log(`Fetched ${CaData.result.length} contract awards for customer ${element._id}.`);
+                    if (element?.contract_awards_filter) {
 
-                    const regionsCaDataArray = [];
-                    CaData.result.map(function (obj) {
-                        let index = regionsCaDataArray.findIndex(a => a.regions === obj.regions);
 
-                        if (index >= 0) {
-                            regionsCaDataArray[index].data.push({
-                                country: obj.country,
-                                description: obj.description
-                            });
-                        } else {
-                            regionsCaDataArray.push({
-                                regions: obj.regions,
-                                data: [{
+                        // Fetching contract awards data
+                        console.log(`Fetching contract awards data for customer ${element._id}...`);
+                        const CaData = await contractAwardAllListForCron(element?.contract_awards_filter);
+                        console.log(`Fetched ${CaData.result} contract awards for customer ${element._id}.`);
+
+                        const regionsCaDataArray = [];
+                        CaData.result.map(function (obj) {
+                            let index = regionsCaDataArray.findIndex(a => a.regions === obj.regions);
+
+                            if (index >= 0) {
+                                regionsCaDataArray[index].data.push({
                                     country: obj.country,
                                     description: obj.description
-                                }]
-                            });
-                        }
-                    });
+                                });
+                            } else {
+                                regionsCaDataArray.push({
+                                    regions: obj.regions,
+                                    data: [{
+                                        country: obj.country,
+                                        description: obj.description
+                                    }]
+                                });
+                            }
+                        });
 
-                    console.log(`Sending contract awards data email to ${element.email}...`);
-                    sendCaDataMail(CaData?.result || [], element._id, element.full_name, element.email, regionsCaDataArray, pendingDays);
-                    console.log(`Email sent for contract awards data to ${element.email}.`);
+                        console.log(`Sending contract awards data email to ${element.email}...`);
+                        sendCaDataMail(CaData?.result || [], element._id, element.full_name, element.email, regionsCaDataArray, pendingDays);
+                        console.log(`Email sent for contract awards data to ${element.email}.`);
+                    }
                 } else {
                     console.log(`Plan expired for customer ${element.full_name} (ID: ${element._id}). Skipping.`);
                 }

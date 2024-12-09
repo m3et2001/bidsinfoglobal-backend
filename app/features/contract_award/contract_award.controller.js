@@ -441,9 +441,9 @@ export const contractAwardAllListForCron = async (query) => {
             if (funding_agency && funding_agency !== "")
                 filter.funding_agency = { $in: funding_agency };
             if (country && country !== "")
-                filter.project_location = { $regex: country, $options: 'i' }
+                filter.project_location = { $in: country.map(c => new RegExp(`^${c.trim()}$`, "i")) };
             if (location && location !== "")
-                filter.project_location = { $regex: location, $options: 'i' }
+                filter.project_location = { $in: location.map(c => new RegExp(`^${c.trim()}$`, "i")) };
 
            
 
@@ -459,7 +459,9 @@ export const contractAwardAllListForCron = async (query) => {
 
         }
     } catch (error) {
-        next(error);
+        console.log(error)
+        return []
+        // next(error);
     }
 };
 

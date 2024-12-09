@@ -14,6 +14,33 @@ import tendersModel from "../../models/tenders.model.js";
 import { searchType } from "../../helpers/constance.js";
 import { startingBigRefNo } from "../../helpers/constance.js";
 
+function convertToQueryObject(queryString) {
+  // List of MongoDB comparison operators for dates
+  const dateOperators = ['$gte', '$lte', '$gt', '$lt', '$eq', '$ne'];
+
+  return JSON.parse(queryString, (key, value) => {
+      // Handle regex patterns
+      if (typeof value === 'string') {
+          const regexMatch = value.match(/^\/(.*?)\/([gimsuy]*)$/);
+          if (regexMatch) {
+              // Convert string that looks like a regex to RegExp object
+              return new RegExp(regexMatch[1], regexMatch[2]);
+          }
+
+          // Check if the current context should trigger date conversion
+          if (dateOperators.includes(key) && value.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/)) {
+              // Convert ISO 8601 date strings to JavaScript Date objects
+              return new Date(value);
+          }
+      }
+      return value;
+  });
+}
+
+
+
+
+
 const tenders_list = {
   title: 1,
   sectors: 1,
@@ -85,220 +112,243 @@ export const tendersAllList = async (req, res, next) => {
       search_type,
       extraFilter = null,
       search_type_filter = null,
+      raw_query,
+      query_type,
       from_date = null,
       to_date = null,
       country = null,
       exclude_words = null,
     } = req.query;
+    if (query_type === "raw_query") {
+      const pipeline = convertToQueryObject(raw_query)
+      const result = await tendersModel.aggregate(pipeline, { allowDiskUse: true })
+      // Counting total results
+      let sliceCount = 1
 
-    let filter = { is_active: true, is_deleted: false };
-    let select = tenders_list;
-    let orAdvCon = []
-    let orCon = []
-    let keywordsList = keywords ? keywords.split(',').map(kw => kw.trim()) : [];
+      const countPipeline = [
+        ...pipeline.slice(0, sliceCount),
+        { $count: "count" }
+      ];
+      const countResult = await tendersModel.aggregate(countPipeline, { allowDiskUse: true })
+      const count = countResult[0]?.count || 0;
+      const query = pipeline
 
-    let condition = 0;
-    if (keywords && exclude_words) {
-      condition = 1; // Both keywords and exclude_words exist
-    } else if (keywords) {
-      condition = 2; // Only keywords exist
-    } else if (exclude_words) {
-      condition = 3; // Only exclude_words exist
+      const re = { result, count, query }
+      responseSend(res, 201, "Tenders records", { ...re, ...req.query });
+
     }
+    else {
 
-    if (search_type === searchType.EXACT) {
+      let filter = { is_active: true, is_deleted: false };
+      let select = tenders_list;
+      let orAdvCon = []
+      let orCon = []
+      let keywordsList = keywords ? keywords.split(',').map(kw => kw.trim()) : [];
 
-      switch (condition) {
-        case 1:
-          // Both keywords and exclude_words exist
-          orAdvCon.push({
-            $and: [
-              {
-                $or: [
-                  { "description": { $regex: new RegExp(keywords.trim()), $options: "m" } },
-                  { "title": { $regex: new RegExp(keywords.trim()), $options: "m" } }
-                ]
-              },
-              {
-                $and: [
-                  { "description": { $not: { $regex: new RegExp(exclude_words.trim()), $options: "m" } } },
-                  { "title": { $not: { $regex: new RegExp(exclude_words.trim()), $options: "m" } } }
-                ]
-              }
-            ]
-          });
-          break;
-
-        case 2:
-          // Only keywords exist
-          orAdvCon.push({
-            $and: [
-              {
-                $or: [
-                  { "description": { $regex: new RegExp(keywords.trim()), $options: "m" } },
-                  { "title": { $regex: new RegExp(keywords.trim()), $options: "m" } }
-                ]
-              }
-            ]
-          });
-          console.log(JSON.stringify(orAdvCon), "Keywords case");
-          break;
-
-        case 3:
-          // Only exclude_words exist
-          orAdvCon.push({
-            $and: [
-              {
-                $and: [
-                  { "description": { $not: { $regex: new RegExp(exclude_words.trim()), $options: "m" } } },
-                  { "title": { $not: { $regex: new RegExp(exclude_words.trim()), $options: "m" } } }
-                ]
-              }
-            ]
-          });
-          console.log(JSON.stringify(orAdvCon), "Exclude words case");
-          break;
-
-        default:
-          console.log("No keywords or exclude_words provided.");
+      let condition = 0;
+      if (keywords && exclude_words) {
+        condition = 1; // Both keywords and exclude_words exist
+      } else if (keywords) {
+        condition = 2; // Only keywords exist
+      } else if (exclude_words) {
+        condition = 3; // Only exclude_words exist
       }
 
-    } else if (search_type === searchType.RELEVENT) {
-      let excludeWordsList = exclude_words ? exclude_words.split(',').map(ew => ew.trim()) : [];
-      switch (condition) {
-        case 1:
-          // Both keywords and exclude_words exist
-          let keywordConditions = [];
-          for (let ele of keywordsList) {
-            keywordConditions.push({ "description": { $regex: new RegExp(ele), $options: "m" } });
-            keywordConditions.push({ "title": { $regex: new RegExp(ele), $options: "m" } });
-          }
+      if (search_type === searchType.EXACT) {
 
-          let excludeConditions = [];
-          for (let ele of excludeWordsList) {
-            excludeConditions.push({ "description": { $not: { $regex: new RegExp(ele), $options: "m" } } });
-            excludeConditions.push({ "title": { $not: { $regex: new RegExp(ele), $options: "m" } } });
-          }
+        switch (condition) {
+          case 1:
+            // Both keywords and exclude_words exist
+            orAdvCon.push({
+              $and: [
+                {
+                  $or: [
+                    { "description": { $regex: new RegExp(keywords.trim()), $options: "m" } },
+                    { "title": { $regex: new RegExp(keywords.trim()), $options: "m" } }
+                  ]
+                },
+                {
+                  $and: [
+                    { "description": { $not: { $regex: new RegExp(exclude_words.trim()), $options: "m" } } },
+                    { "title": { $not: { $regex: new RegExp(exclude_words.trim()), $options: "m" } } }
+                  ]
+                }
+              ]
+            });
+            break;
 
-          orAdvCon.push({
-            $and: [
-              { $or: keywordConditions },
-              { $and: excludeConditions }
-            ]
-          });
-          break;
+          case 2:
+            // Only keywords exist
+            orAdvCon.push({
+              $and: [
+                {
+                  $or: [
+                    { "description": { $regex: new RegExp(keywords.trim()), $options: "m" } },
+                    { "title": { $regex: new RegExp(keywords.trim()), $options: "m" } }
+                  ]
+                }
+              ]
+            });
+            console.log(JSON.stringify(orAdvCon), "Keywords case");
+            break;
 
-        case 2:
-          // Only keywords exist
-          let keywordOnlyConditions = [];
-          for (let ele of keywordsList) {
-            keywordOnlyConditions.push({ "description": { $regex: new RegExp(ele), $options: "m" } });
-            keywordOnlyConditions.push({ "title": { $regex: new RegExp(ele), $options: "m" } });
-          }
+          case 3:
+            // Only exclude_words exist
+            orAdvCon.push({
+              $and: [
+                {
+                  $and: [
+                    { "description": { $not: { $regex: new RegExp(exclude_words.trim()), $options: "m" } } },
+                    { "title": { $not: { $regex: new RegExp(exclude_words.trim()), $options: "m" } } }
+                  ]
+                }
+              ]
+            });
+            console.log(JSON.stringify(orAdvCon), "Exclude words case");
+            break;
 
-          orAdvCon.push({
-            $and: [
-              { $or: keywordOnlyConditions }
-            ]
-          });
-          console.log(JSON.stringify(orAdvCon), "Keywords case");
-          break;
+          default:
+            console.log("No keywords or exclude_words provided.");
+        }
 
-        case 3:
-          // Only exclude_words exist
-          let excludeOnlyConditions = [];
-          for (let ele of excludeWordsList) {
-            excludeOnlyConditions.push({ "description": { $not: { $regex: new RegExp(ele), $options: "m" } } });
-            excludeOnlyConditions.push({ "title": { $not: { $regex: new RegExp(ele), $options: "m" } } });
-          }
+      } else if (search_type === searchType.RELEVENT) {
+        let excludeWordsList = exclude_words ? exclude_words.split(',').map(ew => ew.trim()) : [];
+        switch (condition) {
+          case 1:
+            // Both keywords and exclude_words exist
+            let keywordConditions = [];
+            for (let ele of keywordsList) {
+              keywordConditions.push({ "description": { $regex: new RegExp(ele), $options: "m" } });
+              keywordConditions.push({ "title": { $regex: new RegExp(ele), $options: "m" } });
+            }
 
-          orAdvCon.push({
-            $and: [
-              { $and: excludeOnlyConditions }
-            ]
-          });
-          console.log(JSON.stringify(orAdvCon), "Exclude words case");
-          break;
+            let excludeConditions = [];
+            for (let ele of excludeWordsList) {
+              excludeConditions.push({ "description": { $not: { $regex: new RegExp(ele), $options: "m" } } });
+              excludeConditions.push({ "title": { $not: { $regex: new RegExp(ele), $options: "m" } } });
+            }
 
-        default:
-          console.log("No keywords or exclude_words provided.");
+            orAdvCon.push({
+              $and: [
+                { $or: keywordConditions },
+                { $and: excludeConditions }
+              ]
+            });
+            break;
+
+          case 2:
+            // Only keywords exist
+            let keywordOnlyConditions = [];
+            for (let ele of keywordsList) {
+              keywordOnlyConditions.push({ "description": { $regex: new RegExp(ele), $options: "m" } });
+              keywordOnlyConditions.push({ "title": { $regex: new RegExp(ele), $options: "m" } });
+            }
+
+            orAdvCon.push({
+              $and: [
+                { $or: keywordOnlyConditions }
+              ]
+            });
+            console.log(JSON.stringify(orAdvCon), "Keywords case");
+            break;
+
+          case 3:
+            // Only exclude_words exist
+            let excludeOnlyConditions = [];
+            for (let ele of excludeWordsList) {
+              excludeOnlyConditions.push({ "description": { $not: { $regex: new RegExp(ele), $options: "m" } } });
+              excludeOnlyConditions.push({ "title": { $not: { $regex: new RegExp(ele), $options: "m" } } });
+            }
+
+            orAdvCon.push({
+              $and: [
+                { $and: excludeOnlyConditions }
+              ]
+            });
+            console.log(JSON.stringify(orAdvCon), "Exclude words case");
+            break;
+
+          default:
+            console.log("No keywords or exclude_words provided.");
+        }
+
+      } else if (search_type === searchType.ANY) {
+        keywords = keywords.replace(/\s+/g, ",").split(",").join("|");
+        search_type_filter = { $regex: new RegExp(keywords), $options: "i" };
       }
 
-    } else if (search_type === searchType.ANY) {
-      keywords = keywords.replace(/\s+/g, ",").split(",").join("|");
-      search_type_filter = { $regex: new RegExp(keywords), $options: "i" };
-    }
 
-
-    for (let ele of keywordsList) {
-      orCon.push({ "description": { $regex: new RegExp(ele.trim()), $options: "m" } })
-      orCon.push({ "title": { $regex: new RegExp(ele.trim()), $options: "m" } })
-    }
-
-    if (extraFilter) filter = { ...filter, ...extraFilter };
-    if ((keywords && keywords !== "") || (exclude_words && exclude_words !== ""))
-      filter = {
-        ...filter,
-        $or: orAdvCon.length > 0 ? orAdvCon :
-          orCon
-        ,
-      };
-
-    if (country && country !== "") {
-
-      filter.country = { $in: country.split(',').map(c => new RegExp(`^${c.trim()}$`, "i")) };
-    }
-
-    if (cpv_codes && cpv_codes !== "") {
-      filter.cpv_codes = { $in: cpv_codes.split(",") };
-
-    }
-    if (sectors && sectors !== "") {
-
-      filter.sectors = { $in: sectors.split(",") };
-    }
-    if (regions && regions !== "") {
-      filter.regions = { $in: regions.split(",") };
-      // filter = {
-      //   ...filter,
-      //   $or: [
-      //     { regions: { $in: regions.split(",") } },
-      //     { country: { $in: regions.split(",") } },
-      //   ],
-      // };
-    }
-    if (funding_agency && funding_agency !== "")
-      filter.funding_agency = { $in: funding_agency.split(",") };
-    if (location && location !== "")
-      filter.address = { $regex: location, $options: "i" };
-    if (from_date && to_date && from_date !== "" && to_date !== "") {
-      filter.published_date = {
-        $gte: new Date(new Date(from_date).setHours(0, 0, 0)),
-      };
-      const inputEndDate = new Date(to_date);
-      function zeroPad(num) {
-        return num < 10 ? '0' + num : num; // Pad single digits with a leading zero
+      for (let ele of keywordsList) {
+        orCon.push({ "description": { $regex: new RegExp(ele.trim()), $options: "m" } })
+        orCon.push({ "title": { $regex: new RegExp(ele.trim()), $options: "m" } })
       }
-      const endDateStr = `${inputEndDate.getFullYear()}/${zeroPad(inputEndDate.getMonth() + 1)}/${zeroPad(inputEndDate.getDate())}`;
 
-      filter.closing_date = {
-        $lte: endDateStr,
-      };
+      if (extraFilter) filter = { ...filter, ...extraFilter };
+      if ((keywords && keywords !== "") || (exclude_words && exclude_words !== ""))
+        filter = {
+          ...filter,
+          $or: orAdvCon.length > 0 ? orAdvCon :
+            orCon
+          ,
+        };
+
+      if (country && country !== "") {
+
+        filter.country = { $in: country.split(',').map(c => new RegExp(`^${c.trim()}$`, "i")) };
+      }
+
+      if (cpv_codes && cpv_codes !== "") {
+        filter.cpv_codes = { $in: cpv_codes.split(",") };
+
+      }
+      if (sectors && sectors !== "") {
+
+        filter.sectors = { $in: sectors.split(",") };
+      }
+      if (regions && regions !== "") {
+        filter.regions = { $in: regions.split(",") };
+        // filter = {
+        //   ...filter,
+        //   $or: [
+        //     { regions: { $in: regions.split(",") } },
+        //     { country: { $in: regions.split(",") } },
+        //   ],
+        // };
+      }
+      if (funding_agency && funding_agency !== "")
+        filter.funding_agency = { $in: funding_agency.split(",") };
+      if (location && location !== "")
+        filter.address = { $regex: location, $options: "i" };
+      if (from_date && to_date && from_date !== "" && to_date !== "") {
+        filter.published_date = {
+          $gte: new Date(new Date(from_date).setHours(0, 0, 0)),
+        };
+        const inputEndDate = new Date(to_date);
+        function zeroPad(num) {
+          return num < 10 ? '0' + num : num; // Pad single digits with a leading zero
+        }
+        const endDateStr = `${inputEndDate.getFullYear()}/${zeroPad(inputEndDate.getMonth() + 1)}/${zeroPad(inputEndDate.getDate())}`;
+
+        filter.closing_date = {
+          $lte: endDateStr,
+        };
+      }
+
+      let superAdmin = await isSuperAdmin(req.session);
+      if (req.session && superAdmin) select = tenders_all_field;
+
+      let result = await readAllTenders(
+        filter,
+        select,
+        { [sortField]: parseInt(sortBy) },
+        parseInt(pageNo) * parseInt(limit),
+        parseInt(limit)
+      );
+
+      responseSend(res, 201, "Tenders records", { ...result, ...req.query });
     }
-
-    let superAdmin = await isSuperAdmin(req.session);
-    if (req.session && superAdmin) select = tenders_all_field;
-
-    let result = await readAllTenders(
-      filter,
-      select,
-      { [sortField]: parseInt(sortBy) },
-      parseInt(pageNo) * parseInt(limit),
-      parseInt(limit)
-    );
-
-    responseSend(res, 201, "Tenders records", { ...result, ...req.query });
   } catch (error) {
+    console.log("4444444444444444444444", error)
     next(error);
   }
 };

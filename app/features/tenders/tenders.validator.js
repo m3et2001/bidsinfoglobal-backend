@@ -19,6 +19,8 @@ export const tendersAllListVal = Joi.object({
     search_type: Joi.string().allow(""),
     country: Joi.string().allow(""),
     exclude_words: Joi.string().allow(""),
+    query_type: Joi.string().allow(""),
+    raw_query: Joi.string().allow(""),
 });
 
 export const tendersGetVal = Joi.object({

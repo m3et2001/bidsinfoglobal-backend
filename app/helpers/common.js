@@ -12,6 +12,14 @@ export const GenerateUserName = (email) => {
         throw new Error(error);
     }
 }
+export function convertRegexToString(pipeline) {
+    return JSON.parse(JSON.stringify(pipeline, (key, value) => {
+      if (value instanceof RegExp) {
+        return value.toString(); // Converts RegExp to string
+      }
+      return value;
+    }, 2));
+  }
 
 function makeid(length) {
     let result = '';

@@ -1,3 +1,4 @@
+import { convertRegexToString } from "../../helpers/common.js";
 import grantsModel from "../../models/grants.model.js";
 
 export const readAllGrants = async (
@@ -20,14 +21,14 @@ export const readAllGrants = async (
             { $match: filter },
             { $count: "count" }
         ])
-        const query = [
+        const query = convertRegexToString([
             { $match: filter },
             { $project: select },
             { $sort: sort },
             { $skip: skip },
             { $limit: limit },
-        ]
-        return { result, count: count[0]?.count || 0 ,query};
+        ])
+        return { result, count: count[0]?.count || 0, query };
     } catch (error) {
         throw new Error(error);
     }

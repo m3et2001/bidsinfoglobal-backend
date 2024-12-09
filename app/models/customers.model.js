@@ -117,6 +117,12 @@ const customersSchema = new mongoose.Schema(
         contract_awards_id: {
             type: Object
         },
+        query_type: {
+            type: String
+        },
+        raw_query: {
+            type: String
+        },
     },
     {
         timestamps: true

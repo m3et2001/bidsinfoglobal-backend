@@ -18,6 +18,9 @@ export const grantsAllListVal = Joi.object({
     search_type: Joi.string().allow(""),
     from_date: Joi.string().allow(""),
     to_date: Joi.string().allow(""),
+    exclude_words: Joi.string().allow(""),
+    query_type: Joi.string().allow(""),
+    raw_query: Joi.string().allow(""),
 });
 
 export const grantsGetVal = Joi.object({

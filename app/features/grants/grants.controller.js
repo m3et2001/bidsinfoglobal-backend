@@ -10,16 +10,57 @@ import { generateLogs } from "../common/common.controller.js";
 import grantsModel from "../../models/grants.model.js";
 import { searchType, startingBigRefNo } from "../../helpers/constance.js";
 import { readCustomers } from "../auth/auth.service.js";
-
+function convertToQueryObject(queryString) {
+    // List of MongoDB comparison operators for dates
+    const dateOperators = ['$gte', '$lte', '$gt', '$lt', '$eq', '$ne'];
+  
+    return JSON.parse(queryString, (key, value) => {
+        // Handle regex patterns
+        if (typeof value === 'string') {
+            const regexMatch = value.match(/^\/(.*?)\/([gimsuy]*)$/);
+            if (regexMatch) {
+                // Convert string that looks like a regex to RegExp object
+                return new RegExp(regexMatch[1], regexMatch[2]);
+            }
+  
+            // Check if the current context should trigger date conversion
+            if (dateOperators.includes(key) && value.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/)) {
+                // Convert ISO 8601 date strings to JavaScript Date objects
+                return new Date(value);
+            }
+        }
+        return value;
+    });
+  }
 const grants_list_field = { location: 1, big_ref_no: 1, title: 1, sectors: 1, regions: 1, cpv_codes: 1, funding_agency: 1, funding_agency: 1, deadline: 1, post_date: 1, createAt: 1 };
 const grants_all_field = { grants_id: 1, donor: 1, contact_information: 1, location: 1, big_ref_no: 1, title: 1, type: 1, status: 1, value: 1, type_of_services: 1, sectors: 1, regions: 1, cpv_codes: 1, funding_agency: 1, funding_agency: 1, deadline: 1, duration: 1, attachment: 1, post_date: 1, createAt: 1 };
 const grants_limit_field = { grants_id: 1, title: 1, location: 1, big_ref_no: 1, sectors: 1, regions: 1, cpv_codes: 1, funding_agency: 1, funding_agency: 1, deadline: 1, post_date: 1, createAt: 1 };
 
 export const grantsAllList = async (req, res, next) => {
     try {
-        const { keywords, pageNo, limit, sortBy, sortField, cpv_codes, sectors, regions, location, country, funding_agency, extraFilter = null, search_type_filter = null } = req.query;
+        const { keywords, pageNo, limit, sortBy, sortField, cpv_codes, sectors, regions, location, country, funding_agency, extraFilter = null, search_type_filter = null, raw_query,
+            query_type } = req.query;
         let filter = { is_active: true, is_deleted: false };
         let select = grants_list_field;
+        if (query_type === "raw_query") {
+            const pipeline = convertToQueryObject(raw_query)
+            const result = await grantsModel.aggregate(pipeline, { allowDiskUse: true })
+            // Counting total results
+            let sliceCount = 1
+      
+            const countPipeline = [
+              ...pipeline.slice(0, sliceCount),
+              { $count: "count" }
+            ];
+            const countResult = await grantsModel.aggregate(countPipeline, { allowDiskUse: true })
+            const count = countResult[0]?.count || 0;
+            const query = pipeline
+      
+            const re = { result, count, query }
+            responseSend(res, 201, "Grants records", { ...re, ...req.query });
+      
+          }
+          else {
 
         if (extraFilter)
             filter = { ...filter, ...extraFilter }
@@ -66,6 +107,7 @@ export const grantsAllList = async (req, res, next) => {
         )
 
         responseSend(res, 201, "Grants records", { ...result, ...req.query });
+    }
     } catch (error) {
         next(error);
     }

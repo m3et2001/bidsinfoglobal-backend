@@ -1,3 +1,4 @@
+import { convertRegexToString } from "../../helpers/common.js";
 import projectsModel from "../../models/projects.model.js";
 
 export const readAllProjects = async (
@@ -20,13 +21,13 @@ export const readAllProjects = async (
             { $match: filter },
             { $count: "count" }
         ])
-        const query = [
+        const query = convertRegexToString([
             { $match: filter },
             { $project: select },
             { $sort: sort },
             { $skip: skip },
             { $limit: limit },
-        ]
+        ])
 
         return { result, count: count[0]?.count || 0, query };
     } catch (error) {

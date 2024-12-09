@@ -1,3 +1,4 @@
+import { convertRegexToString } from "../../helpers/common.js";
 import contractAwardModel from "../../models/contract_award.model.js";
 
 export const readAllContractAward = async (
@@ -20,13 +21,13 @@ export const readAllContractAward = async (
             { $match: filter },
             { $count: "count" }
         ])
-        const query = [
+        const query = convertRegexToString([
             { $match: filter },
             { $project: select },
             { $sort: sort },
             { $skip: skip },
             { $limit: limit },
-        ]
+        ])
         return { result, count: count[0]?.count || 0, query };
     } catch (error) {
         throw new Error(error);

@@ -1,3 +1,4 @@
+import { convertRegexToString } from "../../helpers/common.js";
 import tendersModel from "../../models/tenders.model.js";
 import moment from "moment";
 
@@ -73,6 +74,7 @@ export const readAllTenders = async (
     }
     // Execute the aggregation query
     const result = await tendersModel.aggregate(pipeline, { allowDiskUse: true })
+    const query = convertRegexToString(pipeline)
     // Counting total results
     const countPipeline = [
       ...pipeline.slice(0, sliceCount),
@@ -80,9 +82,8 @@ export const readAllTenders = async (
     ];
     const countResult = await tendersModel.aggregate(countPipeline, { allowDiskUse: true })
     const count = countResult[0]?.count || 0;
-    const query = pipeline
 
-    return { result, count,query };
+    return { result, count, query };
   } catch (error) {
     console.error("Error in readAllTenders:", error);
     throw new Error(error);

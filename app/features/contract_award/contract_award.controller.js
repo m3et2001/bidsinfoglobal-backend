@@ -9,17 +9,56 @@ import {
     insertContractAward, readAllContractAward, readContractAward, updateContractAward,
 } from "./contract_award.service.js";
 import { readCustomers } from "../auth/auth.service.js";
-
+function convertToQueryObject(queryString) {
+    // List of MongoDB comparison operators for dates
+    const dateOperators = ['$gte', '$lte', '$gt', '$lt', '$eq', '$ne'];
+  
+    return JSON.parse(queryString, (key, value) => {
+        // Handle regex patterns
+        if (typeof value === 'string') {
+            const regexMatch = value.match(/^\/(.*?)\/([gimsuy]*)$/);
+            if (regexMatch) {
+                // Convert string that looks like a regex to RegExp object
+                return new RegExp(regexMatch[1], regexMatch[2]);
+            }
+  
+            // Check if the current context should trigger date conversion
+            if (dateOperators.includes(key) && value.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/)) {
+                // Convert ISO 8601 date strings to JavaScript Date objects
+                return new Date(value);
+            }
+        }
+        return value;
+    });
+  }
 const contract_award_list_field = { title:1,big_ref_no: 1, project_location: 1, contractor_details: 1, description: 1, sectors: 1, awards_publish_date: 1, sectors: 1, cpv_codes: 1, funding_agency: 1, regions: 1, };
 const contract_award_all_field = {  title:1,contract_award_id: 1, org_name: 1, org_address: 1, telephone_no: 1, fax_number: 1, email: 1, contact_person: 1, big_ref_no: 1, document_no: 1, bidding_type: 1, project_location: 1, contractor_details: 1, tender_notice_no: 1, description: 1, cpv_codes: 1, funding_agency: 1, regions: 1, sectors: 1, awards_publish_date: 1, is_active: 1, createdAt: 1 };
 const contract_award_limit_field = {  title:1,big_ref_no: 1, project_location: 1, contractor_details: 1, description: 1, sectors: 1, cpv_codes: 1, funding_agency: 1, regions: 1, awards_publish_date: 1 };
 
 export const contractAwardAllList = async (req, res, next) => {
     try {
-        const { keywords, pageNo, limit, sortBy, sortField, cpv_codes, sectors, regions, location, country, funding_agency, extraFilter = null, search_type_filter = null } = req.query;
+        const { keywords, pageNo, limit, sortBy, sortField, cpv_codes, sectors, regions, location, country, funding_agency, extraFilter = null, search_type_filter = null, query_type,raw_query} = req.query;
         let filter = { is_active: true, is_deleted: false };
         let select = contract_award_list_field;
-
+        if (query_type === "raw_query") {
+            const pipeline = convertToQueryObject(raw_query)
+            const result = await contractAwardModel.aggregate(pipeline, { allowDiskUse: true })
+            // Counting total results
+            let sliceCount = 1
+      
+            const countPipeline = [
+              ...pipeline.slice(0, sliceCount),
+              { $count: "count" }
+            ];
+            const countResult = await contractAwardModel.aggregate(countPipeline, { allowDiskUse: true })
+            const count = countResult[0]?.count || 0;
+            const query = pipeline
+      
+            const re = { result, count, query }
+            responseSend(res, 201, "Contract award records", { ...re, ...req.query });
+      
+          }
+          else {
         if (extraFilter)
             filter = { ...filter, ...extraFilter }
 
@@ -64,6 +103,7 @@ export const contractAwardAllList = async (req, res, next) => {
         )
 
         responseSend(res, 201, "Contract award records", { ...result, ...req.query });
+    }
     } catch (error) {
         next(error);
     }

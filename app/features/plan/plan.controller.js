@@ -23,7 +23,7 @@ export const getPlansList = async (req, res, next) => {
 
 export const subscribePlan = async (req, res, next) => {
     try {
-        const { plan_id, categories } = req.body;
+        const { plan_id, categories,formData} = req.body;
         const { customer_id } = req.session;
 
         const custCheck = await readCustomers({ customer_id, status: "active" }, { email: 1, full_name: 1 });
@@ -39,6 +39,7 @@ export const subscribePlan = async (req, res, next) => {
             customer_id,
             plan_id,
             categories,
+            formData,
             request_date: new Date(),
         }
         await createPlanRequest(payload);

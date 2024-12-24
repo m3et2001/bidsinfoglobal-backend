@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import { subscribePlanReq } from "../helpers/constance.js";
 
+
 const planRequestSchema = new mongoose.Schema(
     {
         customer_id: {
@@ -11,6 +12,9 @@ const planRequestSchema = new mongoose.Schema(
         },
         categories: {
             type: Array
+        },
+        formData: {
+            type: Object
         },
         request_date: {
             type: Date

@@ -78,7 +78,7 @@ cron.schedule('0 0 * * *', async function () {       // midnight
 
           // Fetching tenders data
           console.log(`Fetching tenders data for customer ${element._id}...`);
-          const tendersData = await tendersAllListForCron(element?.tenders_filter,100);
+          const tendersData = await tendersAllListForCron(element?.tenders_filter,2000);
           console.log(`Fetched ${tendersData.result.length} tenders for customer ${element._id}.`);
 
           const regionsDataArray = [];
@@ -113,7 +113,7 @@ cron.schedule('0 0 * * *', async function () {       // midnight
               `Fetching contract awards data for customer ${element._id}...`
             );
             const CaData = await contractAwardAllListForCron(
-              element?.contract_awards_filter,100
+              element?.contract_awards_filter,2000
             );
             console.log(
               `Fetched ${CaData.result} contract awards for customer ${element._id}.`

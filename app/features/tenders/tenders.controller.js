@@ -354,6 +354,11 @@ export const tendersAllListForCron = async (query) => {
       country = null,
       exclude_words = null,
     } = query;
+
+    function isNotEmpty(value) {
+      // Check for empty string and empty array
+      return value && value !== "" && !(Array.isArray(value) && value.length === 0);
+    }
     if (query_type === "raw_query") {
       const pipeline = convertToQueryObject(raw_query)
       const result = await tendersModel.aggregate(pipeline, { allowDiskUse: true })
@@ -539,21 +544,21 @@ export const tendersAllListForCron = async (query) => {
             orCon
           ,
         };
-
-      if (country && country !== "") {
+        
+        if (isNotEmpty(country)) {
 
         filter.country = { $in: country.map(c => new RegExp(`^${c.trim()}$`, "i")) };
       }
 
-      if (cpv_codes && cpv_codes !== "") {
+      if (isNotEmpty(cpv_codes)) {
         filter.cpv_codes = { $in: cpv_codes ? cpv_codes : [] };
 
       }
-      if (sectors && sectors !== "") {
+      if (isNotEmpty(sectors)) {
 
         filter.sectors = { $in: sectors };
       }
-      if (regions && regions !== "") {
+      if (isNotEmpty(regions)) {
         filter.regions = { $in: regions };
         // filter = {
         //   ...filter,
@@ -563,9 +568,9 @@ export const tendersAllListForCron = async (query) => {
         //   ],
         // };
       }
-      if (funding_agency && funding_agency !== "")
+      if (isNotEmpty(funding_agency))
         filter.funding_agency = { $in: funding_agency };
-      if (location && location !== "")
+      if (isNotEmpty(location))
         filter.address = { $regex: location, $options: "i" };
       if (from_date && to_date && from_date !== "" && to_date !== "") {
         filter.published_date = {

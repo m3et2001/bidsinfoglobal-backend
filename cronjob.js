@@ -32,7 +32,7 @@ cron.schedule('*/1000 * * * * *', async function () { // testing
             { _id: 1, tenders_filter: 1,contract_awards_filter:1, email: 1, full_name: 1, plans: 1 },
             { ["createdAt"]: -1 },
             0,
-            100
+            1000
         );
         console.log(`Fetched ${customerData.result.length} active customers.`);
 
@@ -55,7 +55,7 @@ cron.schedule('*/1000 * * * * *', async function () { // testing
 
                     // Fetching tenders data
                     console.log(`Fetching tenders data for customer ${element._id}...`);
-                    const tendersData = await tendersAllListForCron(element?.tenders_filter);
+                    const tendersData = await tendersAllListForCron(element?.tenders_filter,100);
                     console.log(`Fetched ${tendersData.result.length} tenders for customer ${element._id}.`);
 
                     const regionsDataArray = [];

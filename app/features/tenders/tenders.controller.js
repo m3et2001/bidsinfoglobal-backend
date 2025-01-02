@@ -331,7 +331,7 @@ export const tendersAllList = async (req, res, next) => {
     next(error);
   }
 };
-export const tendersAllListForCron = async (query) => {
+export const tendersAllListForCron = async (query,dataLimit) => {
   try {
     var {
       keywords,
@@ -595,7 +595,7 @@ export const tendersAllListForCron = async (query) => {
         select,
         { ["createdAt"]: 1 },
         0,
-        1000
+        dataLimit
       );
       return result
 

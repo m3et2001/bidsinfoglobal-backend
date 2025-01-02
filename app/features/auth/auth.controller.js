@@ -514,7 +514,7 @@ export const sendCaDataMail = async (CaData = [], customer_id, full_name, email,
 
         let mailRes = await sendEMAIL(
             mailTo,
-            mailSubject.tendersToCustomer + "for " + formattedDatee,
+            mailSubject.caToCustomer + "for " + formattedDatee,
             "",
             htmlToSend
         )

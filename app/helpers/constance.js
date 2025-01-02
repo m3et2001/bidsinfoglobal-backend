@@ -38,7 +38,8 @@ export const searchType = {
 }
 
 export const mailSubject = {
-    tendersToCustomer: "Bidsinfoglobal Tenders and RFPs"
+    tendersToCustomer: "Bidsinfoglobal Tenders and RFPs",
+    caToCustomer: "Bidsinfoglobal Contract Award and RFPs"
 }
 
 export const subscribePlanReq = {

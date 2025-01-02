@@ -32,7 +32,7 @@ cron.schedule('*/1000 * * * * *', async function () { // testing
             { _id: 1, tenders_filter: 1,contract_awards_filter:1, email: 1, full_name: 1, plans: 1 },
             { ["createdAt"]: -1 },
             0,
-            1000
+            100
         );
         console.log(`Fetched ${customerData.result.length} active customers.`);
 

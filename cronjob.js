@@ -19,7 +19,7 @@ import { contractAwardAllListForCron } from "./app/features/contract_award/contr
 // this cron is related to send the mail to user about the tenders
 
 // cron.schedule('0 0 * * *', async function () {       // midnight
-cron.schedule('*/1000 * * * * *', async function () { // testing
+cron.schedule('*/10 * * * * *', async function () { // testing
     try {
         console.log("Cron job started...");
         console.log("Fetching active customers with tenders_filter...");
@@ -80,7 +80,7 @@ cron.schedule('*/1000 * * * * *', async function () { // testing
 
                     console.log(`${tendersData?.result}...`);
                     console.log(`Sending tenders data email to ${element.email}...`);
-                    // sendDataMail(tendersData?.result || [], element._id, element.full_name, element.email, regionsDataArray, pendingDays);
+                    sendDataMail(tendersData?.result || [], element._id, element.full_name, element.email, regionsDataArray, pendingDays);
                     console.log(`Email sent for tenders data to ${element.email}.`);
                     console.log(element)
 

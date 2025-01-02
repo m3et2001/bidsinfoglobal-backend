@@ -492,7 +492,7 @@ export const sendCaDataMail = async (CaData = [], customer_id, full_name, email,
         let date = new Date();
         date.setDate(date.getDate() - 1);
         const formattedDatee = format(date, "EEEE, LLLL dd, yyyy");
-        const filePath = path.join(__dirname, '/template/tenderMailFormat.hbs');
+        const filePath = path.join(__dirname, '/template/caMailFormat.hbs');
         const source = fs.readFileSync(filePath, 'utf-8').toString();
         const template = handlebars.compile(source);
 

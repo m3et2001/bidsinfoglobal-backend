@@ -32,9 +32,8 @@ import { contractAwardAllListForCron } from "./app/features/contract_award/contr
 
 // this cron is related to send the mail to user about the tenders
 
-// cron.schedule('0 0 * * *', async function () {       // midnight
-cron.schedule("*/10 * * * * *", async function () {
-  // testing
+cron.schedule('0 0 * * *', async function () {       // midnight
+// cron.schedule("*/10 * * * * *", async function () { // testing
   try {
     console.log("Cron job started...");
     console.log("Fetching active customers with tenders_filter...");
@@ -75,38 +74,38 @@ cron.schedule("*/10 * * * * *", async function () {
         );
 
         if (notExpired) {
-          // console.log(`Plan is active. ${pendingDays} days remaining for expiry.`);
+          console.log(`Plan is active. ${pendingDays} days remaining for expiry.`);
 
-          // // Fetching tenders data
-          // console.log(`Fetching tenders data for customer ${element._id}...`);
-          // const tendersData = await tendersAllListForCron(element?.tenders_filter,100);
-          // console.log(`Fetched ${tendersData.result.length} tenders for customer ${element._id}.`);
+          // Fetching tenders data
+          console.log(`Fetching tenders data for customer ${element._id}...`);
+          const tendersData = await tendersAllListForCron(element?.tenders_filter,100);
+          console.log(`Fetched ${tendersData.result.length} tenders for customer ${element._id}.`);
 
-          // const regionsDataArray = [];
-          // tendersData.result.map(function (obj) {
-          //     let index = regionsDataArray.findIndex(a => a.regions === obj.regions);
+          const regionsDataArray = [];
+          tendersData.result.map(function (obj) {
+              let index = regionsDataArray.findIndex(a => a.regions === obj.regions);
 
-          //     if (index >= 0) {
-          //         regionsDataArray[index].data.push({
-          //             country: obj.country,
-          //             description: obj.description
-          //         });
-          //     } else {
-          //         regionsDataArray.push({
-          //             regions: obj.regions,
-          //             data: [{
-          //                 country: obj.country,
-          //                 description: obj.description
-          //             }]
-          //         });
-          //     }
-          // });
+              if (index >= 0) {
+                  regionsDataArray[index].data.push({
+                      country: obj.country,
+                      description: obj.description
+                  });
+              } else {
+                  regionsDataArray.push({
+                      regions: obj.regions,
+                      data: [{
+                          country: obj.country,
+                          description: obj.description
+                      }]
+                  });
+              }
+          });
 
-          // console.log(`${tendersData?.result}...`);
-          // console.log(`Sending tenders data email to ${element.email}...`);
-          // sendDataMail(tendersData?.result || [], element._id, element.full_name, element.email, regionsDataArray, pendingDays);
-          // console.log(`Email sent for tenders data to ${element.email}.`);
-          // console.log(element)
+          console.log(`${tendersData?.result}...`);
+          console.log(`Sending tenders data email to ${element.email}...`);
+          sendDataMail(tendersData?.result || [], element._id, element.full_name, element.email, regionsDataArray, pendingDays);
+          console.log(`Email sent for tenders data to ${element.email}.`);
+          console.log(element)
 
           if (element?.contract_awards_filter) {
             // Fetching contract awards data

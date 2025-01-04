@@ -3,16 +3,18 @@ import mongoose from "mongoose";
 const citySchema = new mongoose.Schema(
   {
     name: {
+      type: String
+    },
+    state_name: {
       type: String,
     },
-    title: {
+
+    code: {
       type: String,
     },
-    description: {
-      type: String,
-    },
-    zip_code: {
-      type: String,
+    towns: {
+      type: Array,
+      default: [],
     },
 
     is_deleted: {
@@ -30,5 +32,6 @@ const citySchema = new mongoose.Schema(
 );
 
 const cityModel = mongoose.model("cities", citySchema);
+cityModel.createIndexes();
 
 export default cityModel;

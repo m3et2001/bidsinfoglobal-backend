@@ -17,8 +17,9 @@ import regionsModel from "./app/models/regions.model.js";
 import sectorsModel from "./app/models/sectors.model.js";
 import cpvCodesModel from "./app/models/cpv_codes.model.js";
 import fundingAgencyModel from "./app/models/funding_agency.model.js";
+import cityModel from "./app/models/city.model.js";
 
-const mongoURL = 'mongodb+srv://bidsinfoglobal:qGWxjS3YxJRHFovt@qa.t5cmca1.mongodb.net/';
+const mongoURL = 'mongodb+srv://bidsinfoglobal:3N4ZRDaS6H64GajL@qa.t5cmca1.mongodb.net';
 mongoose.connect(mongoURL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -89,6 +90,34 @@ db.once('open', function () {
 //             })
 //     );
 // });
+fs.readFile('cities.json', function (err, data) {
+    // Check for errors
+    if (err) throw err;
+
+    // Converting to JSON
+    const science = JSON.parse(data);
+    // console.log(science[0].interest_rate);
+    var promises = science.map((scores) => {
+        var payload = {};
+        payload.state_name = scores.state;
+        payload.name = scores.name;
+        payload.code = scores.code;
+        payload.towns = scores.towns;
+        payload.is_deleted = false;
+        payload.is_active = true;
+        return payload;
+    });
+    Promise.all(promises).then((files) =>
+        // console.log(files.length)
+        cityModel.insertMany(files)
+            .then((results) => {
+                return results;
+            })
+            .catch((e) => {
+                return e;
+            })
+    );
+});
 
 
 // fs.readFile('regions.json', function (err, data) {

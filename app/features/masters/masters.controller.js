@@ -10,6 +10,11 @@ import {
     insertRegions, readAllRegions, readRegions, updateRegions,
     insertSectors, readAllSectors, readSectors, updateSectors,
     insertCPVCodes, readAllCPVCodes, readCPVCodes, updateCPVCodes, readAllFundingAgency,
+    readAllCities,
+    readCities,
+    insertCity,
+    updateCity,
+    deleteCity,
 } from "./masters.service.js";
 
 // country master api
@@ -172,9 +177,9 @@ export const statesAdd = async (req, res, next) => {
 export const statesUpdate = async (req, res, next) => {
     try {
         const { _id } = req.body;
-
+        
         let result = await updateStates({ _id }, req.body);
-
+        
         responseSend(res, 201, "States updated successfully", result);
     } catch (error) {
         next(error);
@@ -184,15 +189,88 @@ export const statesUpdate = async (req, res, next) => {
 export const statesDelete = async (req, res, next) => {
     try {
         const { _id } = req.query;
-
+        
         await updateStates({ _id }, { is_deleted: true, is_active: false });
-
+        
         responseSend(res, 201, "States deleted successfully", {});
     } catch (error) {
         next(error);
     }
 }
 
+// cities master api
+const cities_select_field = { state_name: 1, name: 1, code: 1,towns:1, is_active: 1, createdAt: 1 };
+
+export const citiesAllList = async (req, res, next) => {
+    try {
+        const { keywords, pageNo, limit, sortBy, sortField } = req.query;
+        let filter = { is_active: true, is_deleted: false };
+        
+        if (keywords && keywords !== "")
+            filter = {
+        ...filter,
+        $or: [
+            { name: { $regex: keywords, $options: 'i' } },
+            { code: { $regex: keywords, $options: 'i' } },
+        ]
+    };
+    
+    let result = await readAllCities(
+        filter,
+        cities_select_field,
+        { [sortField]: parseInt(sortBy) },
+        parseInt(pageNo) * parseInt(limit),
+        parseInt(limit),
+    )
+    
+    responseSend(res, 201, "Cities records", { ...result, ...req.query });
+} catch (error) {
+    next(error);
+}
+};
+export const citiesGet = async (req, res, next) => {
+    try {
+        const { _id } = req.query;
+        
+        let result = await readCities({ _id }, cities_select_field);
+        
+        responseSend(res, 201, "City single record", result);
+    } catch (error) {
+        next(error);
+    }
+}
+
+export const cityAdd = async (req, res, next) => {
+    try {
+        let result = await insertCity(req.body);
+
+        responseSend(res, 201, "City added successfully", result);
+    } catch (error) {
+        next(error);
+    }
+}
+export const cityUpdate = async (req, res, next) => {
+    try {
+        const { _id } = req.body;
+        
+        let result = await updateCity({ _id }, req.body);
+        
+        responseSend(res, 201, "City updated successfully", result);
+    } catch (error) {
+        next(error);
+    }
+}
+export const cityDelete = async (req, res, next) => {
+    try {
+        const { _id } = req.query;
+        
+        await deleteCity(_id );
+        
+        responseSend(res, 201, "States deleted successfully", {});
+    } catch (error) {
+        next(error);
+    }
+}
 // regions master api
 const regions_select_field = { name: 1, title: 1, description: 1, project_title: 1, project_description: 1, code: 1, is_active: 1, createdAt: 1 };
 

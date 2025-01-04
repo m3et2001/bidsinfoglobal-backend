@@ -8,6 +8,11 @@ import {
     regionsAllListVal, regionsGetVal, regionsAddVal, regionsUpdateVal, regionsDeleteVal,
     sectorsAllListVal, sectorsGetVal, sectorsAddVal, sectorsUpdateVal, sectorsDeleteVal,
     cpvcodesAllListVal, cpvcodesGetVal, cpvcodesAddVal, cpvcodesUpdateVal, cpvcodesDeleteVal, fundingAgencyAllListVal, fundingAgencyGetVal, fundingAgencyAddVal, fundingAgencyUpdateVal, fundingAgencyDeleteVal,
+    citiesAllListVal,
+    citiesGetVal,
+    cityAddVal,
+    cityUpdateVal,
+    cityDeleteVal,
     // mailContentAllListVal, mailContentGetVal, mailContentAddVal, mailContentUpdateVal, mailContentDeleteVal,
 } from "./masters.validator.js";
 
@@ -18,6 +23,11 @@ import {
     sectorsAllList, sectorsGet, sectorsAdd, sectorsUpdate, sectorsDelete,
     cpvcodesAllList, cpvcodesGet, cpvcodesAdd, cpvcodesUpdate, cpvcodesDelete,
     fundingAgencyAllList, fundingAgencyGet, fundingAgencyAdd, fundingAgencyUpdate, fundingAgencyDelete,
+    citiesAllList,
+    citiesGet,
+    cityAdd,
+    cityUpdate,
+    cityDelete,
     // mailContentAllList, mailContentGet, mailContentAdd, mailContentUpdate, mailContentDelete,
 } from "./masters.controller.js";
 
@@ -39,6 +49,12 @@ router.get("/states", authenticateUser, reqValidator(statesGetVal), statesGet);
 router.post("/states", authenticateUser, reqValidator(statesAddVal), statesAdd);
 router.put("/states", authenticateUser, reqValidator(statesUpdateVal), statesUpdate);
 router.delete("/states", authenticateUser, reqValidator(statesDeleteVal), statesDelete);
+// states master apis
+router.get("/city-all", reqValidator(citiesAllListVal), citiesAllList);
+router.get("/cities", authenticateUser, reqValidator(citiesGetVal), citiesGet);
+router.post("/cities", authenticateUser, reqValidator(cityAddVal), cityAdd);
+router.put("/cities", authenticateUser, reqValidator(cityUpdateVal), cityUpdate);
+router.delete("/cities", authenticateUser, reqValidator(cityDeleteVal), cityDelete);
 
 // region master apis
 router.get("/regions-all", reqValidator(regionsAllListVal), regionsAllList);

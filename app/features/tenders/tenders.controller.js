@@ -939,18 +939,20 @@ export const tendersAddMultiple = async (req, res, next) => {
         // const count = await tendersModel.count();
         // baseRefNo += count;
       }
+      big_ref_no_list =[]
 
       await Promise.all(
         filteredTenders.map((tender, index) => {
           tender.big_ref_no = "T-" + (baseRefNo + index + 1);
           tender.createdAt = new Date(Date.now() + index);
+          big_ref_no_list.push(tender.big_ref_no)
         })
       );
 
       // Step 4: Insert new tenders
       const result = await tendersModel.insertMany(filteredTenders);
       console.log("Inserted tenders:", result);
-      responseSend(res, 201, "Tenders data added successfully", result);
+      responseSend(res, 201, "Tenders data added successfully", {"big_refs":big_ref_no_list,"data":result});
     } else {
       console.log("No new tenders to insert.");
       responseSend(res, 200, "No new tenders to insert.", []);

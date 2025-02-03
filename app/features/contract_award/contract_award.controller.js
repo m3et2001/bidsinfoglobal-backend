@@ -768,11 +768,74 @@ export const contractAwardAdd = async (req, res, next) => {
   }
 };
 
+// export const contractAwardAddMultiple = async (req, res, next) => {
+//   try {
+//     const { contracts } = req.body;
+
+//     // Step 1: Retrieve the latest contract award's big_ref_no
+//     let baseRefNo = startingBigRefNo;
+//     const latestContract = await contractAwardModel
+//       .findOne()
+//       .sort({ createdAt: -1 });
+
+//     if (latestContract) {
+//       // Extract the numeric part of big_ref_no from the latest contract and increment
+//       baseRefNo = parseInt(latestContract.big_ref_no.split("-")[1]) + 1;
+//     }
+
+//     // Step 2: Assign big_ref_no to each contract and increment from the baseRefNo
+//     contracts.forEach((contract, index) => {
+//       contract.big_ref_no = "CA-" + (baseRefNo + index);
+//       contract.createdAt = new Date(Date.now() + index);
+//     });
+
+//     let result = await contractAwardModel.insertMany(contracts);
+
+//     responseSend(res, 201, "Contract award added successfully", result);
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+
 export const contractAwardAddMultiple = async (req, res, next) => {
   try {
     const { contracts } = req.body;
 
-    // Step 1: Retrieve the latest contract award's big_ref_no
+    // Step 1: Deduplicate incoming contracts based on the specified fields
+    const uniqueContracts = contracts.reduce((acc, contract) => {
+      if (!acc.some((c) =>
+        c.awards_published_date === contract.awards_published_date &&
+        c.title === contract.title &&
+        c.project_location === contract.project_location &&
+        c.tender_notice_no === contract.tender_notice_no &&
+        c.org_name === contract.org_name
+      )) {
+        acc.push(contract);
+      }
+      return acc;
+    }, []);
+
+    // Step 2: Filter contracts to avoid inserting duplicates in the database
+    const filteredContracts = [];
+    for (const contract of uniqueContracts) {
+      const exists = await contractAwardModel.findOne({
+        $or: [
+          {
+            awards_published_date: contract.awards_published_date,
+            title: contract.title,
+            project_location: contract.project_location,
+            tender_notice_no: contract.tender_notice_no,
+            org_name: contract.org_name
+          }
+        ]
+      });
+
+      if (!exists) {
+        filteredContracts.push(contract);
+      }
+    }
+
+    // Step 3: Retrieve the latest contract award's big_ref_no
     let baseRefNo = startingBigRefNo;
     const latestContract = await contractAwardModel
       .findOne()
@@ -783,15 +846,27 @@ export const contractAwardAddMultiple = async (req, res, next) => {
       baseRefNo = parseInt(latestContract.big_ref_no.split("-")[1]) + 1;
     }
 
-    // Step 2: Assign big_ref_no to each contract and increment from the baseRefNo
-    contracts.forEach((contract, index) => {
+    // Step 4: Assign big_ref_no to each contract and increment from the baseRefNo
+    big_ref_no_list =[]
+    await Promise.all(
+    filteredContracts.forEach((contract, index) => {
       contract.big_ref_no = "CA-" + (baseRefNo + index);
       contract.createdAt = new Date(Date.now() + index);
-    });
+      big_ref_no_list.push(contract.big_ref_no)
 
-    let result = await contractAwardModel.insertMany(contracts);
+    }))
 
-    responseSend(res, 201, "Contract award added successfully", result);
+    // Step 5: Insert new contracts
+
+    if (filteredContracts.length > 0) {
+      const result = await contractAwardModel.insertMany(filteredContracts);
+      console.log("Inserted contracts:", result);
+      responseSend(res, 201, "Contract award added successfully", {"big_refs":big_ref_no_list,"data":result});
+    } else {
+      console.log("No new contracts to insert.");
+      responseSend(res, 200, "No new contracts to insert.", []);
+    }
+    
   } catch (error) {
     next(error);
   }

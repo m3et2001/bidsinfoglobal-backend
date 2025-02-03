@@ -367,32 +367,105 @@ export const projectsAdd = async (req, res, next) => {
     }
 }
 
+// export const projectsAddMultiple = async (req, res, next) => {
+//     try {
+//         const { projects } = req.body;
+
+//         let baseRefNo = startingBigRefNo;
+//         const latestProject = await projectsModel.findOne().sort({ createdAt: -1 });
+
+//         if (latestProject) {
+//             // Extract the numeric part of big_ref_no from the latest contract and increment
+//             baseRefNo = parseInt(latestProject.big_ref_no.split('-')[1]) + 1;
+//         }
+
+//         // Step 2: Assign big_ref_no to each contract and increment from the baseRefNo
+//         projects.forEach((project, index) => {
+//             project.big_ref_no = "P-" + (baseRefNo + index);
+//             project.createdAt = new Date(Date.now() + index);
+//         });
+
+//         let result = await projectsModel.insertMany(projects);
+
+//         responseSend(res, 201, "Projects data added successfully", result);
+
+//     } catch (error) {
+//         next(error);
+//     }
+// }
 export const projectsAddMultiple = async (req, res, next) => {
-    try {
-        const { projects } = req.body;
+  try {
+    const { projects } = req.body;
 
-        let baseRefNo = startingBigRefNo;
-        const latestProject = await projectsModel.findOne().sort({ createdAt: -1 });
+    // Step 1: Deduplicate incoming projects based on the specified fields
+    const uniqueProjects = projects.reduce((acc, project) => {
+      if (!acc.some((p) =>
+        p.project_id === project.project_id &&
+        p.project_name === project.project_name &&
+        p.project_location === project.project_location &&
+        p.project_publishing_date === project.project_publishing_date &&
+        p.client_name === project.client_name &&
+        p.project_status === project.project_status
+      )) {
+        acc.push(project);
+      }
+      return acc;
+    }, []);
 
-        if (latestProject) {
-            // Extract the numeric part of big_ref_no from the latest contract and increment
-            baseRefNo = parseInt(latestProject.big_ref_no.split('-')[1]) + 1;
-        }
+    // Step 2: Filter projects to avoid inserting duplicates in the database
+    const filteredProjects = [];
+    for (const project of uniqueProjects) {
+      const exists = await projectsModel.findOne({
+        $or: [
+          {
+            project_id: project.project_id,
+            project_name: project.project_name,
+            project_location: project.project_location,
+            project_publishing_date: project.project_publishing_date,
+            client_name: project.client_name,
+            project_status: project.project_status
+          }
+        ]
+      });
 
-        // Step 2: Assign big_ref_no to each contract and increment from the baseRefNo
-        projects.forEach((project, index) => {
-            project.big_ref_no = "P-" + (baseRefNo + index);
-            project.createdAt = new Date(Date.now() + index);
-        });
-
-        let result = await projectsModel.insertMany(projects);
-
-        responseSend(res, 201, "Projects data added successfully", result);
-
-    } catch (error) {
-        next(error);
+      if (!exists) {
+        filteredProjects.push(project);
+      }
     }
-}
+
+    // Step 3: Retrieve the latest project to generate baseRefNo
+    let baseRefNo = startingBigRefNo;
+    const latestProject = await projectsModel.findOne().sort({ createdAt: -1 });
+
+    if (latestProject) {
+      // Extract the numeric part of big_ref_no from the latest project and increment
+      baseRefNo = parseInt(latestProject.big_ref_no.split('-')[1]) + 1;
+    }
+    big_ref_no_list =[]
+
+    // Step 4: Assign big_ref_no to each project and increment from the baseRefNo
+    filteredProjects.forEach((project, index) => {
+      project.big_ref_no = "P-" + (baseRefNo + index);
+      project.createdAt = new Date(Date.now() + index);
+      big_ref_no_list.push(project.big_ref_no)
+
+    });
+
+    // Step 5: Insert new projects
+    if (filteredProjects.length > 0) {
+      const result = await projectsModel.insertMany(filteredProjects);
+      console.log("Inserted projects:", result);
+      responseSend(res, 201, "Projects data added successfully", {"big_refs":big_ref_no_list,"data":result});
+    } else {
+      console.log("No new projects to insert.");
+      responseSend(res, 200, "No new projects to insert.", []);
+    }
+
+  } catch (error) {
+    next(error);
+  }
+};
+
 
 export const projectsUpdate = async (req, res, next) => {
     try {
